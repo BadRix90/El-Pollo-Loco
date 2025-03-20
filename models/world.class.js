@@ -1,23 +1,8 @@
 class World {
   character = new Character();
-  // enemies = [new Chicken(), new Chicken(), new Chicken()];
-  enemies = Array.from(
-    { length: Math.floor(Math.random() * 4) + 2 },
-    () => new Chicken()
-  );
-
-  clouds = [new Cloud()];
-
-  backgroundObjects = [
-    new BackgroundObject("img/5_background/layers/air.png", 0),
-    new BackgroundObject("img/5_background/layers/3_third_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/2_second_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/air.png", 719),
-    new BackgroundObject("img/5_background/layers/3_third_layer/2.png", 719),
-    new BackgroundObject("img/5_background/layers/2_second_layer/2.png", 719),
-    new BackgroundObject("img/5_background/layers/1_first_layer/2.png", 719),
-  ];
+  enemies = level1.enemies;
+  clouds = level1.clouds;
+  backgroundObjects = level1.backgroundObjects;
 
   backgroundWidth = 719 * 2;
   ctx;
@@ -29,6 +14,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.character.world = this;
     this.draw();
     this.setWorld();
   }
@@ -42,9 +28,9 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToMap(this.backgroundObjects);
+    this.drawBackgroundObjects();
 
-    this.drawBackgroundObjects()
+    this.addObjectsToMap(this.backgroundObjects);
 
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
@@ -59,12 +45,13 @@ class World {
   }
 
   drawBackgroundObjects() {
-    const cameraXAbs = Math.abs(this.camera_x)
-    const startSection = Math.floor(cameraXAbs / this.backgroundWidth) - 1
-    const visibleSections = Math.ceil(this.canvas.width / this.backgroundWidth) + 2
+    const cameraXAbs = Math.abs(this.camera_x);
+    const startSection = Math.floor(cameraXAbs / this.backgroundWidth) - 1;
+    const visibleSections =
+      Math.ceil(this.canvas.width / this.backgroundWidth) + 2;
 
     for (let i = 0; i < visibleSections; i++) {
-      const sectionX = (startSection + i) * this.backgroundWidth
+      const sectionX = (startSection + i) * this.backgroundWidth;
 
       this.backgroundObjects.forEach((bgObj) => {
         const tempObj = {
@@ -73,9 +60,9 @@ class World {
           img: bgObj.img,
           width: bgObj.width,
           height: bgObj.height,
-        }
-        this.addToMap(tempObj)
-      })
+        };
+        this.addToMap(tempObj);
+      });
     }
   }
 
