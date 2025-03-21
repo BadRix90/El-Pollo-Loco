@@ -11,7 +11,7 @@ class Cloud extends MovableObject {
 
   animate() {
     this.moveLeft();
-    setInterval(() => this.resetPosition(), 1000 / 600);
+    setInterval(() => this.resetPosition(), 1000 / 60);
   }
 
   resetPosition() {
