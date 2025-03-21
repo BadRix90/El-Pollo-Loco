@@ -1,8 +1,6 @@
 class World {
   character = new Character();
-  enemies = level1.enemies;
-  clouds = level1.clouds;
-  backgroundObjects = level1.backgroundObjects;
+  level = level1;
 
   backgroundWidth = 719 * 2;
   ctx;
@@ -30,11 +28,11 @@ class World {
 
     this.drawBackgroundObjects();
 
-    this.addObjectsToMap(this.backgroundObjects);
+    this.addObjectsToMap(this.level.backgroundObjects);
 
     this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
-    this.addObjectsToMap(this.clouds);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.clouds);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -53,7 +51,7 @@ class World {
     for (let i = 0; i < visibleSections; i++) {
       const sectionX = (startSection + i) * this.backgroundWidth;
 
-      this.backgroundObjects.forEach((bgObj) => {
+      this.level.backgroundObjects.forEach((bgObj) => {
         const tempObj = {
           ...bgObj,
           x: bgObj.x + sectionX,
