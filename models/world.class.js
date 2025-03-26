@@ -58,33 +58,41 @@ class World {
     const bulletsToKeep = [];
 
     this.throwableObjects.forEach((bullet) => {
-        let hitSomething = false;
+      let hitSomething = false;
 
-        this.level.enemies.forEach((enemy) => {
-            if (!enemy.isDead() && bullet.isColliding(enemy)) {
-                enemy.hit(50);
-                hitSomething = true;
-            }
-        });
-
-        if (this.level.endboss && !this.level.endboss.isDead() && bullet.isColliding(this.level.endboss)) {
-            this.level.endboss.hit(25);
-            hitSomething = true;
+      this.level.enemies.forEach((enemy) => {
+        if (
+          !enemy.isDead() &&
+          bullet.isColliding(enemy) &&
+          bullet.owner !== enemy
+        ) {
+          enemy.hit(50);
+          bullet.markedForDeletion = true;
         }
+      });
 
-        const outOfView =
-            bullet.x < this.camera_x - bullet.width ||
-            bullet.x > this.camera_x + this.canvas.width ||
-            bullet.x < 0 || bullet.x > this.level.level_end_x;
+      if (
+        this.level.endboss &&
+        !this.level.endboss.isDead() &&
+        bullet.isColliding(this.level.endboss)
+      ) {
+        this.level.endboss.hit(25);
+        hitSomething = true;
+      }
 
-        if (!hitSomething && !outOfView) {
-            bulletsToKeep.push(bullet);
-        }
+      const outOfView =
+        bullet.x < this.camera_x - bullet.width ||
+        bullet.x > this.camera_x + this.canvas.width ||
+        bullet.x < 0 ||
+        bullet.x > this.level.level_end_x;
+
+      if (!hitSomething && !outOfView) {
+        bulletsToKeep.push(bullet);
+      }
     });
 
     this.throwableObjects = bulletsToKeep;
-}
-
+  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

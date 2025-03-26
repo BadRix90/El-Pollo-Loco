@@ -110,7 +110,7 @@ class Enemy extends MovableObject {
   
       const speed = this.otherDirection ? -10 : 10;
   
-      const bullet = new Bullet(bulletX, bulletY, speed);
+      const bullet = new Bullet(bulletX, bulletY, speed, this);	
       this.world.throwableObjects.push(bullet);
     }, 700); 
   }
