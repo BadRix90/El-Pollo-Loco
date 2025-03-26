@@ -57,20 +57,29 @@ class World {
   checkBulletHits() {
     const bulletsToKeep = [];
   
-    this.throwableObjects.forEach((bullet) => {
-      if (bullet.markedForDeletion) {
-        bullet.deletionDelay -= bullet.speed;
-        if (bullet.deletionDelay <= 0) return;
-        bulletsToKeep.push(bullet);
-        return;
+    this.enemyBullets.forEach(bullet => {
+      if (!bullet.markedForDeletion && !this.character.isDead() && bullet.isColliding(this.character)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+        bullet.markedForDeletion = true;
+        bullet.deletionDelay = 5;
       }
-  
-      let hitSomething = false;
-      
-      bulletsToKeep.push(bullet);
     });
   
-    this.throwableObjects = bulletsToKeep; // Alte Methode entfernt
+ 
+    this.playerBullets.forEach(bullet => {
+      this.level.enemies.forEach(enemy => {
+        if (!bullet.markedForDeletion && !enemy.isDead() && bullet.isColliding(enemy)) {
+          enemy.hit(50);
+          bullet.markedForDeletion = true;
+          bullet.deletionDelay = 10;
+        }
+      });
+    });
+  
+
+    this.playerBullets = this.playerBullets.filter(b => !b.markedForDeletion || b.deletionDelay > 0);
+    this.enemyBullets = this.enemyBullets.filter(b => !b.markedForDeletion || b.deletionDelay > 0);
   }
   
 
