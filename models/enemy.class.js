@@ -100,20 +100,22 @@ class Enemy extends MovableObject {
   startShooting() {
     setInterval(() => {
       if (!this.world || this.isDead()) return;
-      if (this.mode !== 'attack') return;
   
-      const offsetX = this.otherDirection ? 15 : this.width - 10;
-      const offsetY = this.height / 2 - 5;
+      const distanceToPlayer = Math.abs(this.world.character.x - this.x);
   
-      const bulletX = this.x + offsetX;
-      const bulletY = this.y + offsetY;
+      if (distanceToPlayer < this.attackDistance) {
+        this.mode = 'attack';
   
-      const speed = this.otherDirection ? -10 : 10;
+        const bulletX = this.x + (this.otherDirection ? -20 : this.width + 10);
+        const bulletY = this.y + this.height / 2 - 5;
   
-      const bullet = new Bullet(bulletX, bulletY, speed, this);	
-      this.world.throwableObjects.push(bullet);
-    }, 700); 
+        const speed = this.otherDirection ? -10 : 10;
+  
+        this.world.spawnBullet(bulletX, bulletY, speed > 0 ? 1 : -1, this);
+      }
+    }, 1200);
   }
+  
   
   resetPosition() {
     if (this.x < -this.width) {

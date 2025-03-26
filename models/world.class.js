@@ -9,7 +9,6 @@ class World {
   camera_x = 0;
   statusBar = new StatusBar();
   throwableObjects = [];
-  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -21,7 +20,7 @@ class World {
     this.setWorld();
     this.run();
     this.playerBullets = [];
-  this.enemyBullets = [];
+    this.enemyBullets = [];
   }
 
   setWorld() {
@@ -56,32 +55,41 @@ class World {
 
   checkBulletHits() {
     const bulletsToKeep = [];
-  
-    this.enemyBullets.forEach(bullet => {
-      if (!bullet.markedForDeletion && !this.character.isDead() && bullet.isColliding(this.character)) {
+
+    this.enemyBullets.forEach((bullet) => {
+      if (
+        !bullet.markedForDeletion &&
+        !this.character.isDead() &&
+        bullet.isColliding(this.character)
+      ) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
         bullet.markedForDeletion = true;
         bullet.deletionDelay = 5;
       }
     });
-  
- 
-    this.playerBullets.forEach(bullet => {
-      this.level.enemies.forEach(enemy => {
-        if (!bullet.markedForDeletion && !enemy.isDead() && bullet.isColliding(enemy)) {
+
+    this.playerBullets.forEach((bullet) => {
+      this.level.enemies.forEach((enemy) => {
+        if (
+          !bullet.markedForDeletion &&
+          !enemy.isDead() &&
+          bullet.isColliding(enemy)
+        ) {
           enemy.hit(50);
           bullet.markedForDeletion = true;
           bullet.deletionDelay = 10;
         }
       });
     });
-  
 
-    this.playerBullets = this.playerBullets.filter(b => !b.markedForDeletion || b.deletionDelay > 0);
-    this.enemyBullets = this.enemyBullets.filter(b => !b.markedForDeletion || b.deletionDelay > 0);
+    this.playerBullets = this.playerBullets.filter(
+      (b) => !b.markedForDeletion || b.deletionDelay > 0
+    );
+    this.enemyBullets = this.enemyBullets.filter(
+      (b) => !b.markedForDeletion || b.deletionDelay > 0
+    );
   }
-  
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -97,8 +105,9 @@ class World {
     this.addToMap(this.character);
 
     this.addObjectsToMap(this.level.enemies);
-    this.addObjectsToMap(this.playerBullets); 
+    this.addObjectsToMap(this.playerBullets);
     this.addObjectsToMap(this.enemyBullets);
+
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
@@ -149,14 +158,13 @@ class World {
 
   spawnBullet(x, y, direction = 1, owner = null) {
     const bullet = new Bullet(x, y, 7 * direction, owner);
-  
+
     if (owner === this.character) {
       this.playerBullets.push(bullet);
     } else {
       this.enemyBullets.push(bullet);
     }
   }
-  
 
   drawShootEffect(x, y) {
     const effect = new MovableObject();
