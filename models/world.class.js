@@ -25,8 +25,8 @@ class World {
     this.character.world = this;
     this.level.enemies.forEach((enemy) => {
       enemy.world = this;
-      enemy.animate();
-      enemy.startAI();
+      enemy.animate?.();
+      enemy.startAI?.();
     });
 
     if (this.level.endboss) {
