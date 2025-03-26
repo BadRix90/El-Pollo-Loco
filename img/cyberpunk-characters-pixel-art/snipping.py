@@ -5,10 +5,10 @@ from PIL import Image
 base_path = r"C:\Users\Kay\Desktop\developerakademie\Projekte\El-Pollo-Loco\img\cyberpunk-characters-pixel-art"
 
 # Liste der Unterordner mit den Charakteren
-character_dirs = ["1 Biker", "2 Punk", "3 Cyborg", "10_Boss"]
+character_dirs = ["2 Punk"]
 
 # Frame-Größe (wenn überall gleich)
-frame_width = 48  # oder anpassen
+frame_width = 28  # oder anpassen
 frame_height = 48
 
 for folder in character_dirs:
