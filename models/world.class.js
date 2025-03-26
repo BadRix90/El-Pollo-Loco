@@ -56,7 +56,7 @@ class World {
    */
   checkBulletHits() {
     const bulletsToKeep = [];
-  
+
     this.throwableObjects.forEach((bullet) => {
       if (bullet.markedForDeletion) {
         bullet.deletionDelay -= bullet.speed;
@@ -64,10 +64,20 @@ class World {
         bulletsToKeep.push(bullet);
         return;
       }
-  
+
       let hitSomething = false;
-  
+
       this.level.enemies.forEach((enemy) => {
+        if (
+          !this.character.isDead() &&
+          bullet.isColliding(this.character) &&
+          bullet.owner !== this.character
+        ) {
+          this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
+          bullet.markedForDeletion = true;
+        }
+
         if (
           !enemy.isDead() &&
           bullet.isColliding(enemy) &&
@@ -79,7 +89,7 @@ class World {
           hitSomething = true;
         }
       });
-  
+
       if (
         this.level.endboss &&
         !this.level.endboss.isDead() &&
@@ -90,14 +100,12 @@ class World {
         bullet.deletionDelay = 5;
         hitSomething = true;
       }
-  
+
       bulletsToKeep.push(bullet);
     });
-  
+
     this.throwableObjects = bulletsToKeep;
   }
-  
-
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
