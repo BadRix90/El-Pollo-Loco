@@ -132,12 +132,4 @@ class Enemy extends MovableObject {
       }
     }, 200);
   }
-
-  Enemy(startX, range) {
-    const enemy = new Enemy();
-    enemy.x = startX;
-    enemy.patrolStart = startX;
-    enemy.patrolEnd = startX + range;
-    return enemy;
-  }
 }
