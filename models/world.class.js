@@ -53,7 +53,6 @@ class World {
     });
   }
 
-
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -68,7 +67,7 @@ class World {
     this.addToMap(this.character);
 
     this.addObjectsToMap(this.level.enemies);
-
+    this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
@@ -115,5 +114,11 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  spawnBullet(x, y, direction = 1) {
+    const bullet = new Bullet(x, y);
+    bullet.speed *= direction;
+    this.throwableObjects.push(bullet);
   }
 }
