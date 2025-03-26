@@ -51,9 +51,6 @@ class World {
     });
   }
 
-  /**
-   * Checks if bullets hit any enemies and applies damage.
-   */
   checkBulletHits() {
     const bulletsToKeep = [];
   
@@ -65,50 +62,12 @@ class World {
         return;
       }
   
-
-      if (
-        !this.character.isDead() &&
-        bullet.isColliding(this.character) &&
-        bullet.owner !== this.character
-      ) {
-        this.character.hit();
-        this.statusBar.setPercentage(this.character.energy);
-        // console.log(`💥 Player hit! -5 HP → Energy: ${this.character.energy}`);
-        bullet.markedForDeletion = true;
-        bullet.deletionDelay = 5;
-        return; 
-      }
-  
       let hitSomething = false;
-  
-      this.level.enemies.forEach((enemy) => {
-        if (
-          !enemy.isDead() &&
-          bullet.isColliding(enemy) &&
-          bullet.owner !== enemy
-        ) {
-          enemy.hit(50);
-          bullet.markedForDeletion = true;
-          bullet.deletionDelay = 10;
-          hitSomething = true;
-        }
-      });
-  
-      if (
-        this.level.endboss &&
-        !this.level.endboss.isDead() &&
-        bullet.isColliding(this.level.endboss)
-      ) {
-        this.level.endboss.hit(25);
-        bullet.markedForDeletion = true;
-        bullet.deletionDelay = 5;
-        hitSomething = true;
-      }
-  
+      
       bulletsToKeep.push(bullet);
     });
   
-    this.throwableObjects = bulletsToKeep;
+    this.throwableObjects = bulletsToKeep; // Alte Methode entfernt
   }
   
 
@@ -176,9 +135,12 @@ class World {
   }
 
   spawnBullet(x, y, direction = 1, owner = null) {
-    const bullet = new Bullet(x, y, 7 * direction, owner);
+    console.log("Spawn Bullet Owner:", owner); // Debugging: Überprüfen, ob owner mitgegeben wird
+    const bullet = new Bullet(x, y, 7 * direction, owner); // owner mitgeben
     this.throwableObjects.push(bullet);
   }
+  
+  
 
   drawShootEffect(x, y) {
     const effect = new MovableObject();
