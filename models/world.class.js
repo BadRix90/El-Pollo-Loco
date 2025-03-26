@@ -9,6 +9,7 @@ class World {
   camera_x = 0;
   statusBar = new StatusBar();
   throwableObjects = [];
+  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -19,6 +20,8 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    this.playerBullets = [];
+  this.enemyBullets = [];
   }
 
   setWorld() {
@@ -135,11 +138,14 @@ class World {
   }
 
   spawnBullet(x, y, direction = 1, owner = null) {
-    console.log("Spawn Bullet Owner:", owner); // Debugging: Überprüfen, ob owner mitgegeben wird
-    const bullet = new Bullet(x, y, 7 * direction, owner); // owner mitgeben
-    this.throwableObjects.push(bullet);
-  }
+    const bullet = new Bullet(x, y, 7 * direction, owner);
   
+    if (owner === this.character) {
+      this.playerBullets.push(bullet);
+    } else {
+      this.enemyBullets.push(bullet);
+    }
+  }
   
 
   drawShootEffect(x, y) {
