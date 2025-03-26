@@ -102,20 +102,19 @@ class Enemy extends MovableObject {
       if (!this.world || this.isDead()) return;
       if (this.mode !== 'attack') return;
   
-      const bulletX = this.otherDirection
-        ? this.x - 10
-        : this.x + this.width;
+      const offsetX = this.otherDirection ? 15 : this.width - 10;
+      const offsetY = this.height / 2 - 5;
   
-      const bulletY = this.y + this.height / 2;
+      const bulletX = this.x + offsetX;
+      const bulletY = this.y + offsetY;
   
-      const bullet = new Bullet(bulletX, bulletY);
-      bullet.speed *= this.otherDirection ? -1 : 1;
+      const speed = this.otherDirection ? -10 : 10;
   
+      const bullet = new Bullet(bulletX, bulletY, speed);
       this.world.throwableObjects.push(bullet);
-    }, 1000);
+    }, 700); 
   }
   
-
   resetPosition() {
     if (this.x < -this.width) {
       this.x = 720;
