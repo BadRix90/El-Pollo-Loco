@@ -13,7 +13,7 @@ class MovableObject extends DrawableObject {
         this.speedY -= this.acceleration;
       }
 
-      if (!(this instanceof ThrowableObject) && this.y > 250) {
+      if (!(this instanceof Bullet) && this.y > 250) {
         this.y = 250;
         this.speedY = 0;
       }
@@ -21,7 +21,7 @@ class MovableObject extends DrawableObject {
   }
 
   isAboveGround() {
-    if (this instanceof ThrowableObject) {
+    if (this instanceof Bullet) {
       return this.y < 480;
     } else {
       return this.y < 250;
@@ -29,16 +29,13 @@ class MovableObject extends DrawableObject {
   }
 
   isColliding(mo) {
-    const shrink = 70;
-  
     return (
-      this.x + shrink + this.width - shrink * 2 > mo.x + shrink &&
-      this.y + shrink + this.height - shrink * 2 > mo.y + shrink &&
-      this.x + shrink < mo.x + mo.width - shrink &&
-      this.y + shrink < mo.y + mo.height - shrink
+      this.x + this.width > mo.x &&
+      this.y + this.height > mo.y &&
+      this.x < mo.x + mo.width &&
+      this.y < mo.y + mo.height
     );
   }
-  
   
 
   hit() {
@@ -81,6 +78,6 @@ class MovableObject extends DrawableObject {
 
   jump() {
     if (this.isDead && this.isDead()) return;
-    this.speedY = 34;
+    this.speedY = 40;
   }
 }

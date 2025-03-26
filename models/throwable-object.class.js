@@ -1,30 +1,18 @@
-class ThrowableObject extends MovableObject {
-
+class Bullet extends MovableObject {
     constructor(x, y) {
-        super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
-        this.x = x;	
-        this.y = y;
-        this.width = 70;
-        this.height = 70;   
-        this.throw();
-
+      super().loadImage('img/cyberpunk-characters-pixel-art/guns/5 Bullets/1.png');
+      this.x = x;
+      this.y = y;
+      this.width = 20;
+      this.height = 10;
+      this.speed = 7;
+      this.animate();
     }
-
-    throw(){
-        this.speedY = 30;
-        this.applyGravity();
-        setInterval(() => {
-            this.x += 10;
-        }, 1000 / 25);
+  
+    animate() {
+      setInterval(() => {
+        this.x += this.speed;
+      }, 1000 / 60);
     }
-
-
-
-
-
-
-
-
-
-
-}
+  }
+  

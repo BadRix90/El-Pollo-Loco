@@ -10,7 +10,6 @@ class World {
   statusBar = new StatusBar();
   throwableObjects = [];
 
-
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
@@ -20,26 +19,38 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    this.throwables = [];
+    const enemy = new Enemy();
+    enemy.world = this;
+    this.level.enemies.push(enemy);
   }
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies.forEach(enemy => {
+      enemy.world = this;
+      enemy.animate();
+    });
+  
+    if (this.level.endboss) {
+      this.level.endboss.world = this;
+      this.level.endboss.animate?.();
+    }
   }
+  
 
   run() {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
-    }, 200);
+      this.checkBulletHits();
+    }, 100);
   }
 
   checkThrowObjects() {
-    if (this.keyboard.q) {
-      let bottle = new ThrowableObject(
-        this.character.x + 100,
-        this.character.y + 100
-      );
-      this.throwableObjects.push(bottle);
+    if (this.keyboard.q && !this.character.introRunning) {
+      let bullet = new Bullet(this.character.x + 100, this.character.y + 100);
+      this.throwables.push(bullet);
     }
   }
 
@@ -48,6 +59,22 @@ class World {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
+      }
+    });
+  }
+
+  checkBulletHits() {
+    this.throwables.forEach((bullet, bIndex) => {
+      this.level.enemies.forEach((enemy, eIndex) => {
+        if (bullet.isColliding(enemy)) {
+          enemy.hit();
+          this.throwables.splice(bIndex, 1);
+        }
+      });
+
+      if (this.level.endboss && bullet.isColliding(this.level.endboss)) {
+        this.level.endboss.hit();
+        this.throwables.splice(bIndex, 1);
       }
     });
   }
@@ -64,9 +91,10 @@ class World {
 
     this.addObjectsToMap(this.level.street);
     this.addToMap(this.character);
-    
+
     this.addObjectsToMap(this.level.enemies);
-    this.addObjectsToMap(this.throwableObjects);
+
+    this.addObjectsToMap(this.throwables);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -85,12 +113,10 @@ class World {
       bgObj.x = originalX;
     });
   }
-  
 
   addObjectsToMap(objects) {
-    objects.forEach((object) => {
-      this.addToMap(object);
-    });
+    if (!Array.isArray(objects)) return;
+    objects.forEach((obj) => this.addToMap(obj));
   }
 
   addToMap(mo) {
@@ -117,4 +143,7 @@ class World {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
+
+  
+  
 }

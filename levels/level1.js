@@ -1,17 +1,33 @@
 let streetTiles = [];
 let levelWidth = 5400;
-let tileSize = 32
+let tileSize = 32;
 
 for (let x = -tileSize * 10; x <= levelWidth; x += tileSize) {
   streetTiles.push(new Street(x));
 }
 
-const level1 = new Level(
-  [
-    new Enemy(),
-    new Endboss(),
-  ], streetTiles,
+const enemyPositions = [
+  { x: 600, range: 50 },
+  { x: 1800, range: 60 },
+  { x: 3000, range: 50 },
+  { x: 4200, range: 60 },
+  { x: 5100, range: 70 },
+  { x: 5300, range: 90 },
+];
 
+const patrolEnemies = enemyPositions.map((pos) => {
+  const enemy = new Enemy();
+  enemy.x = pos.x;
+  enemy.patrolStart = pos.x;
+  enemy.patrolEnd = pos.x + pos.range;
+  return enemy;
+});
+
+const initialEnemies = [...patrolEnemies, new Endboss()];
+
+const level1 = new Level(
+  initialEnemies,
+  streetTiles,
 
   [
     // Abschnitt 0
