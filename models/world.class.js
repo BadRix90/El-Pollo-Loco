@@ -56,10 +56,17 @@ class World {
    */
   checkBulletHits() {
     const bulletsToKeep = [];
-
+  
     this.throwableObjects.forEach((bullet) => {
+      if (bullet.markedForDeletion) {
+        bullet.deletionDelay -= bullet.speed;
+        if (bullet.deletionDelay <= 0) return; // Bullet verschwindet
+        bulletsToKeep.push(bullet);
+        return;
+      }
+  
       let hitSomething = false;
-
+  
       this.level.enemies.forEach((enemy) => {
         if (
           !enemy.isDead() &&
@@ -68,31 +75,29 @@ class World {
         ) {
           enemy.hit(50);
           bullet.markedForDeletion = true;
+          bullet.deletionDelay = 10; // Kugel fliegt 10px weiter
+          hitSomething = true;
         }
       });
-
+  
       if (
         this.level.endboss &&
         !this.level.endboss.isDead() &&
         bullet.isColliding(this.level.endboss)
       ) {
         this.level.endboss.hit(25);
+        bullet.markedForDeletion = true;
+        bullet.deletionDelay = 5;
         hitSomething = true;
       }
-
-      const outOfView =
-        bullet.x < this.camera_x - bullet.width ||
-        bullet.x > this.camera_x + this.canvas.width ||
-        bullet.x < 0 ||
-        bullet.x > this.level.level_end_x;
-
-      if (!hitSomething && !outOfView) {
-        bulletsToKeep.push(bullet);
-      }
+  
+      bulletsToKeep.push(bullet);
     });
-
+  
     this.throwableObjects = bulletsToKeep;
   }
+  
+
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
