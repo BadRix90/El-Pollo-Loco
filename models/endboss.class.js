@@ -16,12 +16,7 @@ class Endboss extends MovableObject {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.animate();
-    this.hitboxOffset = {
-      top: 100,     
-      bottom: 0,
-      left: 30,    
-      right: 80    
-    };
+
     
   }
 

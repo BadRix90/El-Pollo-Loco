@@ -1,7 +1,7 @@
 class Enemy extends MovableObject {
   y = 250;
   height = 200;
-  width = 100;
+  width = 150;
   speed = 0.3 + Math.random() * 0.25;
 
   IMAGES_WALKING = [
@@ -18,12 +18,7 @@ class Enemy extends MovableObject {
     this.x = 200 + Math.random() * 500;
     this.loadImages(this.IMAGES_WALKING);
     this.animate();
-    this.hitboxOffset = {
-      top: 50,
-      bottom: 0,
-      left: 12,   // 👈 Bild-Offset ausgleichen
-      right: 20
-    };
+
   }    
 
   animate() {

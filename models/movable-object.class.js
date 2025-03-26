@@ -29,21 +29,17 @@ class MovableObject extends DrawableObject {
   }
 
   isColliding(mo) {
-    const offsetA = this.hitboxOffset || {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-    };
-    const offsetB = mo.hitboxOffset || { top: 0, bottom: 0, left: 0, right: 0 };
-
+    const shrink = 70;
+  
     return (
-      this.x + this.width - offsetA.right > mo.x + offsetB.left &&
-      this.y + this.height - offsetA.bottom > mo.y + offsetB.top &&
-      this.x + offsetA.left < mo.x + mo.width - offsetB.right &&
-      this.y + offsetA.top < mo.y + mo.height - offsetB.bottom
+      this.x + shrink + this.width - shrink * 2 > mo.x + shrink &&
+      this.y + shrink + this.height - shrink * 2 > mo.y + shrink &&
+      this.x + shrink < mo.x + mo.width - shrink &&
+      this.y + shrink < mo.y + mo.height - shrink
     );
   }
+  
+  
 
   hit() {
     this.energy -= 5;
@@ -85,6 +81,6 @@ class MovableObject extends DrawableObject {
 
   jump() {
     if (this.isDead && this.isDead()) return;
-    this.speedY = 50;
+    this.speedY = 34;
   }
 }
