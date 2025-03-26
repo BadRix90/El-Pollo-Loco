@@ -5,6 +5,9 @@ let keyboard = new Keyboard();
 function init(){
     canvas = document.getElementById('canvas')
     world = new World(canvas, keyboard)
+    let backgroundMusic = document.getElementById('background-music');
+    backgroundMusic.volume = 0.05; 
+    backgroundMusic.play();
 
 }
 
