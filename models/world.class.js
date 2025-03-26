@@ -56,28 +56,31 @@ class World {
    */
   checkBulletHits() {
     const bulletsToKeep = [];
-
+  
     this.throwableObjects.forEach((bullet) => {
       if (bullet.markedForDeletion) {
         bullet.deletionDelay -= bullet.speed;
-        if (bullet.deletionDelay <= 0) return; // Bullet verschwindet
+        if (bullet.deletionDelay <= 0) return;
         bulletsToKeep.push(bullet);
         return;
       }
+  
 
+      if (
+        !this.character.isDead() &&
+        bullet.isColliding(this.character) &&
+        bullet.owner !== this.character
+      ) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+        bullet.markedForDeletion = true;
+        bullet.deletionDelay = 5;
+        return; 
+      }
+  
       let hitSomething = false;
-
+  
       this.level.enemies.forEach((enemy) => {
-        if (
-          !this.character.isDead() &&
-          bullet.isColliding(this.character) &&
-          bullet.owner !== this.character
-        ) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-          bullet.markedForDeletion = true;
-        }
-
         if (
           !enemy.isDead() &&
           bullet.isColliding(enemy) &&
@@ -85,11 +88,11 @@ class World {
         ) {
           enemy.hit(50);
           bullet.markedForDeletion = true;
-          bullet.deletionDelay = 10; // Kugel fliegt 10px weiter
+          bullet.deletionDelay = 10;
           hitSomething = true;
         }
       });
-
+  
       if (
         this.level.endboss &&
         !this.level.endboss.isDead() &&
@@ -100,12 +103,13 @@ class World {
         bullet.deletionDelay = 5;
         hitSomething = true;
       }
-
+  
       bulletsToKeep.push(bullet);
     });
-
+  
     this.throwableObjects = bulletsToKeep;
   }
+  
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
