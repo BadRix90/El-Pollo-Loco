@@ -51,6 +51,8 @@ class Enemy extends MovableObject {
 
     this.x = 720 + Math.random() * 300;
     this.world = null;
+    this.startShooting();
+
   }
 
   animate() {
@@ -94,6 +96,25 @@ class Enemy extends MovableObject {
       
     }, 200);
   }
+
+  startShooting() {
+    setInterval(() => {
+      if (!this.world || this.isDead()) return;
+      if (this.mode !== 'attack') return;
+  
+      const bulletX = this.otherDirection
+        ? this.x - 10
+        : this.x + this.width;
+  
+      const bulletY = this.y + this.height / 2;
+  
+      const bullet = new Bullet(bulletX, bulletY);
+      bullet.speed *= this.otherDirection ? -1 : 1;
+  
+      this.world.throwableObjects.push(bullet);
+    }, 1000);
+  }
+  
 
   resetPosition() {
     if (this.x < -this.width) {
