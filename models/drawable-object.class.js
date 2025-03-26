@@ -15,6 +15,26 @@ class DrawableObject {
   draw(ctx) {
     if (this.visible === false) return;
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if (this instanceof Character) {
+      if (this.currentHandImage) {
+        ctx.drawImage(
+          this.currentHandImage,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        );
+      }
+      if (this.currentWeaponImage) {
+        ctx.drawImage(
+          this.currentWeaponImage,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        );
+      }
+    }
   }
 
   loadImages(arr) {

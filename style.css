@@ -1,44 +1,92 @@
 @font-face {
-    font-family: 'PressStart2P';
-    src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'PressStart2P';
+  src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
-    font-family: 'PressStart2P', monospace;
-    font-size: 24px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: url('img/5_background/city.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+  font-family: 'PressStart2P', monospace;
+  font-size: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('img/5_background/city.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
 }
 
 canvas {
-    background-color: black;
-    border: 3px solid black;
-    margin: auto;
+  background-color: black;
+  border: 3px solid black;
+  margin: auto;
 }
 
 .glitch-title {
-    font-family: 'PressStart2P', monospace;
-    font-size: 32px;
-    text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
-    letter-spacing: 2px;
-    display: inline-block;
-  }
-  
-  .glitch-letter {
-    display: inline-block;
-    transition: color 0.1s ease, opacity 0.1s ease;
-  }
-  
-  .glitch-letter.glitch-off {
-    color: black;
-    opacity: 0.2;
-  }
-  
+  font-family: 'PressStart2P', monospace;
+  font-size: 32px;
+  text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
+  letter-spacing: 2px;
+  display: inline-block;
+}
+
+.glitch-letter {
+  display: inline-block;
+  transition: color 0.1s ease, opacity 0.1s ease;
+}
+
+.glitch-letter.glitch-off {
+  color: black;
+  opacity: 0.2;
+}
+
+.parallax-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -10;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.bg {
+  width: 100.5%;
+  height: 100%;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+#layer1 .bg {
+  background-image: url('img/5_background/backgrounds_cyberpunk/1/Day/1.png');
+}
+
+#layer2 .bg {
+  background-image: url('img/5_background/backgrounds_cyberpunk/1/Day/2.png');
+}
+
+#layer3 .bg {
+  background-image: url('img/5_background/backgrounds_cyberpunk/1/Day/3.png');
+}
+
+#layer4 .bg {
+  background-image: url('img/5_background/backgrounds_cyberpunk/1/Day/4.png');
+}
+
+#layer5 .bg {
+  background-image: url('img/5_background/backgrounds_cyberpunk/1/Day/5.png');
+}

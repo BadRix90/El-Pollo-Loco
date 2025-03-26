@@ -48,26 +48,16 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/guns/1 Characters/3 Cyborg/frames/Idle1/Idle1_frame_4.png",
   ];
 
-  IMAGES_WEAPON = [
-    "img/cyberpunk-characters-pixel-art/guns/2 Guns/1_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/2 Guns/1_2.png",
-    "img/cyberpunk-characters-pixel-art/guns/2 Guns/2_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/2 Guns/2_2.png",
-    "img/cyberpunk-characters-pixel-art/guns/2 Guns/3_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/2 Guns/3_2.png",
-  ];
-
-  IMAGES_HANDS = [
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/1.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/2.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/3.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/4.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/5.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/6.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/7.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/8.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/9.png",
-    "img/cyberpunk-characters-pixel-art/guns/3 Hands/3 Cyborg/10.png",
+  IMAGES_ATTACK = [
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_5.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_6.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_7.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_8.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_9.png",
   ];
 
   IMAGES_SHOOT_EFFECT = [
@@ -100,24 +90,29 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_SHOOT);
+    this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_SHOOT_EFFECT);
+    this.loadImages(this.IMAGES_BULLETS);
     this.applyGravity();
     this.animate();
     this.startIntroRun();
     this.deadPlayed = false;
     this.introRunning = true;
     this.x = -100;
+    this.visible = true;
   }
 
   startIntroRun() {
-    let targetX = 100;
+    const targetX = 100;
     let introFrame = 0;
 
-    let animInterval = setInterval(() => {
+    const animInterval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_WALKING[introFrame]];
       introFrame = (introFrame + 1) % this.IMAGES_WALKING.length;
     }, 100);
 
-    let moveInterval = setInterval(() => {
+    const moveInterval = setInterval(() => {
       if (this.x < targetX) {
         this.x += 0.5;
       } else {
@@ -142,10 +137,6 @@ class Character extends MovableObject {
         this.moveLeft();
       }
 
-      if (this.world.keyboard.Q && !this.isShooting) {
-        this.shoot();
-      }
-
       if (
         !this.introRunning &&
         this.world.keyboard.SPACE &&
@@ -160,6 +151,8 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
+      if (this.isShooting) return;
+
       if (this.isDead()) {
         if (!this.deadPlayed) this.playAnimation(this.IMAGES_DEAD);
         this.deadPlayed = true;
@@ -177,31 +170,4 @@ class Character extends MovableObject {
     }, 100);
   }
 
-  shoot() {
-    this.isShooting = true;
-
-    this.playAnimation(this.IMAGES_SHOOT);
-
-    let handFrame = 0;
-    const handInterval = setInterval(() => {
-      this.img = this.imageCache[this.IMAGES_HANDS[handFrame]];
-      handFrame++;
-
-      if (handFrame >= this.IMAGES_HANDS.length) {
-        clearInterval(handInterval);
-        this.spawnBullet();
-        this.isShooting = false;
-      }
-    }, 50);
-  }
-
-  spawnBullet() {
-    a;
-    const bullet = new Bullet(
-      this.x + this.width - 20, // Startposition rechts vom Cyborg
-      this.y + 60 // auf Armhöhe
-    );
-
-    this.world.throwables.push(bullet);
-  }
 }
