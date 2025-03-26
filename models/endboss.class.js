@@ -4,6 +4,8 @@ class Endboss extends MovableObject {
   height = 350;
   width = 300;
   energy = 300;
+  deathPlayed = false;
+
 
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_1.png",
@@ -29,14 +31,15 @@ class Endboss extends MovableObject {
   }
 
   hit(damage = 50) {
-    if (this.isDead()) return;
+    if (this.isDead() || this.deathPlayed) return;
 
     this.energy -= damage;
 
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
-      this.playDeathAnimation?.(); // optional, wenn vorhanden
+      this.deathPlayed = true;
+      this.playDeathAnimation?.();
     }
   }
 
@@ -47,7 +50,7 @@ class Endboss extends MovableObject {
       i++;
       if (i >= this.IMAGES_DEAD.length) {
         clearInterval(interval);
-        this.otherDirection = false; // bleibt liegen ohne Spiegelung
+        this.otherDirection = false;
         this.speed = 0;
       }
     }, 100);

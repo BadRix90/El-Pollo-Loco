@@ -73,6 +73,9 @@ class World {
           bullet.markedForDeletion = true;
         }
       });
+      if (bullet.x < 0 || bullet.x > this.level.level_end_x) {
+        bullet.markedForDeletion = true;
+      }
     });
 
     this.throwableObjects = this.throwableObjects.filter(
