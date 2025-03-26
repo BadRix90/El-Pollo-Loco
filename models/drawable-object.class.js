@@ -37,7 +37,6 @@ class DrawableObject {
       );
       ctx.stroke();
     }
-    
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
-  
 }
