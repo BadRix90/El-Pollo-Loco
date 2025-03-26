@@ -41,6 +41,7 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
+      this.checkBulletHits();
     }, 100);
   }
 
@@ -52,6 +53,23 @@ class World {
       }
     });
   }
+
+  /**
+ * Checks if bullets hit any enemies and applies damage.
+ */
+checkBulletHits() {
+  this.throwableObjects.forEach((bullet) => {
+      this.level.enemies.forEach((enemy) => {
+          if (!enemy.isDead() && bullet.isColliding(enemy)) {
+              enemy.hit();
+              bullet.markedForDeletion = true;
+          }
+      });
+  });
+
+  this.throwableObjects = this.throwableObjects.filter(obj => !obj.markedForDeletion);
+}
+
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
