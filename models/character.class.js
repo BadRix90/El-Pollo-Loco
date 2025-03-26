@@ -1,5 +1,6 @@
 class Character extends MovableObject {
   height = 200;
+width = 150;
   y = 80;
   speed = 5;
 
@@ -33,6 +34,13 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_6.png",
   ];
 
+  IMAGES_IDLE = [
+    "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_4.png"
+  ];
+
   world;
 
   constructor() {
@@ -43,32 +51,61 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_IDLE);
     this.applyGravity();
     this.animate();
+    this.startIntroRun();
     this.deadPlayed = false;
-    this.hitboxOffset = {
-      top: 50,
-      bottom: 0,
-      left: -5,
-      right: 20,
-    };
+    this.introRunning = true;
+    this.x = -100;
+    
+  }
+
+  startIntroRun() {
+    let targetX = 100;
+    let introFrame = 0;
+
+    let animInterval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_WALKING[introFrame]];
+      introFrame = (introFrame + 1) % this.IMAGES_WALKING.length;
+    }, 100);
+
+    let moveInterval = setInterval(() => {
+      if (this.x < targetX) {
+        this.x += 0.5;
+      } else {
+        clearInterval(moveInterval);
+        clearInterval(animInterval);
+        this.introRunning = false;
+      }
+    }, 1000 / 120);
   }
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      if (
+        !this.introRunning &&
+        this.world.keyboard.RIGHT &&
+        this.x < this.world.level.level_end_x
+      ) {
         this.moveRight();
       }
 
-      if (this.world.keyboard.LEFT && this.x > 0) {
+      if (!this.introRunning && this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
       }
 
-      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+      if (
+        !this.introRunning &&
+        this.world.keyboard.SPACE &&
+        !this.isAboveGround()
+      ) {
         this.jump();
       }
 
-      this.world.camera_x = -this.x + 100;
+      if (!this.introRunning) {
+        this.world.camera_x = -this.x + 100;
+      }
     }, 1000 / 60);
 
     setInterval(() => {
@@ -82,6 +119,8 @@ class Character extends MovableObject {
       } else {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
+        } else {
+          this.playAnimation(this.IMAGES_IDLE); 
         }
       }
     }, 100);
