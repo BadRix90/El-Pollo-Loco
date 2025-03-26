@@ -183,13 +183,13 @@ class Character extends MovableObject {
 
     setTimeout(() => {
       this.world.drawShootEffect(
-        this.x + this.width * 0.8,
-        this.y + this.height / 2 - 10
+        this.x + this.width * 0.4,
+        this.y + this.height / 2 - 18
       );
 
       this.world.spawnBullet(
-        this.x + this.width * 0.8,
-        this.y + this.height / 2,
+        this.x + this.width * 0.4,
+        this.y + this.height / 2 - 2,
         this.otherDirection ? -1 : 1
       );
     }, 100);
