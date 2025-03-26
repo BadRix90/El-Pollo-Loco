@@ -78,9 +78,13 @@ class World {
       }
     });
 
-    this.throwableObjects = this.throwableObjects.filter(
-      (obj) => !obj.markedForDeletion
-    );
+    const bulletOutOfView =
+      bullet.x < this.camera_x - bullet.width ||
+      bullet.x > this.camera_x + this.canvas.width;
+
+    if (bulletOutOfView || bullet.x < 0 || bullet.x > this.level.level_end_x) {
+      bullet.markedForDeletion = true;
+    }
   }
 
   draw() {
