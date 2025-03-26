@@ -73,6 +73,7 @@ class World {
       ) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
+        // console.log(`💥 Player hit! -5 HP → Energy: ${this.character.energy}`);
         bullet.markedForDeletion = true;
         bullet.deletionDelay = 5;
         return; 
