@@ -55,9 +55,6 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_4.png",
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_5.png",
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_6.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_7.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_8.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_9.png",
   ];
 
   IMAGES_SHOOT_EFFECT = [
@@ -147,7 +144,7 @@ class Character extends MovableObject {
 
       if (!this.introRunning && this.world.keyboard.q && !this.isShooting) {
         this.handleShooting();
-    }
+      }
 
       if (!this.introRunning) {
         this.world.camera_x = -this.x + 100;
@@ -181,18 +178,25 @@ class Character extends MovableObject {
     this.currentImage = 0;
 
     let shootInterval = setInterval(() => {
-        this.playAnimation(this.IMAGES_ATTACK);
+      this.playAnimation(this.IMAGES_ATTACK);
     }, 50);
 
     setTimeout(() => {
-        this.world.spawnBullet(this.x + this.width * 0.8, this.y + this.height / 2, this.otherDirection ? -1 : 1);
+      this.world.drawShootEffect(
+        this.x + this.width * 0.8,
+        this.y + this.height / 2 - 10
+      );
+
+      this.world.spawnBullet(
+        this.x + this.width * 0.8,
+        this.y + this.height / 2,
+        this.otherDirection ? -1 : 1
+      );
     }, 100);
 
     setTimeout(() => {
-        clearInterval(shootInterval);
-        this.isShooting = false;
+      clearInterval(shootInterval);
+      this.isShooting = false;
     }, 400);
-}
-
-
+  }
 }

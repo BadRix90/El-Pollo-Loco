@@ -121,4 +121,28 @@ class World {
     bullet.speed *= direction;
     this.throwableObjects.push(bullet);
   }
+
+drawShootEffect(x, y) {
+  const effect = new MovableObject();
+  effect.loadImages(this.character.IMAGES_SHOOT_EFFECT);
+  effect.img = effect.imageCache[this.character.IMAGES_SHOOT_EFFECT[0]];
+  effect.width = 40;
+  effect.height = 40;
+  effect.x = x;
+  effect.y = y;
+  let frame = 0;
+
+  let interval = setInterval(() => {
+      effect.img = effect.imageCache[this.character.IMAGES_SHOOT_EFFECT[frame]];
+      frame++;
+      if (frame >= this.character.IMAGES_SHOOT_EFFECT.length) {
+          clearInterval(interval);
+          const index = this.throwableObjects.indexOf(effect);
+          if (index > -1) this.throwableObjects.splice(index, 1);
+      }
+  }, 30);
+
+  this.throwableObjects.push(effect);
+}
+
 }
