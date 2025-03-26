@@ -12,14 +12,13 @@ class MovableObject extends DrawableObject {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
       }
-  
+
       if (!(this instanceof ThrowableObject) && this.y > 250) {
         this.y = 250;
         this.speedY = 0;
       }
     }, 1000 / 25);
   }
-  
 
   isAboveGround() {
     if (this instanceof ThrowableObject) {
@@ -30,16 +29,21 @@ class MovableObject extends DrawableObject {
   }
 
   isColliding(mo) {
-    const offset = mo.hitboxOffset || { top: 0, bottom: 0, left: 0, right: 0 };
-  
+    const offsetA = this.hitboxOffset || {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    };
+    const offsetB = mo.hitboxOffset || { top: 0, bottom: 0, left: 0, right: 0 };
+
     return (
-      this.x + this.width > mo.x + offset.left &&
-      this.y + this.height > mo.y + offset.top &&
-      this.x < mo.x + mo.width - offset.right &&
-      this.y < mo.y + mo.height - offset.bottom
+      this.x + this.width - offsetA.right > mo.x + offsetB.left &&
+      this.y + this.height - offsetA.bottom > mo.y + offsetB.top &&
+      this.x + offsetA.left < mo.x + mo.width - offsetB.right &&
+      this.y + offsetA.top < mo.y + mo.height - offsetB.bottom
     );
   }
-  
 
   hit() {
     this.energy -= 5;
@@ -61,11 +65,13 @@ class MovableObject extends DrawableObject {
   }
 
   moveRight() {
+    if (this.isDead && this.isDead()) return;
     this.x += this.speed;
     this.otherDirection = false;
   }
 
   moveLeft() {
+    if (this.isDead && this.isDead()) return;
     this.x -= this.speed;
     this.otherDirection = true;
   }
@@ -78,6 +84,7 @@ class MovableObject extends DrawableObject {
   }
 
   jump() {
+    if (this.isDead && this.isDead()) return;
     this.speedY = 50;
   }
 }
