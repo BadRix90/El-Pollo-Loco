@@ -1,9 +1,44 @@
-body{
-display: flex;
-flex-direction: column;
-align-items: center;
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-canvas{
-    background-color: black;
+body {
+    font-family: 'PressStart2P', monospace;
+    font-size: 24px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('img/5_background/city.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
+canvas {
+    background-color: black;
+    border: 3px solid black;
+    margin: auto;
+}
+
+.glitch-title {
+    font-family: 'PressStart2P', monospace;
+    font-size: 32px;
+    text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
+    letter-spacing: 2px;
+    display: inline-block;
+  }
+  
+  .glitch-letter {
+    display: inline-block;
+    transition: color 0.1s ease, opacity 0.1s ease;
+  }
+  
+  .glitch-letter.glitch-off {
+    color: black;
+    opacity: 0.2;
+  }
+  

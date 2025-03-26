@@ -12,28 +12,37 @@ class MovableObject extends DrawableObject {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
       }
-      if (this.y > 250) {
+  
+      if (!(this instanceof ThrowableObject) && this.y > 250) {
         this.y = 250;
         this.speedY = 0;
       }
     }, 1000 / 25);
   }
+  
 
   isAboveGround() {
-    return this.y < 250;
+    if (this instanceof ThrowableObject) {
+      return this.y < 480;
+    } else {
+      return this.y < 250;
+    }
   }
 
   isColliding(mo) {
+    const offset = mo.hitboxOffset || { top: 0, bottom: 0, left: 0, right: 0 };
+  
     return (
-      this.x + this.width > mo.x && // R -> L
-      this.y + this.height > mo.y && // T -> B
-      this.x < mo.x + mo.width && // L -> R
-      this.y < mo.y + mo.height
-    ); // B -> T
+      this.x + this.width > mo.x + offset.left &&
+      this.y + this.height > mo.y + offset.top &&
+      this.x < mo.x + mo.width - offset.right &&
+      this.y < mo.y + mo.height - offset.bottom
+    );
   }
+  
 
   hit() {
-    this.energy -= 20;
+    this.energy -= 5;
     if (this.energy < 0) {
       this.energy = 0;
     } else {
@@ -69,6 +78,6 @@ class MovableObject extends DrawableObject {
   }
 
   jump() {
-    this.speedY = 25;
+    this.speedY = 50;
   }
 }

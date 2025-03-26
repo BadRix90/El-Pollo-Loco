@@ -8,6 +8,8 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
+  throwableObjects = [];
+
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -17,22 +19,37 @@ class World {
     this.character.world = this;
     this.draw();
     this.setWorld();
-    this.checkCollisions();
+    this.run();
   }
 
   setWorld() {
     this.character.world = this;
   }
 
-  checkCollisions() {
+  run() {
     setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if( this.character.isColliding(enemy) ) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-        }
-      });
-    }, 1000);
+      this.checkCollisions();
+      this.checkThrowObjects();
+    }, 200);
+  }
+
+  checkThrowObjects() {
+    if (this.keyboard.q) {
+      let bottle = new ThrowableObject(
+        this.character.x + 100,
+        this.character.y + 100
+      );
+      this.throwableObjects.push(bottle);
+    }
+  }
+
+  checkCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    });
   }
 
   draw() {
@@ -40,14 +57,16 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
     this.drawBackgroundObjects();
- 
+
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0);
 
+    this.addObjectsToMap(this.level.street);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.level.clouds);
+    
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -58,22 +77,15 @@ class World {
   }
 
   drawBackgroundObjects() {
-    const cameraXAbs = Math.abs(this.camera_x);
-    const startSection = Math.floor(cameraXAbs / this.backgroundWidth) - 1;
-    const visibleSections =
-      Math.ceil(this.canvas.width / this.backgroundWidth) + 2;
-
-    for (let i = 0; i < visibleSections; i++) {
-      const sectionX = (startSection + i) * this.backgroundWidth;
-
-      this.level.backgroundObjects.forEach((bgObj) => {
-        let originalX = bgObj.x;
-        bgObj.x = bgObj.x + sectionX;
-        this.addToMap(bgObj);
-        bgObj.x = originalX;
-      });
-    }
+    this.level.backgroundObjects.forEach((bgObj) => {
+      const scrollX = this.camera_x * bgObj.speedModifier;
+      let originalX = bgObj.x;
+      bgObj.x = originalX + scrollX;
+      this.addToMap(bgObj);
+      bgObj.x = originalX;
+    });
   }
+  
 
   addObjectsToMap(objects) {
     objects.forEach((object) => {

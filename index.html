@@ -8,23 +8,50 @@
     <title>Document</title>
     <script src="models/drawable-object.class.js"></script> 
     <script src="models/movable-object.class.js"></script>
-    <script src="models/chicken.class.js"></script>
+    <script src="models/enemy.class.js"></script>
     <script src="models/character.class.js"></script>
     <script src="models/status-bar.class.js"></script>
     <script src="models/world.class.js"></script>
-    <script src="models/cloud.class.js"></script>
+    <script src="models/street.class.js"></script>
     <script src="models/background-object.class.js"></script>
     <script src="models/keyboard.class.js"></script>
     <script src="models/level.class.js"></script>
+    <script src="models/throwable-object.class.js"></script>
     <script src="models/endboss.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
 </head>
 
 <body onload="init()">
-    <h1>El Pollo Loco</h1>
+    <h1 id="title" class="glitch-title">Glitch Runner</h1>
 
     <canvas id="canvas" width="720" height="480"></canvas>
 </body>
+
+<script>
+    const title = "Glitch Runner";
+    const colors = [
+      "#00fff7", "#ff00f7", "#faff00", "#00ff00", "#ff0066", "#00ccff",
+      "#ff9900", "#cc00ff", "#ff0000", "#33ffcc", "#ff33cc", "#6600ff"
+    ];
+  
+    const glitchTitle = [...title].map((char, i) => {
+      if (char === " ") return " ";
+      return `<span class="glitch-letter" style="color: ${colors[i % colors.length]}">${char}</span>`;
+    }).join("");
+  
+    document.getElementById("title").innerHTML = glitchTitle;
+  
+    setInterval(() => {
+      const letters = document.querySelectorAll('.glitch-letter');
+      const randIndex = Math.floor(Math.random() * letters.length);
+      const el = letters[randIndex];
+  
+      el.classList.add('glitch-off');
+      setTimeout(() => el.classList.remove('glitch-off'), 100 + Math.random() * 200);
+    }, 500);
+  </script>
+  
+  
 
 </html>

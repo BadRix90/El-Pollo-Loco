@@ -5,8 +5,8 @@ class Keyboard {
         this.UP = false;
         this.DOWN = false;
         this.SPACE = false;
-        this.ENTER = false;
+        this.SHIFT = false;
         this.CTRL = false;
-
+        this.q = false;
     }
 }

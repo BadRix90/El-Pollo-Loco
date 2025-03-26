@@ -3,26 +3,32 @@ class Endboss extends MovableObject {
   y = 100;
   height = 350;
   width = 300;
+
+
   IMAGES_WALKING = [
-    "img/4_enemie_boss_chicken/2_alert/G5.png",
-    "img/4_enemie_boss_chicken/2_alert/G6.png",
-    "img/4_enemie_boss_chicken/2_alert/G7.png",
-    "img/4_enemie_boss_chicken/2_alert/G8.png",
-    "img/4_enemie_boss_chicken/2_alert/G9.png",
-    "img/4_enemie_boss_chicken/2_alert/G10.png",
-    "img/4_enemie_boss_chicken/2_alert/G11.png",
-    "img/4_enemie_boss_chicken/2_alert/G12.png",
+'img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_1.png',
+'img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_2.png',
+'img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_3.png',
+'img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_4.png',
   ];
 
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.animate();
+    this.hitboxOffset = {
+      top: 100,     // nach unten kleiner machen
+      bottom: 0,
+      left: 20,    // von links etwas wegnehmen
+      right: 80    // von rechts auch
+    };
+    
   }
 
   animate() {
     setInterval(() => {
         this.playAnimation(this.IMAGES_WALKING);
+        this.otherDirection = true;
     }, 200);
   }
 }

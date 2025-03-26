@@ -1,22 +1,259 @@
+let streetTiles = [];
+let levelWidth = 5400;
+let tileSize = 32
+
+for (let x = -tileSize * 10; x <= levelWidth; x += tileSize) {
+  streetTiles.push(new Street(x));
+}
+
 const level1 = new Level(
   [
-    ...Array.from(
-      { length: Math.floor(Math.random() * 4) + 2 },
-      () => new Chicken()
-    ),
-    new Endboss()
-  ],
+    new Enemy(),
+    new Endboss(),
+  ], streetTiles,
 
-  [new Cloud()],
 
   [
-    new BackgroundObject("img/5_background/layers/air.png", 0),
-    new BackgroundObject("img/5_background/layers/3_third_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/2_second_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/air.png", 719),
-    new BackgroundObject("img/5_background/layers/3_third_layer/2.png", 719),
-    new BackgroundObject("img/5_background/layers/2_second_layer/2.png", 719),
-    new BackgroundObject("img/5_background/layers/1_first_layer/2.png", 719)
-]
+    // Abschnitt 0
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/1.png",
+      -719,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/2.png",
+      -719,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/3.png",
+      -719,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/4.png",
+      -719,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/5.png",
+      -719,
+      0.25
+    ),
+    // Abschnitt 1
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/1.png",
+      0,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/2.png",
+      0,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/3.png",
+      0,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/4.png",
+      0,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/1/Night/5.png",
+      0,
+      0.25
+    ),
+
+    // Abschnitt a2
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/2/Night/1.png",
+      719,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/2/Night/2.png",
+      719,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/2/Night/3.png",
+      719,
+      0.15
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/2/Night/4.png",
+      719,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/2/Night/5.png",
+      719,
+      0.25
+    ),
+
+    // Abschnitt 3
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/3/Night/1.png",
+      1438,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/3/Night/2.png",
+      1438,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/3/Night/3.png",
+      1438,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/3/Night/4.png",
+      1438,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/3/Night/5.png",
+      1438,
+      0.25
+    ),
+
+    // Abschnitt 4
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/4/Night/1.png",
+      2157,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/4/Night/2.png",
+      2157,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/4/Night/3.png",
+      2157,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/4/Night/4.png",
+      2157,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/4/Night/5.png",
+      2157,
+      0.25
+    ),
+
+    // Abschnitt 5
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/5/Night/1.png",
+      2876,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/5/Night/2.png",
+      2876,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/5/Night/3.png",
+      2876,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/5/Night/4.png",
+      2876,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/5/Night/5.png",
+      2876,
+      0.25
+    ),
+
+    // Abschnitt 6
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/6/Night/1.png",
+      3595,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/6/Night/2.png",
+      3595,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/6/Night/3.png",
+      3595,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/6/Night/4.png",
+      3595,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/6/Night/5.png",
+      3595,
+      0.25
+    ),
+
+    // Abschnitt 7
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/7/Night/1.png",
+      4314,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/7/Night/2.png",
+      4314,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/7/Night/3.png",
+      4314,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/7/Night/4.png",
+      4314,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/7/Night/5.png",
+      4314,
+      0.25
+    ),
+
+    // Abschnitt 8
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/8/Night/1.png",
+      5033,
+      0.05
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/8/Night/2.png",
+      5033,
+      0.1
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/8/Night/3.png",
+      5033,
+      0.6
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/8/Night/4.png",
+      5033,
+      0.2
+    ),
+    new BackgroundObject(
+      "img/5_background/backgrounds_cyberpunk/8/Night/5.png",
+      5033,
+      0.25
+    ),
+  ]
 );
