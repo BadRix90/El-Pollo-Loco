@@ -82,6 +82,7 @@
     setTimeout(() => el.classList.remove('glitch-off'), 100 + Math.random() * 200);
   }, 500);
 
+  
   const speeds = [0.1, 0.2, 0.4, 0.6, 0.8];
   const layers = speeds.map((_, i) => document.getElementById(`layer${i + 1}`));
   let positions = [0, 0, 0, 0, 0];
