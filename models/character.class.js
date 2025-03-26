@@ -137,6 +137,10 @@ class Character extends MovableObject {
         this.moveLeft();
       }
 
+      if (!this.introRunning && this.world.keyboard.G) {
+        this.handleShooting();
+      }
+
       if (
         !this.introRunning &&
         this.world.keyboard.SPACE &&
@@ -169,5 +173,26 @@ class Character extends MovableObject {
       }
     }, 100);
   }
+
+  handleShooting() {
+    if (this.isShooting || this.isDead()) return;
+
+    this.isShooting = true;
+    this.currentImage = 0;
+
+    let shootInterval = setInterval(() => {
+        this.playAnimation(this.IMAGES_ATTACK);
+    }, 50);
+
+    setTimeout(() => {
+        this.world.spawnBullet(this.x + this.width * 0.8, this.y + this.height / 2, this.otherDirection ? -1 : 1);
+    }, 100);
+
+    setTimeout(() => {
+        clearInterval(shootInterval);
+        this.isShooting = false;
+    }, 400);
+}
+
 
 }
