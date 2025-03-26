@@ -5,6 +5,8 @@ class Enemy extends MovableObject {
   speed = 0.3 + Math.random() * 0.25;
   energy = 100;
   deathPlayed = false;
+  mode = "idle";
+  attackDistance = 300;
 
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_1.png",
@@ -24,6 +26,22 @@ class Enemy extends MovableObject {
     "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_6.png",
   ];
 
+  IMAGES_IDLE = [
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_4.png",
+  ];
+
+  IMAGES_ATTACK = [
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_5.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_6.png",
+  ];
+
   constructor() {
     super().loadImage(
       "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_1.png"
@@ -32,6 +50,20 @@ class Enemy extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.x = 720 + Math.random() * 300;
     this.world = null;
+  }
+
+  startAI() {
+    setInterval(() => {
+      if (!this.world || this.isDead()) return;
+
+      const distanceToPlayer = Math.abs(this.world.character.x - this.x);
+
+      if (distanceToPlayer < this.attackDistance) {
+        this.mode = "attack";
+      } else {
+        this.mode = "idle";
+      }
+    }, 200); // alle 200ms prüfen
   }
 
   animate() {
