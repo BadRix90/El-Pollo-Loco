@@ -137,10 +137,6 @@ class Character extends MovableObject {
         this.moveLeft();
       }
 
-      if (!this.introRunning && this.world.keyboard.G) {
-        this.handleShooting();
-      }
-
       if (
         !this.introRunning &&
         this.world.keyboard.SPACE &&
@@ -148,6 +144,10 @@ class Character extends MovableObject {
       ) {
         this.jump();
       }
+
+      if (!this.introRunning && this.world.keyboard.q && !this.isShooting) {
+        this.handleShooting();
+    }
 
       if (!this.introRunning) {
         this.world.camera_x = -this.x + 100;
