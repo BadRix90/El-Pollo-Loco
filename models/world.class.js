@@ -175,9 +175,8 @@ class World {
     this.ctx.restore();
   }
 
-  spawnBullet(x, y, direction = 1) {
-    const bullet = new Bullet(x, y);
-    bullet.speed *= direction;
+  spawnBullet(x, y, direction = 1, owner = null) {
+    const bullet = new Bullet(x, y, 7 * direction, owner);
     this.throwableObjects.push(bullet);
   }
 

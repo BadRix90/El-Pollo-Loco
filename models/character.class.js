@@ -190,8 +190,10 @@ class Character extends MovableObject {
       this.world.spawnBullet(
         this.x + this.width * 0.4,
         this.y + this.height / 2 - 2,
-        this.otherDirection ? -1 : 1
+        this.otherDirection ? -1 : 1,
+        this // 👈 owner mitgeben!
       );
+      
     }, 100);
 
     setTimeout(() => {
