@@ -21,10 +21,10 @@ class Enemy extends MovableObject {
     this.hitboxOffset = {
       top: 50,
       bottom: 0,
-      left: -5,
+      left: 12,   // 👈 Bild-Offset ausgleichen
       right: 20
     };
-  }
+  }    
 
   animate() {
     setInterval(() =>{

@@ -17,10 +17,10 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.animate();
     this.hitboxOffset = {
-      top: 100,     // nach unten kleiner machen
+      top: 100,     
       bottom: 0,
-      left: 20,    // von links etwas wegnehmen
-      right: 80    // von rechts auch
+      left: 30,    
+      right: 80    
     };
     
   }
