@@ -19,10 +19,6 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
-
-    const enemy = new Enemy();
-    enemy.world = this;
-    this.level.enemies.push(enemy);
   }
 
   setWorld() {

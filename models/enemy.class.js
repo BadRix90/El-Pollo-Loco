@@ -43,27 +43,14 @@ class Enemy extends MovableObject {
   ];
 
   constructor() {
-    super().loadImage(
-      "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_1.png"
-    );
+    super().loadImage(this.IMAGES_IDLE[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_ATTACK);
+
     this.x = 720 + Math.random() * 300;
     this.world = null;
-  }
-
-  startAI() {
-    setInterval(() => {
-      if (!this.world || this.isDead()) return;
-
-      const distanceToPlayer = Math.abs(this.world.character.x - this.x);
-
-      if (distanceToPlayer < this.attackDistance) {
-        this.mode = "attack";
-      } else {
-        this.mode = "idle";
-      }
-    }, 200); // alle 200ms prüfen
   }
 
   animate() {
@@ -82,6 +69,20 @@ class Enemy extends MovableObject {
         this.playAnimation(this.IMAGES_WALKING);
       }
     }, 100);
+  }
+
+  startAI() {
+    setInterval(() => {
+      if (!this.world || this.isDead()) return;
+
+      const distanceToPlayer = Math.abs(this.world.character.x - this.x);
+
+      if (distanceToPlayer < this.attackDistance) {
+        this.mode = "attack";
+      } else {
+        this.mode = "idle";
+      }
+    }, 200);
   }
 
   resetPosition() {
