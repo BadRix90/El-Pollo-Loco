@@ -55,21 +55,30 @@ class World {
   }
 
   /**
- * Checks if bullets hit any enemies and applies damage.
- */
-checkBulletHits() {
-  this.throwableObjects.forEach((bullet) => {
+   * Checks if bullets hit any enemies and applies damage.
+   */
+  checkBulletHits() {
+    this.throwableObjects.forEach((bullet) => {
       this.level.enemies.forEach((enemy) => {
-          if (!enemy.isDead() && bullet.isColliding(enemy)) {
-              enemy.hit();
-              bullet.markedForDeletion = true;
+        if (!enemy.isDead() && bullet.isColliding(enemy)) {
+          enemy.hit();
+          if (
+            this.level.endboss &&
+            !this.level.endboss.isDead() &&
+            bullet.isColliding(this.level.endboss)
+          ) {
+            this.level.endboss.hit(25);
+            bullet.markedForDeletion = true;
           }
+          bullet.markedForDeletion = true;
+        }
       });
-  });
+    });
 
-  this.throwableObjects = this.throwableObjects.filter(obj => !obj.markedForDeletion);
-}
-
+    this.throwableObjects = this.throwableObjects.filter(
+      (obj) => !obj.markedForDeletion
+    );
+  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -140,27 +149,26 @@ checkBulletHits() {
     this.throwableObjects.push(bullet);
   }
 
-drawShootEffect(x, y) {
-  const effect = new MovableObject();
-  effect.loadImages(this.character.IMAGES_SHOOT_EFFECT);
-  effect.img = effect.imageCache[this.character.IMAGES_SHOOT_EFFECT[0]];
-  effect.width = 40;
-  effect.height = 40;
-  effect.x = x;
-  effect.y = y;
-  let frame = 0;
+  drawShootEffect(x, y) {
+    const effect = new MovableObject();
+    effect.loadImages(this.character.IMAGES_SHOOT_EFFECT);
+    effect.img = effect.imageCache[this.character.IMAGES_SHOOT_EFFECT[0]];
+    effect.width = 40;
+    effect.height = 40;
+    effect.x = x;
+    effect.y = y;
+    let frame = 0;
 
-  let interval = setInterval(() => {
+    let interval = setInterval(() => {
       effect.img = effect.imageCache[this.character.IMAGES_SHOOT_EFFECT[frame]];
       frame++;
       if (frame >= this.character.IMAGES_SHOOT_EFFECT.length) {
-          clearInterval(interval);
-          const index = this.throwableObjects.indexOf(effect);
-          if (index > -1) this.throwableObjects.splice(index, 1);
+        clearInterval(interval);
+        const index = this.throwableObjects.indexOf(effect);
+        if (index > -1) this.throwableObjects.splice(index, 1);
       }
-  }, 30);
+    }, 30);
 
-  this.throwableObjects.push(effect);
-}
-
+    this.throwableObjects.push(effect);
+  }
 }

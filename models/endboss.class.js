@@ -3,6 +3,7 @@ class Endboss extends MovableObject {
   y = 100;
   height = 350;
   width = 300;
+  energy = 300;
 
 
   IMAGES_WALKING = [
@@ -19,6 +20,19 @@ class Endboss extends MovableObject {
 
     
   }
+
+  hit(damage = 50) {
+    if (this.isDead()) return;
+
+    this.energy -= damage;
+
+    if (this.energy <= 0) {
+        this.energy = 0;
+        this.speed = 0;
+        this.playDeathAnimation?.(); // optional, wenn vorhanden
+    }
+}
+
 
   animate() {
     setInterval(() => {
