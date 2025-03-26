@@ -58,34 +58,36 @@ class World {
    * Checks if bullets hit any enemies and applies damage.
    */
   checkBulletHits() {
+    const bulletsToKeep = [];
+
     this.throwableObjects.forEach((bullet) => {
-      this.level.enemies.forEach((enemy) => {
-        if (!enemy.isDead() && bullet.isColliding(enemy)) {
-          enemy.hit();
-          if (
-            this.level.endboss &&
-            !this.level.endboss.isDead() &&
-            bullet.isColliding(this.level.endboss)
-          ) {
+        let hitSomething = false;
+
+        this.level.enemies.forEach((enemy) => {
+            if (!enemy.isDead() && bullet.isColliding(enemy)) {
+                enemy.hit(50);
+                hitSomething = true;
+            }
+        });
+
+        if (this.level.endboss && !this.level.endboss.isDead() && bullet.isColliding(this.level.endboss)) {
             this.level.endboss.hit(25);
-            bullet.markedForDeletion = true;
-          }
-          bullet.markedForDeletion = true;
+            hitSomething = true;
         }
-      });
-      if (bullet.x < 0 || bullet.x > this.level.level_end_x) {
-        bullet.markedForDeletion = true;
-      }
+
+        const outOfView =
+            bullet.x < this.camera_x - bullet.width ||
+            bullet.x > this.camera_x + this.canvas.width ||
+            bullet.x < 0 || bullet.x > this.level.level_end_x;
+
+        if (!hitSomething && !outOfView) {
+            bulletsToKeep.push(bullet);
+        }
     });
 
-    const bulletOutOfView =
-      bullet.x < this.camera_x - bullet.width ||
-      bullet.x > this.camera_x + this.canvas.width;
+    this.throwableObjects = bulletsToKeep;
+}
 
-    if (bulletOutOfView || bullet.x < 0 || bullet.x > this.level.level_end_x) {
-      bullet.markedForDeletion = true;
-    }
-  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
