@@ -56,8 +56,8 @@ class Enemy extends MovableObject {
   animate() {
     setInterval(() => {
       if (this.isDead()) return;
-  
-      if (this.mode === 'idle') {
+
+      if (this.mode === "idle") {
         this.x += this.speed;
         if (this.x >= this.patrolEnd || this.x <= this.patrolStart) {
           this.speed *= -1;
@@ -65,18 +65,17 @@ class Enemy extends MovableObject {
         }
       }
     }, 1000 / 60);
-  
+
     setInterval(() => {
       if (this.isDead()) return;
-  
-      if (this.mode === 'idle') {
-        this.playAnimation(this.IMAGES_IDLE);
-      } else if (this.mode === 'attack') {
+
+      if (this.mode === "idle") {
+        this.playAnimation(this.IMAGES_WALKING);
+      } else if (this.mode === "attack") {
         this.playAnimation(this.IMAGES_ATTACK);
       }
     }, 120);
   }
-  
 
   startAI() {
     setInterval(() => {
@@ -86,9 +85,13 @@ class Enemy extends MovableObject {
 
       if (distanceToPlayer < this.attackDistance) {
         this.mode = "attack";
+      
+        this.otherDirection = this.world.character.x < this.x;
+      
       } else {
         this.mode = "idle";
       }
+      
     }, 200);
   }
 
