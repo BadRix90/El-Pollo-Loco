@@ -162,7 +162,7 @@ class Character extends MovableObject {
     }, 50);
   
     setTimeout(() => {
-      const bulletX = this.x + (this.otherDirection ? -20 : this.width + 10);
+      const bulletX = this.x + (this.otherDirection ? 30 : this.width - 40);
       const bulletY = this.y + this.height / 2 - 5;
       const direction = this.otherDirection ? -1 : 1;
   
