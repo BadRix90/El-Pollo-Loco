@@ -1,7 +1,6 @@
 class World {
   character = new Character();
   level = level1;
-
   backgroundWidth = 719 * 2;
   ctx;
   canvas;
@@ -38,6 +37,8 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
+      this.checkBulletHits();
+      this.removeOffscreenBullets();
     }, 100);
   }
 
@@ -50,6 +51,9 @@ class World {
     });
   }
 
+  
+
+  
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 

@@ -1,5 +1,4 @@
 class Bullet extends MovableObject {
-
   IMAGES_BULLETS = [
     "img/cyberpunk-characters-pixel-art/guns/5 Bullets/1.png",
     "img/cyberpunk-characters-pixel-art/guns/5 Bullets/2.png",
@@ -26,21 +25,28 @@ class Bullet extends MovableObject {
     "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/5_1.png",
     "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/5_2.png",
   ];
-  
-  constructor(x, y, speed = 7, owner = null) {
-    super().loadImage('img/cyberpunk-characters-pixel-art/guns/5 Bullets/9.png');
+
+  constructor(x, y, direction, bulletType, owner) {
+    super().loadImage(this.IMAGES_BULLETS[bulletType]);
     this.x = x;
     this.y = y;
-    this.width = 10;
-    this.height = 5;
-    this.speed = speed;
+    this.width = 20;
+    this.height = 10;
+    this.speed = 10;
+    this.direction = direction;
+    this.maxDistance = 500;
+    this.travelledDistance = 0;
     this.owner = owner;
-    this.animate();
+    this.animate(); 
   }
 
   animate() {
     setInterval(() => {
-      this.x += this.speed;
-    }, 1000 / 60);
+      this.x += this.speed * this.direction;
+      this.travelledDistance += this.speed;
+      if (this.travelledDistance >= this.maxDistance) {
+        this.markedForDeletion = true;
+      }
+    }, 1000 / 60); 
   }
 }
