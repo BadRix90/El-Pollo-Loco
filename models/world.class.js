@@ -19,7 +19,6 @@ class World {
     this.setWorld();
     this.run();
     this.playerBullets = [];
-    this.enemyBullets = [];
   }
 
   setWorld() {
@@ -41,7 +40,6 @@ class World {
       this.checkCollisions();
       this.checkBulletHits();
       this.removeOffscreenBullets();
-      this.handleShootingEnemy();
     }, 100);
   }
 
@@ -66,28 +64,22 @@ class World {
       }
     });
 
-    this.enemyBullets.forEach((bullet) => {
-      if (!bullet.markedForDeletion && !this.character.isDead()) {
-        if (bullet.isColliding(this.character)) {
-          this.character.hit(5);
-          bullet.markedForDeletion = true;
-        }
-      }
-    });
-
     this.playerBullets = this.playerBullets.filter(
-      (bullet) => !bullet.markedForDeletion
-    );
-    this.enemyBullets = this.enemyBullets.filter(
       (bullet) => !bullet.markedForDeletion
     );
   }
 
   removeOffscreenBullets() {
-    this.playerBullets = this.playerBullets.filter(b => !b.markedForDeletion);
-    this.enemyBullets = this.enemyBullets.filter(b => !b.markedForDeletion);
+    this.playerBullets = this.playerBullets.filter((b) => !b.markedForDeletion);
   }
-  
+
+  spawnBullet(x, y, direction, owner, bulletType) {
+    const bullet = new Bullet(x, y, direction, bulletType, owner);
+
+    if (owner === this.character) {
+      this.playerBullets.push(bullet);
+    } 
+  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -153,31 +145,5 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
-  }
-
-  handleShootingEnemy() {
-    this.level.enemies.forEach((enemy) => {
-      if (enemy.isShooting && !enemy.isDead()) {
-        const now = Date.now();
-        if (now - enemy.lastShotTime >= enemy.shootCooldown) {
-          const bulletX = enemy.x + (enemy.otherDirection ? 25 : enemy.width - 35);
-          const bulletY = enemy.y + enemy.height / 2 + 25;
-          const direction = enemy.otherDirection ? -1 : 1;
-          this.spawnBullet(bulletX, bulletY, direction, enemy, 0);
-          enemy.lastShotTime = now;
-        }
-      }
-    });
-  }
- 
-
-  spawnBullet(x, y, direction, owner, bulletType) {
-    const bullet = new Bullet(x, y, direction, bulletType, owner);
-
-    if (owner === this.character) {
-      this.playerBullets.push(bullet);
-    } else {
-      this.enemyBullets.push(bullet);
-    }
   }
 }

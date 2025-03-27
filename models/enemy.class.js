@@ -65,9 +65,6 @@ class Enemy extends MovableObject {
     this.y = this.defaultYPosition;
     this.x = 720 + Math.random() * 300;
     this.world = null;
-    this.bulletSpawned = false;
-    this.lastShotTime = 0;
-    this.shootCooldown = 500;
   }
 
   animate() {
@@ -94,22 +91,7 @@ class Enemy extends MovableObject {
     }, 120);
   }
 
-  startAI() {
-    setInterval(() => {
-      if (!this.world || this.isDead()) return;
-
-      const distanceToPlayer = Math.abs(this.world.character.x - this.x);
-
-      if (distanceToPlayer < this.attackDistance) {
-        this.mode = "attack";
-        this.otherDirection = this.world.character.x < this.x;
-        this.isShooting = true;
-      } else {
-        this.mode = "idle";
-        this.isShooting = false;
-      }
-    }, 200);
-  }
+  startAI() {}
 
   resetPosition() {
     if (this.x < -this.width) {
