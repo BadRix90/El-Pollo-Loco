@@ -133,4 +133,29 @@ class World {
     });
   }
   
+  spawnBullet(x, y, direction, owner, bulletType) {
+    const bullet = new Bullet(x, y, direction, bulletType, owner);
+    
+    if (owner === this.character) {
+      this.playerBullets.push(bullet);
+    } else {
+      this.enemyBullets.push(bullet);
+    }
+
+    console.log(`Bullet spawned at X: ${x}, Y: ${y} with direction ${direction}`);
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
