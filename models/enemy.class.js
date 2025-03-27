@@ -55,7 +55,6 @@ class Enemy extends MovableObject {
     this.y = this.defaultYPosition;
     this.x = 720 + Math.random() * 300;
     this.world = null;
-    this.startShooting();
 
   }
 
@@ -99,27 +98,7 @@ class Enemy extends MovableObject {
       }
       
     }, 200);
-  }
-
-  startShooting() {
-    setInterval(() => {
-      if (!this.world || this.isDead()) return;
-  
-      const distanceToPlayer = Math.abs(this.world.character.x - this.x);
-  
-      if (distanceToPlayer < this.attackDistance) {
-        this.mode = 'attack';
-  
-        const bulletX = this.x + (this.otherDirection ? -20 : this.width + 10);
-        const bulletY = this.y + this.height / 2 - 5;
-  
-        const speed = this.otherDirection ? -10 : 10;
-  
-        this.world.spawnBullet(bulletX, bulletY, speed > 0 ? 1 : -1, this);
-      }
-    }, 1200);
-  }
-  
+  }  
   
   resetPosition() {
     if (this.x < -this.width) {

@@ -56,24 +56,7 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_6.png",
   ];
 
-  IMAGES_SHOOT_EFFECT = [
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/1_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/1_2.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/2_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/2_2.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/3_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/3_2.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/4_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/4_2.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/5_1.png",
-    "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/5_2.png",
-  ];
 
-  IMAGES_BULLETS = [
-    "img/cyberpunk-characters-pixel-art/guns/5 Bullets/1.png",
-    "img/cyberpunk-characters-pixel-art/guns/5 Bullets/2.png",
-    "img/cyberpunk-characters-pixel-art/guns/5 Bullets/3.png",
-  ];
 
   world;
 
@@ -88,8 +71,6 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SHOOT);
     this.loadImages(this.IMAGES_ATTACK);
-    this.loadImages(this.IMAGES_SHOOT_EFFECT);
-    this.loadImages(this.IMAGES_BULLETS);
     this.applyGravity();
     this.animate();
     this.startIntroRun();
@@ -141,10 +122,6 @@ class Character extends MovableObject {
         this.jump();
       }
 
-      if (!this.introRunning && this.world.keyboard.q && !this.isShooting) {
-        this.handleShooting();
-      }
-
       if (!this.introRunning) {
         this.world.camera_x = -this.x + 100;
       }
@@ -170,34 +147,5 @@ class Character extends MovableObject {
     }, 100);
   }
 
-  handleShooting() {
-    if (this.isShooting || this.isDead()) return;
 
-    this.isShooting = true;
-    this.currentImage = 0;
-
-    let shootInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_ATTACK);
-    }, 50);
-
-    setTimeout(() => {
-      this.world.drawShootEffect(
-        this.x + this.width * 0.4,
-        this.y + this.height / 2 - 18
-      );
-
-      this.world.spawnBullet(
-        this.x + this.width * 0.4,
-        this.y + this.height / 2 - 2,
-        this.otherDirection ? -1 : 1,
-        this // 👈 owner mitgeben!
-      );
-      
-    }, 100);
-
-    setTimeout(() => {
-      clearInterval(shootInterval);
-      this.isShooting = false;
-    }, 400);
-  }
 }
