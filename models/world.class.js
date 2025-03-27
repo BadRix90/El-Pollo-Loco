@@ -51,6 +51,30 @@ class World {
     });
   }
 
+  checkBulletHits() {
+    this.playerBullets.forEach((bullet) => {
+      if (!bullet.markedForDeletion) {
+        this.level.enemies.forEach((enemy) => {
+          if (bullet.isColliding(enemy)) {
+            enemy.hit(50);
+            bullet.markedForDeletion = true;
+          }
+        });
+      }
+    });
+  
+    this.enemyBullets.forEach((bullet) => {
+      if (!bullet.markedForDeletion && !this.character.isDead()) {
+        if (bullet.isColliding(this.character)) {
+          this.character.hit(5);
+          bullet.markedForDeletion = true;
+        }
+      }
+    });
+
+    this.playerBullets = this.playerBullets.filter((bullet) => !bullet.markedForDeletion);
+    this.enemyBullets = this.enemyBullets.filter((bullet) => !bullet.markedForDeletion);
+  }
   
 
   
