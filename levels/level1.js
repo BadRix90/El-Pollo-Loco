@@ -1,9 +1,7 @@
 let streetTiles = [];
-let levelWidth = 5400;
-let tileSize = 32;
 let maxOffset = 20000;
+let tileSize = 32;
 let sectionWidth = 719;
-
 
 for (let x = -tileSize * 10; x <= maxOffset; x += tileSize) {
   streetTiles.push(new Street(x));
@@ -15,7 +13,6 @@ const enemyPositions = [
   { x: 3000, range: 50 },
   { x: 4200, range: 60 },
   { x: 5100, range: 70 },
-  { x: 5300, range: 90 },
 ];
 
 const patrolEnemies = enemyPositions.map((pos) => {
@@ -26,7 +23,36 @@ const patrolEnemies = enemyPositions.map((pos) => {
   return enemy;
 });
 
-const initialEnemies = [...patrolEnemies, new Endboss()];
+
+const robotEnemies = [];
+for (let i = 0; i < 3; i++) {
+
+  let spawnX = Math.random() * (10000 - 719) + 719;
+  let robot = new RobotEnemy();
+  robot.x = spawnX;
+
+  robot.patrolStart = spawnX;
+  robot.patrolEnd = spawnX + 1000;
+  robotEnemies.push(robot);
+}
+
+
+const copterEnemies = [];
+for (let i = 0; i < 3; i++) {
+  let spawnX = Math.random() * (10000 - 719) + 719;
+  let copter = new CopterEnemy();
+  copter.x = spawnX;
+  copter.patrolStart = spawnX;
+  copter.patrolEnd = spawnX + 1000;
+  copterEnemies.push(copter);
+}
+
+const initialEnemies = [
+  ...patrolEnemies,
+  ...copterEnemies,
+  ...robotEnemies,
+  new Endboss()
+];
 
 const backgroundObjects = [];
 const parallaxFactors = [0.05, 0.1, 0.6, 0.2, 0.25];
