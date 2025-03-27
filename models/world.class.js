@@ -112,4 +112,25 @@ class World {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
+
+  handleShooting() {
+    if (this.character.isShooting) {
+      const bulletX = this.character.x + (this.character.otherDirection ? -20 : this.character.width + 10);
+      const bulletY = this.character.y + this.character.height / 2 - 5;
+      const direction = this.character.otherDirection ? -1 : 1;
+      
+      this.spawnBullet(bulletX, bulletY, direction, this.character, 0);
+    }
+  
+    this.level.enemies.forEach((enemy) => {
+      if (enemy.isShooting) {
+        const bulletX = enemy.x + (enemy.otherDirection ? -20 : enemy.width + 10);
+        const bulletY = enemy.y + enemy.height / 2 - 5;
+        const direction = enemy.otherDirection ? -1 : 1;
+  
+        this.spawnBullet(bulletX, bulletY, direction, enemy, 1);
+      }
+    });
+  }
+  
 }
