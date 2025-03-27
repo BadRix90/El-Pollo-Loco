@@ -48,12 +48,14 @@ class Character extends MovableObject {
   ];
 
   IMAGES_ATTACK = [
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_6.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_5.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_6.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_7.png",
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_8.png"
   ];
 
   world;
