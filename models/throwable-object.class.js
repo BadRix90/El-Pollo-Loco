@@ -3,8 +3,8 @@ class Bullet extends MovableObject {
     super().loadImage('img/cyberpunk-characters-pixel-art/guns/5 Bullets/1.png');
     this.x = x;
     this.y = y;
-    this.width = 20;
-    this.height = 10;
+    this.width = 10;
+    this.height = 5;
     this.speed = speed;
     this.owner = owner;
     this.animate();

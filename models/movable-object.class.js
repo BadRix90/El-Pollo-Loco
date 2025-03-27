@@ -1,10 +1,13 @@
 class MovableObject extends DrawableObject {
+  height = 150;
+  width = 100;
   speed = 0.2;
   otherDirection = false;
   speedY = 0;
   acceleration = 4;
   energy = 100;
   lastHit = 0;
+  defaultYPosition = 300;
 
   applyGravity() {
     setInterval(() => {
@@ -13,8 +16,8 @@ class MovableObject extends DrawableObject {
         this.speedY -= this.acceleration;
       }
 
-      if (!(this instanceof Bullet) && this.y > 250) {
-        this.y = 250;
+      if (!(this instanceof Bullet) && this.y > this.defaultYPosition) {
+        this.y = this.defaultYPosition;
         this.speedY = 0;
       }
     }, 1000 / 25);
@@ -24,7 +27,7 @@ class MovableObject extends DrawableObject {
     if (this instanceof Bullet) {
       return this.y < 480;
     } else {
-      return this.y < 250;
+      return this.y < this.defaultYPosition; 
     }
   }
 
@@ -36,7 +39,6 @@ class MovableObject extends DrawableObject {
       this.y < mo.y + mo.height
     );
   }
-  
 
   hit() {
     this.energy -= 5;

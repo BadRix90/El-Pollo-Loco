@@ -1,12 +1,10 @@
 class Enemy extends MovableObject {
-  y = 250;
-  height = 200;
-  width = 150;
   speed = 0.3 + Math.random() * 0.25;
   energy = 100;
   deathPlayed = false;
   mode = "idle";
   attackDistance = 300;
+
 
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_1.png",
@@ -48,7 +46,7 @@ class Enemy extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_ATTACK);
-
+    this.y = this.defaultYPosition;
     this.x = 720 + Math.random() * 300;
     this.world = null;
     this.startShooting();
