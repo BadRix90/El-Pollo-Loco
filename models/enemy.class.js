@@ -7,37 +7,42 @@ class Enemy extends MovableObject {
 
 
   IMAGES_WALKING = [
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Run/Run_frame_6.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_5.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_6.png",
   ];
 
   IMAGES_DEAD = [
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Death/Death_frame_6.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Death/Death_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Death/Death_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Death/Death_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Death/Death_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Death/Death_frame_5.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Death/Death_frame_6.png",
   ];
 
   IMAGES_IDLE = [
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Idle/Idle_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Idle/Idle_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Idle/Idle_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Idle/Idle_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Idle/Idle_frame_4.png",
   ];
 
   IMAGES_ATTACK = [
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/1 Worker/frames/Attack/Attack_frame_6.png",
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_1.png',
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_2.png',
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_3.png',
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_4.png',
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_5.png',
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_6.png'
+  ];
+
+  IMAGES_HURT = [
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_1.png',
+    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_2.png'
   ];
 
   constructor() {
@@ -46,6 +51,7 @@ class Enemy extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_HURT);
     this.y = this.defaultYPosition;
     this.x = 720 + Math.random() * 300;
     this.world = null;
@@ -121,14 +127,29 @@ class Enemy extends MovableObject {
     }
   }
 
+  playHurtAnimation() {
+    let i = 0;
+    let interval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_HURT[i]];
+      i++;
+      if (i >= this.IMAGES_HURT.length) {
+        clearInterval(interval);
+        this.mode = "idle"; 
+      }
+    }, 100);
+  }
+
   hit() {
     if (this.isDead()) return;
 
     this.energy -= 50;
 
-    if (this.isDead()) {
+    if (this.energy <= 0) {
+      this.energy = 0;
       this.speed = 0;
       this.playDeathAnimation();
+    } else {
+      this.playHurtAnimation();
     }
   }
 
