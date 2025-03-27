@@ -101,6 +101,9 @@ class World {
 
     this.addObjectsToMap(this.level.enemies);
 
+    this.addObjectsToMap(this.playerBullets);
+    this.addObjectsToMap(this.enemyBullets);
+
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
@@ -164,7 +167,7 @@ class World {
         const bulletY = enemy.y + enemy.height / 2 - 5;
         const direction = enemy.otherDirection ? -1 : 1;
   
-        this.spawnBullet(bulletX, bulletY, direction, enemy, 1);
+        this.spawnBullet(bulletX, bulletY, direction, enemy, 0);
       }
     });
   }
@@ -177,8 +180,6 @@ class World {
     } else {
       this.enemyBullets.push(bullet);
     }
-
-    console.log(`Bullet spawned at X: ${x}, Y: ${y} with direction ${direction}`);
   }
   
 

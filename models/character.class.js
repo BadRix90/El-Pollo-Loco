@@ -122,6 +122,10 @@ class Character extends MovableObject {
         this.jump();
       }
 
+      if (!this.introRunning && this.world.keyboard.q) {
+        this.handleShooting();
+      }
+
       if (!this.introRunning) {
         this.world.camera_x = -this.x + 100;
       }
@@ -147,5 +151,28 @@ class Character extends MovableObject {
     }, 100);
   }
 
+  handleShooting() {
+    if (this.isShooting || this.isDead()) return;
+  
+    this.isShooting = true;
+    this.currentImage = 0;
+  
+    let shootInterval = setInterval(() => {
+      this.playAnimation(this.IMAGES_ATTACK);
+    }, 50);
+  
+    setTimeout(() => {
+      const bulletX = this.x + (this.otherDirection ? -20 : this.width + 10);
+      const bulletY = this.y + this.height / 2 - 5;
+      const direction = this.otherDirection ? -1 : 1;
+  
+      this.world.spawnBullet(bulletX, bulletY, direction, this, 0);
+    }, 100);
+  
+    setTimeout(() => {
+      clearInterval(shootInterval);
+      this.isShooting = false;
+    }, 400);
+  }
 
 }
