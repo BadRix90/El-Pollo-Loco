@@ -4,7 +4,7 @@ let tileSize = 32;
 let maxOffset = 20000;
 let sectionWidth = 719;
 
-// Erstelle die Straßenobjekte dynamisch bis maxOffset
+
 for (let x = -tileSize * 10; x <= maxOffset; x += tileSize) {
   streetTiles.push(new Street(x));
 }
@@ -28,11 +28,9 @@ const patrolEnemies = enemyPositions.map((pos) => {
 
 const initialEnemies = [...patrolEnemies, new Endboss()];
 
-// Dynamische Generierung der Hintergrundobjekte
 const backgroundObjects = [];
 const parallaxFactors = [0.05, 0.1, 0.6, 0.2, 0.25];
 
-// Sections generieren und Hintergrundobjekte erstellen
 const sections = [];
 sections.push({ number: 1, offset: -719 });
 
