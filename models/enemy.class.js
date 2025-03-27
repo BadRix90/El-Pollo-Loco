@@ -3,7 +3,6 @@ class Enemy extends MovableObject {
   energy = 100;
   deathPlayed = false;
   mode = "idle";
-  attackDistance = 300;
 
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_1.png",
@@ -30,29 +29,9 @@ class Enemy extends MovableObject {
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Idle/Idle_frame_4.png",
   ];
 
-  IMAGES_ATTACK = [
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_6.png",
-  ];
-
   IMAGES_HURT = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_1.png",
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_2.png",
-  ];
-
-  IMAGES_FIRE_ATTACK = [
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_6.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_7.png",
-    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Fire_attack/Fire_attack_frame_8.png "
   ];
 
   constructor() {
@@ -60,7 +39,6 @@ class Enemy extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
     this.y = this.defaultYPosition;
     this.x = 720 + Math.random() * 300;
@@ -85,13 +63,9 @@ class Enemy extends MovableObject {
 
       if (this.mode === "idle") {
         this.playAnimation(this.IMAGES_WALKING);
-      } else if (this.mode === "attack") {
-        this.playAnimation(this.IMAGES_ATTACK);
       }
     }, 120);
   }
-
-  startAI() {}
 
   resetPosition() {
     if (this.x < -this.width) {
