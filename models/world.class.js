@@ -18,6 +18,9 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    this.playerBullets = [];
+    this.enemyBullets = [];
+
   }
 
   setWorld() {
@@ -74,6 +77,11 @@ class World {
 
     this.playerBullets = this.playerBullets.filter((bullet) => !bullet.markedForDeletion);
     this.enemyBullets = this.enemyBullets.filter((bullet) => !bullet.markedForDeletion);
+  }
+  
+  removeOffscreenBullets() {
+    this.playerBullets = this.playerBullets.filter(bullet => bullet.x > 0 && bullet.x < this.canvas.width);
+    this.enemyBullets = this.enemyBullets.filter(bullet => bullet.x > 0 && bullet.x < this.canvas.width);
   }
   
 
