@@ -84,13 +84,10 @@ class World {
   }
 
   removeOffscreenBullets() {
-    this.playerBullets = this.playerBullets.filter(
-      (bullet) => bullet.x > 0 && bullet.x < this.canvas.width
-    );
-    this.enemyBullets = this.enemyBullets.filter(
-      (bullet) => bullet.x > 0 && bullet.x < this.canvas.width
-    );
+    this.playerBullets = this.playerBullets.filter(b => !b.markedForDeletion);
+    this.enemyBullets = this.enemyBullets.filter(b => !b.markedForDeletion);
   }
+  
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -160,7 +157,7 @@ class World {
 
   handleShootingEnemy() {
     this.level.enemies.forEach((enemy) => {
-      if (enemy.isShooting) {
+      if (enemy.isShooting && !enemy.isDead()) {
         const now = Date.now();
         if (now - enemy.lastShotTime >= enemy.shootCooldown) {
           const bulletX = enemy.x + (enemy.otherDirection ? 25 : enemy.width - 35);

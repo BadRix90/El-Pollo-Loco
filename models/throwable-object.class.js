@@ -24,7 +24,7 @@ class Bullet extends MovableObject {
     this.height = 10;
     this.speed = 10;
     this.direction = direction;
-    this.maxDistance = 500;
+    this.maxDistance = 250;
     this.travelledDistance = 0;
     this.owner = owner;
     this.animate();
