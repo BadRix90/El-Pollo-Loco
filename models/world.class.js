@@ -156,8 +156,8 @@ class World {
     this.ctx.restore();
   }
 
-  spawnBullet(x, y, direction = 1, owner = null) {
-    const bullet = new Bullet(x, y, 7 * direction, owner);
+  spawnBullet(x, y, direction = 1, owner = null, bulletImages) {
+    const bullet = new Bullet(x, y, 7 * direction, owner, bulletImages);
 
     if (owner === this.character) {
       this.playerBullets.push(bullet);

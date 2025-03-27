@@ -1,6 +1,6 @@
 class Bullet extends MovableObject {
-  constructor(x, y, speed = 7, owner = null) {
-    super().loadImage('img/cyberpunk-characters-pixel-art/guns/5 Bullets/1.png');
+  constructor(x, y, speed = 7, owner = null, bulletImages = []) {
+    super().loadImage(bulletImages[0]);
     this.x = x;
     this.y = y;
     this.width = 10;
