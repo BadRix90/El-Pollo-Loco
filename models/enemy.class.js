@@ -5,7 +5,6 @@ class Enemy extends MovableObject {
   mode = "idle";
   attackDistance = 300;
 
-
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_1.png",
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Run/Run_frame_2.png",
@@ -32,17 +31,17 @@ class Enemy extends MovableObject {
   ];
 
   IMAGES_ATTACK = [
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_1.png',
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_2.png',
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_3.png',
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_4.png',
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_5.png',
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_6.png'
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_2.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_3.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_4.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_5.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Attack/Attack_frame_6.png",
   ];
 
   IMAGES_HURT = [
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_1.png',
-    'img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_2.png'
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_1.png",
+    "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_2.png",
   ];
 
   constructor() {
@@ -55,7 +54,9 @@ class Enemy extends MovableObject {
     this.y = this.defaultYPosition;
     this.x = 720 + Math.random() * 300;
     this.world = null;
-
+    this.bulletSpawned = false;
+    this.lastShotTime = 0;
+    this.shootCooldown = 500;
   }
 
   animate() {
@@ -90,16 +91,15 @@ class Enemy extends MovableObject {
 
       if (distanceToPlayer < this.attackDistance) {
         this.mode = "attack";
-      
         this.otherDirection = this.world.character.x < this.x;
-      
+        this.isShooting = true;
       } else {
         this.mode = "idle";
+        this.isShooting = false;
       }
-      
     }, 200);
-  }  
-  
+  }
+
   resetPosition() {
     if (this.x < -this.width) {
       this.x = 720;
@@ -113,7 +113,7 @@ class Enemy extends MovableObject {
       i++;
       if (i >= this.IMAGES_HURT.length) {
         clearInterval(interval);
-        this.mode = "idle"; 
+        this.mode = "idle";
       }
     }, 100);
   }

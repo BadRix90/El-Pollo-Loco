@@ -56,8 +56,6 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack1/Cyborg_attack1_frame_6.png",
   ];
 
-
-
   world;
 
   constructor() {
@@ -122,8 +120,13 @@ class Character extends MovableObject {
         this.jump();
       }
 
-      if (!this.introRunning && this.world.keyboard.q) {
+      if (!this.introRunning && this.world.keyboard.q && !this.alreadyShot) {
         this.handleShooting();
+        this.alreadyShot = true;
+      }
+
+      if (!this.world.keyboard.q) {
+        this.alreadyShot = false;
       }
 
       if (!this.introRunning) {
@@ -132,7 +135,12 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isShooting) return;
+      if (this.isShooting || this.isDead()) return;
+
+      const now = Date.now();
+      if (now - this.lastShotTime < this.shootCooldown) return;
+
+      this.lastShotTime = now;
 
       if (this.isDead()) {
         if (!this.deadPlayed) this.playAnimation(this.IMAGES_DEAD);
@@ -153,26 +161,27 @@ class Character extends MovableObject {
 
   handleShooting() {
     if (this.isShooting || this.isDead()) return;
-  
+    
     this.isShooting = true;
     this.currentImage = 0;
+    let bulletSpawned = false;
   
     let shootInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_ATTACK);
+      if (!bulletSpawned && this.currentImage >= this.IMAGES_ATTACK.length - 1) {
+        const bulletX = this.x + (this.otherDirection ? 30 : this.width - 40);
+        const bulletY = this.y + this.height / 2 - 5;
+        const direction = this.otherDirection ? -1 : 1;
+        this.world.spawnBullet(bulletX, bulletY, direction, this, 0);
+        bulletSpawned = true;
+      }
     }, 50);
   
-    setTimeout(() => {
-      const bulletX = this.x + (this.otherDirection ? 30 : this.width - 40);
-      const bulletY = this.y + this.height / 2 - 5;
-      const direction = this.otherDirection ? -1 : 1;
-  
-      this.world.spawnBullet(bulletX, bulletY, direction, this, 0);
-    }, 100);
-  
+
     setTimeout(() => {
       clearInterval(shootInterval);
       this.isShooting = false;
     }, 400);
   }
-
+  
 }

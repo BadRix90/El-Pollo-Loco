@@ -30,8 +30,8 @@ class Bullet extends MovableObject {
     this.animate();
     this.effectFrame = 0;
     this.effectActive = true;
-    this.effectX = this.x + (this.direction === -1 ? -50 : this.width - 20);
-    this.effectY = this.y - 10;
+    this.effectX = this.x + (this.direction === -1 ? -20: this.width - 10);
+    this.effectY = this.y -10;
   }
 
   draw(ctx) {
