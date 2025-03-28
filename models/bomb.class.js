@@ -1,5 +1,5 @@
 class Bomb extends MovableObject {
-  constructor(x, y, world) {
+  constructor(x, y, world, endboss) {
     super().loadImage(
       "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png"
     );
@@ -10,6 +10,7 @@ class Bomb extends MovableObject {
     this.x = x;
     this.y = y;
     this.world = world;
+    this.endboss = endboss;
     this.speedY = -20;
     this.gravity = 2;
     this.state = "fly";
@@ -99,8 +100,13 @@ class Bomb extends MovableObject {
           this.world.activeBombs = this.world.activeBombs.filter(
             (b) => b !== this
           );
-          this.world.level.endboss.isAttacking = false;
-          this.world.level.endboss.mode = "idle";
+          if (this.endboss) {
+            this.endboss.isAttacking = false;
+            this.endboss.mode = "idle";
+            console.log("💤 Bomb animation complete – Endboss ready again.");
+          } else {
+            console.warn("⚠️ Endboss reference missing in Bomb!");
+          }
         }
       }
     }, 100);

@@ -121,7 +121,7 @@ class Endboss extends MovableObject {
   }
 
   spawnBomb() {
-    const bomb = new Bomb(this.world.character.x, -200, this.world);
+    const bomb = new Bomb(this.world.character.x, -200, this.world, this);
     this.world.activeBombs.push(bomb);
   }
 
