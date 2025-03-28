@@ -19,6 +19,7 @@ class Bullet extends MovableObject {
 
   constructor(x, y, direction, bulletType, owner) {
     super().loadImage(this.IMAGES_BULLETS[bulletType]);
+    this.bulletType = bulletType;
     this.loadImages(this.IMAGES_BULLETS);
     this.loadImages(this.IMAGES_SHOOT_EFFECT);
     this.x = x;
@@ -44,7 +45,7 @@ class Bullet extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      this.playAnimation(this.IMAGES_BULLETS);
+      this.playAnimation([this.IMAGES_BULLETS[this.bulletType]]);
     }, 50);
 
   }
