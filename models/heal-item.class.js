@@ -22,9 +22,9 @@ class HealItem extends DrawableObject {
       
       collect() {
         if (this.isCollidingWithCharacter()) {
-          this.world.character.energy = Math.min(this.world.character.energy + 10, 100);  // Charakter heilt um 10, maximal 100 HP
+          this.world.character.energy = this.world.character.maxEnergy;
           this.world.statusBar.setPercentage(this.world.character.energy);
-          this.remove();  // Entfernt das Item nach dem Sammeln
+          this.remove(); 
         }
       }
       
