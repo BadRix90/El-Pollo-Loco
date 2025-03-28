@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-  x = 5000;
+  x = 5500;
   y = 100;
   height = 350;
   width = 500;
@@ -102,7 +102,7 @@ class Endboss extends MovableObject {
     }, 100);
   }
   
-
+a
   startSpecialAttack() {
     if (this.isDead() || this.isAttacking) return;
   

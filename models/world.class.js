@@ -22,7 +22,6 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
-
   }
 
   setWorld() {
@@ -38,8 +37,12 @@ class World {
       this.level.endboss.animate?.();
     }
 
-    let healItem = new HealItem(800, 300, this);
-    this.healItems.push(healItem);
+    let healItem1 = new HealItem(1000, 300, this);
+    let healItem2 = new HealItem(2000, 300, this);
+    let healItem3 = new HealItem(4500, 300, this);
+
+    
+    this.healItems.push(healItem1, healItem2, healItem3);
   }
 
   run() {
@@ -61,10 +64,9 @@ class World {
       }
     });
     this.healItems.forEach((item) => {
-      item.collect();  
+      item.collect();
     });
   }
-  
 
   checkEndbossAttack() {
     if (!this.level.endboss || this.level.endboss.isDead()) return;
@@ -144,7 +146,7 @@ class World {
     this.addObjectsToMap(this.enemyBullets);
     this.addObjectsToMap(this.activeBombs);
     this.addObjectsToMap(this.healItems);
-    
+
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
