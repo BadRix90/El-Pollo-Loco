@@ -40,6 +40,8 @@ class World {
       this.checkCollisions();
       this.checkBulletHits();
       this.removeOffscreenBullets();
+      this.checkEndbossAttack();
+
     }, 100);
   }
 
@@ -51,6 +53,22 @@ class World {
       }
     });
   }
+
+  checkEndbossAttack() {
+    if (!this.level.endboss || this.level.endboss.isDead()) return;
+  
+    const distance = Math.abs(this.character.x - this.level.endboss.x);
+    const attackRange = 250;
+  
+    if (distance < attackRange) {
+      this.level.endboss.startAttack();
+      if (!this.character.isHurt()) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    }
+  }
+  
 
   checkBulletHits() {
     this.playerBullets.forEach((bullet) => {
@@ -128,8 +146,6 @@ class World {
     }
 
     mo.draw(this.ctx);
-    mo.drawFrame(this.ctx); //frame in rot
-
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }

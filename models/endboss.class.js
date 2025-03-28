@@ -83,8 +83,24 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  startAttack() {
+    if (this.isDead() || this.isAttacking) return;
+  
+    this.isAttacking = true;
+    this.currentImage = 0;
+  
+    let attackInterval = setInterval(() => {
+      this.playAnimation(this.IMAGES_ATTACK);
+    }, 100);
+  
+    setTimeout(() => {
+      clearInterval(attackInterval);
+      this.isAttacking = false;
+    }, this.IMAGES_ATTACK.length * 100);
+  }
+  
+
   hit(damage = 50) {
-    // Ensure that if already dead or death animation has been played, nothing happens
     if (this.isDead() || this.deathPlayed) return;
 
     this.energy -= damage;
@@ -92,7 +108,7 @@ class Endboss extends MovableObject {
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
-      this.deathPlayed = true; // Mark that the death animation has been played
+      this.deathPlayed = true;
       this.playDeathAnimation();
     } else {
       this.mode = "hurt";
