@@ -38,7 +38,7 @@ class World {
       this.level.endboss.animate?.();
     }
 
-    let healItem = new HealItem(400, 300, this);
+    let healItem = new HealItem(800, 300, this);
     this.healItems.push(healItem);
   }
 
@@ -60,7 +60,11 @@ class World {
         this.healItems.forEach((item) => item.collect());
       }
     });
+    this.healItems.forEach((item) => {
+      item.collect();  
+    });
   }
+  
 
   checkEndbossAttack() {
     if (!this.level.endboss || this.level.endboss.isDead()) return;

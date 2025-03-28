@@ -9,29 +9,31 @@ class HealItem extends DrawableObject {
     }
   
 
-isCollidingWithCharacter() {
-    return (
-      this.x < this.world.character.x + this.world.character.width &&
-      this.x + this.width > this.world.character.x &&
-      this.y < this.world.character.y + this.world.character.height &&
-      this.y + this.height > this.world.character.y
-    );
-  }
-
-  collect() {
-    if (this.isCollidingWithCharacter()) {
-      console.log("🍀 Character healed!");
-      this.world.character.energy = Math.min(this.world.character.energy + 10, 100);  // Charakter heilt um 10, maximal 100 HP
-      this.world.statusBar.setPercentage(this.world.character.energy);
-      this.remove(); 
-    }
-  }
+    isCollidingWithCharacter() {
+        const character = this.world.character;
+        const isColliding =
+          this.x < character.x + character.width &&
+          this.x + this.width > character.x &&
+          this.y < character.y + character.height &&
+          this.y + this.height > character.y;
+        return isColliding;
+      }
+      
+      
+      collect() {
+        if (this.isCollidingWithCharacter()) {
+          this.world.character.energy = Math.min(this.world.character.energy + 10, 100);  // Charakter heilt um 10, maximal 100 HP
+          this.world.statusBar.setPercentage(this.world.character.energy);
+          this.remove();  // Entfernt das Item nach dem Sammeln
+        }
+      }
+      
 
 
   remove() {
     const index = this.world.healItems.indexOf(this);
     if (index !== -1) {
-      this.world.healItems.splice(index, 1);  
+      this.world.healItems.splice(index, 1);  // Entfernt das Item aus dem Array
     }
   }
 }
