@@ -109,12 +109,11 @@ class Endboss extends MovableObject {
       this.img = this.imageCache[this.IMAGES_ATTACK[i]];
       i++;
   
-      // Schuss in letzter Frame der Animation
       if (i === this.IMAGES_ATTACK.length - 1) {
         const direction = this.world.character.x < this.x ? -1 : 1;
         const bulletX = this.x + (direction === 1 ? this.width - 40 : 30);
-        const bulletY = this.y + this.height / 2 - 5;
-        this.world.spawnBullet(bulletX, bulletY, direction, this, 0); // Typ 0
+        const bulletY = this.y + this.height - 100;
+        this.world.spawnBullet(bulletX, bulletY, direction, this, 1);
       }
   
       if (i >= this.IMAGES_ATTACK.length) {

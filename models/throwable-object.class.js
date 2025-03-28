@@ -12,7 +12,10 @@ class Bullet extends MovableObject {
     "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/5_2.png",
   ];
 
-  IMAGES_BULLETS = ["img/cyberpunk-characters-pixel-art/guns/5 Bullets/9.png"];
+  IMAGES_BULLETS = [
+    "img/cyberpunk-characters-pixel-art/guns/5 Bullets/9.png",
+    "img/cyberpunk-characters-pixel-art/guns/5 Bullets/4_1.png"
+  ];
 
   constructor(x, y, direction, bulletType, owner) {
     super().loadImage(this.IMAGES_BULLETS[bulletType]);
@@ -28,29 +31,8 @@ class Bullet extends MovableObject {
     this.travelledDistance = 0;
     this.owner = owner;
     this.animate();
-    // this.effectFrame = 0;
-    // this.effectActive = true;
-    // this.effectX = this.x + (this.direction === -1 ? -20: this.width - 10);
-    // this.effectY = this.y -10;
   }
 
-  // draw(ctx) {
-  //   if (this.visible !== false) {
-  //     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  //   }
-
-  //   if (this.effectActive) {
-  //     const path =
-  //       this.IMAGES_SHOOT_EFFECT[
-  //         this.effectFrame % this.IMAGES_SHOOT_EFFECT.length
-  //       ];
-  //     const img = this.imageCache[path];
-
-  //     if (img && img.complete && img.naturalWidth > 0) {
-  //       ctx.drawImage(img, this.effectX, this.effectY, 30, 30);
-  //     }
-  //   }
-  // }
 
   animate() {
     setInterval(() => {
@@ -65,15 +47,5 @@ class Bullet extends MovableObject {
       this.playAnimation(this.IMAGES_BULLETS);
     }, 50);
 
-    // let effectInterval = setInterval(() => {
-    //   if (this.effectActive) {
-    //     this.effectFrame++;
-    //   }
-    // }, 50);
-
-    // setTimeout(() => {
-    //   this.effectActive = false;
-    //   clearInterval(effectInterval);
-    // }, 300);
   }
 }
