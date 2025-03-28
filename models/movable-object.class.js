@@ -5,8 +5,8 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   speedY = 0;
   acceleration = 4;
-  energy = 100;
   lastHit = 0;
+  hitCooldown = 500;
   defaultYPosition = 300;
 
   IMAGES_HURT = [];
@@ -89,20 +89,37 @@ class MovableObject extends DrawableObject {
     }, 100);
   }
 
+
   hit(damage = 5) {
-    if (this.isDead()) return;
-  
+    // Verhindert mehrfachen Schaden innerhalb des Cooldowns
+    let currentTime = Date.now();
+    if (currentTime - this.lastHit < this.hitCooldown) {
+      return; // Keine weiteren Treffer innerhalb des Cooldowns
+    }
+
+    this.lastHit = currentTime;
+
+    // Vor dem Treffer: Zeige die aktuelle Energie
+    console.log(`Energy before hit: ${this.energy} HP`);
+
+    // Schaden anwenden
     this.energy -= damage;
-  
+
+    // Zeige, was abgezogen wurde
+    console.log(`Damage inflicted: ${damage} HP`);
+
+    // Nach dem Treffer: Zeige den neuen Wert der Energie
+    console.log(`Energy after hit: ${this.energy} HP`);
+
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
       this.playDeathAnimation();
     } else {
-      this.lastHit = new Date().getTime?.();
-      this.playHurtAnimation?.(); 
+      this.playHurtAnimation();
     }
   }
+  
   
 
   playDeathAnimation() {

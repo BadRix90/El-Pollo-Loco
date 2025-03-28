@@ -127,7 +127,7 @@ class Endboss extends MovableObject {
   }
   
 
-  hit(damage = 50) {
+  hit(damage = 20) {
     if (this.isDead() || this.deathPlayed) return;
 
     this.energy -= damage;
