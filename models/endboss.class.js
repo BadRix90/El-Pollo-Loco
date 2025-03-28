@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-  x = 5300;
+  x = 300;
   y = 100;
   height = 350;
   width = 300;
@@ -101,17 +101,30 @@ class Endboss extends MovableObject {
     if (this.isDead() || this.isAttacking) return;
   
     this.isAttacking = true;
+    this.mode = "attack";
     this.currentImage = 0;
   
-    let attackInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_ATTACK);
-    }, 100);
+    let i = 0;
+    let interval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_ATTACK[i]];
+      i++;
   
-    setTimeout(() => {
-      clearInterval(attackInterval);
-      this.isAttacking = false;
-    }, this.IMAGES_ATTACK.length * 100);
+      // Schuss in letzter Frame der Animation
+      if (i === this.IMAGES_ATTACK.length - 1) {
+        const direction = this.world.character.x < this.x ? -1 : 1;
+        const bulletX = this.x + (direction === 1 ? this.width - 40 : 30);
+        const bulletY = this.y + this.height / 2 - 5;
+        this.world.spawnBullet(bulletX, bulletY, direction, this, 0); // Typ 0
+      }
+  
+      if (i >= this.IMAGES_ATTACK.length) {
+        clearInterval(interval);
+        this.isAttacking = false;
+        this.mode = "idle";
+      }
+    }, 100);
   }
+  
   
 
   hit(damage = 50) {

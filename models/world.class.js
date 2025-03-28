@@ -8,6 +8,7 @@ class World {
   camera_x = 0;
   statusBar = new StatusBar();
   throwableObjects = [];
+  enemyBullets = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -94,11 +95,14 @@ class World {
 
   spawnBullet(x, y, direction, owner, bulletType) {
     const bullet = new Bullet(x, y, direction, bulletType, owner);
-
+  
     if (owner === this.character) {
       this.playerBullets.push(bullet);
+    } else {
+      this.enemyBullets.push(bullet);
     }
   }
+  
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -117,6 +121,7 @@ class World {
 
     this.addObjectsToMap(this.playerBullets);
     this.addObjectsToMap(this.enemyBullets);
+
 
     this.ctx.translate(-this.camera_x, 0);
 
