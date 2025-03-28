@@ -64,11 +64,27 @@ class Bomb extends MovableObject {
       } else if (this.state === "boom") {
         this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM);
         i++;
-
-        if (i === 1 && this.isColliding(this.world.character)) {
-          this.world.character.hit();
-          this.world.statusBar.setPercentage(this.world.character.energy);
-        }
+        if (i === 1) {
+            const distance = Math.abs(this.x - this.world.character.x);
+            const maxRange = 150;
+            const maxDamage = 30;
+          
+            if (distance < maxRange) {
+              const damageFactor = 1 - distance / maxRange;
+              const damage = Math.round(maxDamage * damageFactor);
+          
+              this.world.character.hit(damage);
+              this.world.statusBar.setPercentage(this.world.character.energy);
+          
+              console.log("💣 Bomb exploded!");
+              console.log(`📏 Distance: ${distance}px`);
+              console.log(`💥 Damage dealt: ${damage} HP`);
+              console.log(`🩸 Player energy after hit: ${this.world.character.energy} HP`);
+            } else {
+              console.log("✅ Player outside of explosion range. No damage.");
+            }
+          }
+          
 
         if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM.length) {
           this.state = "dust";

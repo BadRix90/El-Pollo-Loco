@@ -43,15 +43,6 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  hit() {
-    this.energy -= 5;
-    if (this.energy < 0) {
-      this.energy = 0;
-    } else {
-      this.lastHit = new Date().getTime();
-    }
-  }
-
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
@@ -98,19 +89,21 @@ class MovableObject extends DrawableObject {
     }, 100);
   }
 
-  hit() {
+  hit(damage = 5) {
     if (this.isDead()) return;
-
-    this.energy -= 50;
-
+  
+    this.energy -= damage;
+  
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
       this.playDeathAnimation();
     } else {
-      this.playHurtAnimation();
+      this.lastHit = new Date().getTime?.();
+      this.playHurtAnimation?.(); 
     }
   }
+  
 
   playDeathAnimation() {
     let i = 0;
