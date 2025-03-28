@@ -123,11 +123,6 @@ class Endboss extends MovableObject {
   spawnBomb() {
     const bomb = new Bomb(this.world.character.x, -200, this.world);
     this.world.activeBombs.push(bomb);
-
-    setTimeout(() => {
-      this.isAttacking = false;
-      this.mode = "idle";
-    }, 2000);
   }
 
   hit(damage = 50) {
