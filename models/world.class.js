@@ -10,6 +10,8 @@ class World {
   throwableObjects = [];
   enemyBullets = [];
   activeBombs = [];
+  playerBullets = [];
+  healItems = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -20,7 +22,7 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
-    this.playerBullets = [];
+
   }
 
   setWorld() {
@@ -34,8 +36,10 @@ class World {
     if (this.level.endboss) {
       this.level.endboss.world = this;
       this.level.endboss.animate?.();
-      this.level.endboss.startAI?.();
     }
+
+    let healItem = new HealItem(400, 300, this);
+    this.healItems.push(healItem);
   }
 
   run() {
@@ -44,6 +48,7 @@ class World {
       this.checkBulletHits();
       this.removeOffscreenBullets();
       this.checkEndbossAttack();
+      this.checkCollisions();
     }, 100);
   }
 
@@ -52,6 +57,7 @@ class World {
       if (!enemy.isDead() && this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
+        this.healItems.forEach((item) => item.collect());
       }
     });
   }
@@ -183,10 +189,10 @@ class World {
   shakeCamera(duration = 500, intensity = 10) {
     let startTime = Date.now();
     let originalX = this.camera_x;
-  
+
     let shakeInterval = setInterval(() => {
       let elapsed = Date.now() - startTime;
-      
+
       if (elapsed >= duration) {
         clearInterval(shakeInterval);
         this.camera_x = originalX;
@@ -195,5 +201,4 @@ class World {
       }
     }, 16);
   }
-  
 }
