@@ -76,15 +76,6 @@ class Bomb extends MovableObject {
 
             this.world.character.hit(damage);
             this.world.statusBar.setPercentage(this.world.character.energy);
-
-            console.log("💣 Bomb exploded!");
-            console.log(`📏 Distance: ${distance}px`);
-            console.log(`💥 Damage dealt: ${damage} HP`);
-            console.log(
-              `🩸 Player energy after hit: ${this.world.character.energy} HP`
-            );
-          } else {
-            console.log("✅ Player outside of explosion range. No damage.");
           }
         }
 
@@ -103,10 +94,7 @@ class Bomb extends MovableObject {
           if (this.endboss) {
             this.endboss.isAttacking = false;
             this.endboss.mode = "idle";
-            console.log("💤 Bomb animation complete – Endboss ready again.");
-          } else {
-            console.warn("⚠️ Endboss reference missing in Bomb!");
-          }
+          } 
         }
       }
     }, 1000 / 60);

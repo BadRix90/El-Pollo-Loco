@@ -6,10 +6,8 @@ function init(){
     canvas = document.getElementById('canvas')
     world = new World(canvas, keyboard)
     let backgroundMusic = document.getElementById('background-music');
-    backgroundMusic.volume = 0.05; 
-    backgroundMusic.play();
-
-}
+    backgroundMusic.volume = 0.05;
+    }
 
 window.addEventListener('keydown', (e) => {
     if (e.key === " ") {

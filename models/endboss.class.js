@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-  x = 300;
+  x = 5000;
   y = 100;
   height = 350;
   width = 300;
@@ -67,7 +67,7 @@ class Endboss extends MovableObject {
           (!this.lastSpecial || Date.now() - this.lastSpecial > 10000)
         ) {
           this.startSpecialAttack();
-          this.lastSpecial = Date.now(); // Cooldown für Spezialangriff
+          this.lastSpecial = Date.now();
         } else {
           this.startAttack();
         }
