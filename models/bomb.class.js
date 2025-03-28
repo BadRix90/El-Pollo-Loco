@@ -48,7 +48,7 @@ class Bomb extends MovableObject {
 
     let interval = setInterval(() => {
       if (this.state === "fly") {
-        this.y += 8;
+        this.y += 4;
         this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_FLY);
         if (this.y >= this.defaultYPosition) {
           this.y = this.defaultYPosition;
@@ -109,6 +109,6 @@ class Bomb extends MovableObject {
           }
         }
       }
-    }, 100);
+    }, 1000 / 60);
   }
 }
