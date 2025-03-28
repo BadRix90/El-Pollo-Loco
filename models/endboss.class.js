@@ -83,6 +83,20 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  startAI() {
+    setInterval(() => {
+      if (!this.world || this.isDead() || this.isAttacking) return;
+  
+      const distance = Math.abs(this.world.character.x - this.x);
+      const attackRange = 250;
+  
+      if (distance < attackRange) {
+        this.startAttack();
+      }
+    }, 300);
+  }
+  
+
   startAttack() {
     if (this.isDead() || this.isAttacking) return;
   
@@ -131,10 +145,11 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (this.isDead() || this.deathPlayed) return; 
+      if (this.isDead() || this.deathPlayed || this.isAttacking) return; 
       this.playAnimation(this.IMAGES_WALKING);
       this.otherDirection = true;
     }, 200);
   }
+  
   
 }

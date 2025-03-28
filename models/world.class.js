@@ -32,6 +32,7 @@ class World {
     if (this.level.endboss) {
       this.level.endboss.world = this;
       this.level.endboss.animate?.();
+      this.level.endboss.startAI?.();
     }
   }
 
