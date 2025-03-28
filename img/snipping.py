@@ -2,14 +2,14 @@ import os
 from PIL import Image
 
 # Pfad zum Hauptverzeichnis
-base_path = r"C:\Users\Kay\Desktop\developerakademie\Projekte\El-Pollo-Loco\img\cyberpunk-characters-pixel-art"
+base_path = r"C:\Users\Kay\Desktop\developerakademie\Projekte\El-Pollo-Loco\img"
 
 # Liste der Unterordner mit den Charakteren
-character_dirs = ["2 Punk"]
+character_dirs = ['statusbar_battery']
 
-# Frame-Größe (wenn überall gleich)
-frame_width = 28  # oder anpassen
-frame_height = 48
+
+frame_width = 960
+frame_height = 640
 
 for folder in character_dirs:
     full_path = os.path.join(base_path, folder)

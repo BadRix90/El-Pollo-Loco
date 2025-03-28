@@ -92,42 +92,46 @@ canvas {
 }
 
 #title-menu,
-    #in-game-menu {
-      position: absolute;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 5px;
-      color: #fff;
-      font-family: 'PressStart2P', monospace;
-    }
+#in-game-menu {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'PressStart2P', monospace;
+}
 
-    #title-menu {
-      top: 20px;
-      left: 20px;
-    }
+#title-menu {
+  top: 20px;
+  left: 20px;
+}
 
-    #in-game-menu {
-      top: 20px;
-      right: 20px;
-    }
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      padding: 8px 12px;
-      z-index: 1;
-    }
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    button {
-      margin: 5px;
-      cursor: pointer;
-    }
+#in-game-menu {
+  top: 20px;
+  right: 20px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+button {
+  margin: 5px;
+  cursor: pointer;
+}
