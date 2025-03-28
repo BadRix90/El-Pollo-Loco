@@ -75,6 +75,7 @@ class World {
   
 
   checkBulletHits() {
+    // Spieler schießt auf Gegner
     this.playerBullets.forEach((bullet) => {
       if (!bullet.markedForDeletion) {
         this.level.enemies.forEach((enemy) => {
@@ -83,13 +84,33 @@ class World {
             bullet.markedForDeletion = true;
           }
         });
+  
+        if (this.level.endboss && bullet.isColliding(this.level.endboss)) {
+          this.level.endboss.hit(30);
+          bullet.markedForDeletion = true;
+        }
       }
     });
-
-    this.playerBullets = this.playerBullets.filter(
-      (bullet) => !bullet.markedForDeletion
-    );
+  
+    // Gegner/Boss schießt auf Spieler
+    this.enemyBullets.forEach((bullet) => {
+      if (!bullet.markedForDeletion && bullet.isColliding(this.character)) {
+        const damage = 10;
+        this.character.hit(damage);
+        this.statusBar.setPercentage(this.character.energy);
+        bullet.markedForDeletion = true;
+  
+        console.log("💥 Character hit by enemy bullet!");
+        console.log(`🩸 Damage: ${damage} HP`);
+        console.log(`⚡️ Energy after hit: ${this.character.energy} HP`);
+      }
+    });
+  
+    // Aufräumen
+    this.playerBullets = this.playerBullets.filter(b => !b.markedForDeletion);
+    this.enemyBullets = this.enemyBullets.filter(b => !b.markedForDeletion);
   }
+  
 
   removeOffscreenBullets() {
     this.playerBullets = this.playerBullets.filter((b) => !b.markedForDeletion);
