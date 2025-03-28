@@ -139,7 +139,8 @@ class World {
     this.addObjectsToMap(this.playerBullets);
     this.addObjectsToMap(this.enemyBullets);
     this.addObjectsToMap(this.activeBombs);
-
+    this.addObjectsToMap(this.healItems);
+    
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
