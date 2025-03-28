@@ -14,6 +14,7 @@ class Bomb extends MovableObject {
     this.speedY = -20;
     this.gravity = 2;
     this.state = "fly";
+    this.damage = damage;
     this.animate();
   }
 

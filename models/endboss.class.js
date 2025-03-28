@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
   x = 5000;
   y = 100;
   height = 350;
-  width = 300;
+  width = 500;
   energy = 300;
   deathPlayed = false;
 
@@ -77,23 +77,23 @@ class Endboss extends MovableObject {
 
   startAttack() {
     if (this.isDead() || this.isAttacking) return;
-
+  
     this.isAttacking = true;
     this.mode = "attack";
     this.currentImage = 0;
-
+  
     let i = 0;
     let interval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_ATTACK[i]];
       i++;
-
+  
       if (i === this.IMAGES_ATTACK.length - 1) {
         const direction = this.world.character.x < this.x ? -1 : 1;
         const bulletX = this.x + (direction === 1 ? this.width - 40 : 30);
         const bulletY = this.y + this.height - 100;
         this.world.spawnBullet(bulletX, bulletY, direction, this, 1);
       }
-
+  
       if (i >= this.IMAGES_ATTACK.length) {
         clearInterval(interval);
         this.isAttacking = false;
@@ -101,14 +101,15 @@ class Endboss extends MovableObject {
       }
     }, 100);
   }
+  
 
   startSpecialAttack() {
     if (this.isDead() || this.isAttacking) return;
-
+  
     this.isAttacking = true;
     this.mode = "special";
     this.currentImage = 0;
-
+  
     let i = 0;
     let specialInterval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_ATTACK_SPECIAL[i]];
@@ -119,11 +120,12 @@ class Endboss extends MovableObject {
       }
     }, 100);
   }
-
+  
   spawnBomb() {
-    const bomb = new Bomb(this.world.character.x, -200, this.world, this);
+    const bomb = new Bomb(this.world.character.x, -200, this.world, this, 25); 
     this.world.activeBombs.push(bomb);
   }
+  
 
   hit(damage = 50) {
     if (this.isDead() || this.deathPlayed) return;
