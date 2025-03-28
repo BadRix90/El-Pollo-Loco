@@ -91,10 +91,11 @@ class Bomb extends MovableObject {
           this.world.activeBombs = this.world.activeBombs.filter(
             (b) => b !== this
           );
+          this.world.shakeCamera(500, 15);
           if (this.endboss) {
             this.endboss.isAttacking = false;
             this.endboss.mode = "idle";
-          } 
+          }
         }
       }
     }, 1000 / 60);

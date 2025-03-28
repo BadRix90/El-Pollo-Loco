@@ -179,4 +179,21 @@ class World {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
+
+  shakeCamera(duration = 500, intensity = 10) {
+    let startTime = Date.now();
+    let originalX = this.camera_x;
+  
+    let shakeInterval = setInterval(() => {
+      let elapsed = Date.now() - startTime;
+      
+      if (elapsed >= duration) {
+        clearInterval(shakeInterval);
+        this.camera_x = originalX;
+      } else {
+        this.camera_x = originalX + Math.sin(elapsed / 50) * intensity;
+      }
+    }, 16);
+  }
+  
 }
