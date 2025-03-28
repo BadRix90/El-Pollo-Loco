@@ -9,6 +9,8 @@ class World {
   statusBar = new StatusBar();
   throwableObjects = [];
   enemyBullets = [];
+  activeBombs = [];
+
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -121,6 +123,7 @@ class World {
 
     this.addObjectsToMap(this.playerBullets);
     this.addObjectsToMap(this.enemyBullets);
+    this.addObjectsToMap(this.activeBombs);
 
 
     this.ctx.translate(-this.camera_x, 0);

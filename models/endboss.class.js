@@ -29,31 +29,6 @@ class Endboss extends MovableObject {
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack3/Attack3_frame_6.png",
   ];
 
-  IMAGES_ATTACK_SPECIAL_BOMB_FLY = [
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png",
-  ];
-
-  IMAGES_ATTACK_SPECIAL_BOMB = [
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack4/Attack4_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack4/Attack4_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack4/Attack4_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack4/Attack4_frame_4.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack4/Attack4_frame_5.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Attack4/Attack4_frame_6.png",
-  ];
-
-  IMAGES_ATTACK_SPECIAL_BOMB_BOOM = [
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/BOOM_bomb/BOOM_bomb_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/BOOM_bomb/BOOM_bomb_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/BOOM_bomb/BOOM_bomb_frame_3.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/BOOM_bomb/BOOM_bomb_frame_4.png",
-  ];
-
-  IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST = [
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Dust/Dust_frame_1.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Dust/Dust_frame_2.png",
-    "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Dust/Dust_frame_3.png",
-  ];
 
   IMAGES_HURT = [
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Hurt/Hurt_frame_1.png",
@@ -74,10 +49,6 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_ATTACK_SPECIAL);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_FLY);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.animate();
@@ -124,7 +95,33 @@ class Endboss extends MovableObject {
     }, 100);
   }
   
+  startSpecialAttack() {
+    if (this.isDead() || this.isAttacking) return;
   
+    this.isAttacking = true;
+    this.mode = "special";
+    this.currentImage = 0;
+  
+    let i = 0;
+    let specialInterval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_ATTACK_SPECIAL[i]];
+      i++;
+      if (i >= this.IMAGES_ATTACK_SPECIAL.length) {
+        clearInterval(specialInterval);
+        this.spawnBomb();
+      }
+    }, 100);
+  }
+
+  spawnBomb() {
+    const bomb = new Bomb(this.world.character.x, -200, this.world);
+    this.world.activeBombs.push(bomb);
+  
+    setTimeout(() => {
+      this.isAttacking = false;
+      this.mode = "idle";
+    }, 2000);
+  }
 
   hit(damage = 50) {
     if (this.isDead() || this.deathPlayed) return;
