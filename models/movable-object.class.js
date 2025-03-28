@@ -9,6 +9,9 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   defaultYPosition = 300;
 
+  IMAGES_HURT = [];
+  IMAGES_DEAD = [];
+
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -80,6 +83,64 @@ class MovableObject extends DrawableObject {
 
   jump() {
     if (this.isDead && this.isDead()) return;
-    this.speedY = 40;
+    this.speedY = 45;
   }
+
+  playHurtAnimation() {
+    let i = 0;
+    let interval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_HURT[i]];
+      i++;
+      if (i >= this.IMAGES_HURT.length) {
+        clearInterval(interval);
+        this.mode = "idle";
+      }
+    }, 100);
+  }
+
+  hit() {
+    if (this.isDead()) return;
+
+    this.energy -= 5;
+
+    if (this.energy <= 0) {
+      this.energy = 0;
+      this.speed = 0;
+      this.playDeathAnimation();
+    } else {
+      this.playHurtAnimation();
+    }
+  }
+
+  playDeathAnimation() {
+    let i = 0;
+    let interval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_DEAD[i]];
+      i++;
+      if (i >= this.IMAGES_DEAD.length) {
+        clearInterval(interval);
+        this.startBlinkAndRemove();
+      }
+    }, 100);
+  }
+
+  startBlinkAndRemove() {
+    let blinkCount = 0;
+    const maxBlinks = 5;
+
+    const blinkInterval = setInterval(() => {
+      this.visible = !this.visible;
+      blinkCount++;
+
+      if (blinkCount >= maxBlinks) {
+        clearInterval(blinkInterval);
+
+        const index = this.world.level.enemies.indexOf(this);
+        if (index > -1) {
+          this.world.level.enemies.splice(index, 1);
+        }
+      }
+    }, 200);
+  }
+
 }

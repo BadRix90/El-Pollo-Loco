@@ -134,21 +134,17 @@
   document.getElementById('toggle-music').addEventListener('click', toggleMusic);
   document.getElementById('in-game-toggle-music').addEventListener('click', toggleMusic);
 
-  // Steuerung anzeigen (auf Englisch)
   function showControls() {
     alert("Controls:\n- Move Left: A  \n- Move Right: D \n- Jump: Space\n- Shoot: Q");
   }
   document.getElementById('controls-button').addEventListener('click', showControls);
   document.getElementById('in-game-controls-button').addEventListener('click', showControls);
 
-  // Spiel starten: Titelmenü ausblenden, In-Game-Menü einblenden
   document.getElementById('start-button').addEventListener('click', function () {
     document.getElementById('title-menu').style.display = 'none';
     document.getElementById('in-game-menu').style.display = 'block';
-    // Hier kannst du auch deine Spiel-Initialisierungslogik aufrufen (z.B. initGame())
   });
 
-  // Spiel beenden: Seite neu laden oder zu einem Menüscreen wechseln
   document.getElementById('end-button').addEventListener('click', function () {
     location.reload();
   });

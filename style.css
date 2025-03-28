@@ -99,14 +99,14 @@ canvas {
       padding: 10px;
       border-radius: 5px;
       color: #fff;
-      font-family: sans-serif;
+      font-family: 'PressStart2P', monospace;
     }
-    /* Titelmenü oben links */
+
     #title-menu {
       top: 20px;
       left: 20px;
     }
-    /* In-Game-Menü oben rechts */
+
     #in-game-menu {
       top: 20px;
       right: 20px;
