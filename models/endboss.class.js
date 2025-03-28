@@ -156,9 +156,15 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (this.isDead() || this.deathPlayed || this.isAttacking) return;
-      this.playAnimation(this.IMAGES_WALKING);
+      if (this.isDead() || this.deathPlayed) return;
+      if (this.mode === "special") {
+        this.playAnimation(this.IMAGES_IDLE);
+      } else if (!this.isAttacking) {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
+  
       this.otherDirection = true;
     }, 200);
   }
+  
 }
