@@ -2,7 +2,7 @@ class Character extends MovableObject {
   height = 150;
   width = 100;
   speed = 5;
-  maxEnergy = 10000;
+  maxEnergy = 100;
   energy = this.maxEnergy;
   deathPlayed = false;
 

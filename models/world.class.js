@@ -13,6 +13,7 @@ class World {
   playerBullets = [];
   healItems = [];
 
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
@@ -41,7 +42,6 @@ class World {
     let healItem2 = new HealItem(2000, 300, this);
     let healItem3 = new HealItem(4500, 300, this);
 
-    
     this.healItems.push(healItem1, healItem2, healItem3);
   }
 
@@ -135,7 +135,7 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
-    
+
     this.ctx.translate(this.camera_x, 0);
     this.drawHP();
     this.addObjectsToMap(this.level.street);
@@ -149,6 +149,7 @@ class World {
     this.addObjectsToMap(this.healItems);
 
     this.ctx.translate(-this.camera_x, 0);
+    this.applyDamageOverlay();
 
     let self = this;
     requestAnimationFrame(function () {
@@ -160,6 +161,17 @@ class World {
     this.ctx.font = "20px Arial";
     this.ctx.fillStyle = "white";
     this.ctx.fillText("HP: " + this.character.energy, 20 - this.camera_x, 30);
+  }
+
+  applyDamageOverlay() {
+    const hpPercent = this.character.energy / this.character.maxEnergy;
+  
+    if (hpPercent < 0.4) { // Nur unter 50 % anzeigen
+      const pulse = Math.sin(Date.now() / 100) * 0.3 + 0.7; // Wert zwischen 0.4 – 1
+      const opacity = Math.min(1, (1 - hpPercent) * pulse);
+      this.ctx.fillStyle = `rgba(255, 0, 0, ${opacity})`;
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   }
   
 
