@@ -6,7 +6,6 @@ class Character extends MovableObject {
   energy = this.maxEnergy;
   deathPlayed = false;
 
-
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_1.png",
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_2.png",
@@ -59,7 +58,7 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_5.png",
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_6.png",
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_7.png",
-    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_8.png"
+    "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_8.png",
   ];
 
   world;
@@ -83,8 +82,6 @@ class Character extends MovableObject {
     this.x = -100;
     this.visible = true;
   }
-
-
 
   startIntroRun() {
     const targetX = 100;
@@ -169,14 +166,17 @@ class Character extends MovableObject {
 
   handleShooting() {
     if (this.isShooting || this.isDead()) return;
-    
+
     this.isShooting = true;
     this.currentImage = 0;
     let bulletSpawned = false;
-  
+
     let shootInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_ATTACK);
-      if (!bulletSpawned && this.currentImage >= this.IMAGES_ATTACK.length - 1) {
+      if (
+        !bulletSpawned &&
+        this.currentImage >= this.IMAGES_ATTACK.length - 1
+      ) {
         const bulletX = this.x + (this.otherDirection ? 30 : this.width - 40);
         const bulletY = this.y + this.height / 2 - 5;
         const direction = this.otherDirection ? -1 : 1;
@@ -184,12 +184,20 @@ class Character extends MovableObject {
         bulletSpawned = true;
       }
     }, 50);
-  
 
     setTimeout(() => {
       clearInterval(shootInterval);
       this.isShooting = false;
     }, 400);
   }
-  
+
+  hit(damage = 5) {
+    super.hit(damage); // ruft MovableObject.hit() auf
+
+    if (this.world && this.world.statusBar) {
+      this.world.statusBar.setPercentage(
+        Math.round((this.energy / this.maxEnergy) * 100)
+      );
+    }
+  }
 }
