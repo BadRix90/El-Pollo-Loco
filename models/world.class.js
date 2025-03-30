@@ -135,8 +135,9 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
+    
     this.ctx.translate(this.camera_x, 0);
-
+    this.drawHP();
     this.addObjectsToMap(this.level.street);
     this.addToMap(this.character);
 
@@ -154,6 +155,13 @@ class World {
       self.draw();
     });
   }
+
+  drawHP() {
+    this.ctx.font = "20px Arial";
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText("HP: " + this.character.energy, 20 - this.camera_x, 30);
+  }
+  
 
   drawBackgroundObjects() {
     this.level.backgroundObjects.forEach((bgObj) => {

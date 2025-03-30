@@ -97,6 +97,14 @@ class MovableObject extends DrawableObject {
     this.lastHit = currentTime;
     this.energy -= damage;
 
+    if (this.world && this.world.statusBar) {
+      this.world.statusBar.setPercentage(
+        Math.round((this.energy / this.maxEnergy) * 100)
+      );
+    }
+
+    console.log(`Character HP: ${this.energy}`);
+
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;

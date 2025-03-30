@@ -27,10 +27,15 @@ class HealItem extends DrawableObject {
       this.world.character.energy = this.world.character.maxEnergy;
       console.log(`🍀 Healed: ${healedAmount} HP`);
       console.log(`New HP: ${this.world.character.energy} HP`);
-      this.world.statusBar.setPercentage(this.world.character.energy);
+  
+      this.world.statusBar.setPercentage(
+        Math.round((this.world.character.energy / this.world.character.maxEnergy) * 100)
+      );
+  
       this.remove();
     }
   }
+  
 
   remove() {
     const index = this.world.healItems.indexOf(this);
