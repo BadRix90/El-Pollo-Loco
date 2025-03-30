@@ -30,7 +30,7 @@ class MovableObject extends DrawableObject {
     if (this instanceof Bullet) {
       return this.y < 480;
     } else {
-      return this.y < this.defaultYPosition; 
+      return this.y < this.defaultYPosition;
     }
   }
 
@@ -89,38 +89,26 @@ class MovableObject extends DrawableObject {
     }, 100);
   }
 
-
   hit(damage = 5) {
-    // Verhindert mehrfachen Schaden innerhalb des Cooldowns
     let currentTime = Date.now();
     if (currentTime - this.lastHit < this.hitCooldown) {
-      return; // Keine weiteren Treffer innerhalb des Cooldowns
+      return;
     }
-
     this.lastHit = currentTime;
-
-    // Vor dem Treffer: Zeige die aktuelle Energie
-    console.log(`Energy before hit: ${this.energy} HP`);
-
-    // Schaden anwenden
     this.energy -= damage;
-
-    // Zeige, was abgezogen wurde
-    console.log(`Damage inflicted: ${damage} HP`);
-
-    // Nach dem Treffer: Zeige den neuen Wert der Energie
-    console.log(`Energy after hit: ${this.energy} HP`);
 
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
-      this.playDeathAnimation();
+
+      if (!this.deathPlayed) {
+        this.deathPlayed = true;
+        this.playDeathAnimation();
+      }
     } else {
       this.playHurtAnimation();
     }
   }
-  
-  
 
   playDeathAnimation() {
     let i = 0;
@@ -152,5 +140,4 @@ class MovableObject extends DrawableObject {
       }
     }, 200);
   }
-
 }

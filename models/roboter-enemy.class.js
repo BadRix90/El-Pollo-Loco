@@ -2,6 +2,8 @@ class RobotEnemy extends MovableObject {
   speed = 0.3 + Math.random() * 0.2;
   energy = 60;
   mode = "idle";
+  deathPlayed = false;
+
 
   IMAGES_RUNNING = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/4 Alarmobot/frames/Run/Run_frame_1.png",

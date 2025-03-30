@@ -4,6 +4,7 @@ class CopterEnemy extends MovableObject {
   mode = "idle";
   patrolStart = 0;
   patrolEnd = 0;
+  deathPlayed = false;
 
   IMAGES_FLYING = [
     "img/cyberpunk-characters-pixel-art/4 Enemies/5 Copter/frames/Run/Run_frame_1.png",

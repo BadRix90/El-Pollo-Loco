@@ -22,21 +22,12 @@ class HealItem extends DrawableObject {
 
   collect() {
     if (this.isCollidingWithCharacter()) {
-      // Berechne den Heilwert (immer auf 100% der maximalen Energie)
       const healedAmount =
         this.world.character.maxEnergy - this.world.character.energy;
-
-      // Setze die Energie des Charakters auf den Maximalwert
       this.world.character.energy = this.world.character.maxEnergy;
-
-      // Konsolenausgabe für geheilte Energie und neue HP
       console.log(`🍀 Healed: ${healedAmount} HP`);
       console.log(`New HP: ${this.world.character.energy} HP`);
-
-      // Aktualisiere die Statusbar
       this.world.statusBar.setPercentage(this.world.character.energy);
-
-      // Entferne das Item nach dem Sammeln
       this.remove();
     }
   }
@@ -44,7 +35,7 @@ class HealItem extends DrawableObject {
   remove() {
     const index = this.world.healItems.indexOf(this);
     if (index !== -1) {
-      this.world.healItems.splice(index, 1); // Entfernt das Item aus dem Array
+      this.world.healItems.splice(index, 1);
     }
   }
 }

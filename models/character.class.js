@@ -4,6 +4,8 @@ class Character extends MovableObject {
   speed = 5;
   maxEnergy = 10000;
   energy = this.maxEnergy;
+  deathPlayed = false;
+
 
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_1.png",
