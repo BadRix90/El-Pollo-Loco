@@ -20,9 +20,11 @@ class StatusBar extends DrawableObject {
     this.loadImages(this.IMAGES_FULL);
     this.loadImages(this.IMAGES_EMPTY);
     this.x = 20;
-    this.y = 0;
-    this.width = 200;
-    this.height = 50;
+    this.y = 20;
+    this.width = 120;
+    this.height = 20;
+   
+    
   }
 
   draw(ctx) {
