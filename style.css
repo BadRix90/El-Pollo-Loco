@@ -1,12 +1,12 @@
 @font-face {
-  font-family: 'PressStart2P';
-  src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  font-family: 'CyberpunkCraftpixPixel';
+  src: url('assets/fonts/CyberpunkCraftpixPixel.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  font-family: 'PressStart2P', monospace;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
   font-size: 24px;
   color: white;
   display: flex;
@@ -27,11 +27,17 @@ canvas {
   canvas {
     width: 100%;
   }
+  .glitch-title{
+    display: none;
+  }
 }
 
 @media only screen and (max-height: 480px) {
   canvas {
     height: 100vh;
+  }
+  .glitch-title{
+    display: none;
   }
 }
 

@@ -77,7 +77,7 @@ sections.forEach(section => {
   }
 });
 
-const level1 = new Level(
+level1 = new Level(
   initialEnemies,
   streetTiles,
   backgroundObjects
