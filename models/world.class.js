@@ -13,7 +13,6 @@ class World {
   playerBullets = [];
   healItems = [];
 
-
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
@@ -150,7 +149,6 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
 
-
     let self = this;
     requestAnimationFrame(function () {
       self.draw();
@@ -162,7 +160,6 @@ class World {
     this.ctx.fillStyle = "white";
     this.ctx.fillText("HP: " + this.character.energy, 20 - this.camera_x, 30);
   }
-
 
   drawBackgroundObjects() {
     this.level.backgroundObjects.forEach((bgObj) => {
@@ -185,6 +182,8 @@ class World {
     }
 
     mo.draw(this.ctx);
+    mo.drawFrame?.(this.ctx);
+
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }

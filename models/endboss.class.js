@@ -72,7 +72,7 @@ class Endboss extends MovableObject {
           this.startAttack();
         }
       }
-    }, 300);
+    }, 500);
   }
 
   startAttack() {

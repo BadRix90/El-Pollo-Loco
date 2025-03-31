@@ -35,13 +35,17 @@ class MovableObject extends DrawableObject {
   }
 
   isColliding(mo) {
+    const a = this.getHitbox();
+    const b = mo.getHitbox?.() || mo;
+  
     return (
-      this.x + this.width > mo.x &&
-      this.y + this.height > mo.y &&
-      this.x < mo.x + mo.width &&
-      this.y < mo.y + mo.height
+      a.x + a.width > b.x &&
+      a.y + a.height > b.y &&
+      a.x < b.x + b.width &&
+      a.y < b.y + b.height
     );
   }
+  
 
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
@@ -112,6 +116,19 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  getHitbox() {
+    const offsetX = 30;
+    const offsetYTop = 40; 
+    const offsetYBottom = 0;
+  
+    return {
+      x: this.x + offsetX,
+      y: this.y + offsetYTop,
+      width: this.width - offsetX * 2,
+      height: this.height - offsetYTop - offsetYBottom
+    };
+  }
+  
   playDeathAnimation() {
     let i = 0;
     let interval = setInterval(() => {

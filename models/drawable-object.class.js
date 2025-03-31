@@ -46,16 +46,14 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Enemy ||
-      this instanceof Endboss
-    ) {
+    if (this instanceof MovableObject) {
+      const hitbox = this.getHitbox();
       ctx.beginPath();
       ctx.lineWidth = "2";
       ctx.strokeStyle = "red";
-      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
       ctx.stroke();
     }
   }
+  
 }
