@@ -1,17 +1,18 @@
 class StatusBar extends DrawableObject {
   IMAGES_FULL = [
-    "IMG/GUI/2 BARS/HEALTHBAR1.PNG",
-    "IMG/GUI/2 BARS/HEALTHBAR2.PNG",
-    "IMG/GUI/2 BARS/HEALTHBAR3.PNG",
-    "IMG/GUI/2 BARS/HEALTHBAR4.PNG",
+    'img/GUI/2 Bars/HealthBar1.png',
+    'img/GUI/2 Bars/HealthBar2.png',
+    'img/GUI/2 Bars/HealthBar3.png',
+    'img/GUI/2 Bars/HealthBar4.png'
   ];
-
+  
   IMAGES_EMPTY = [
-    "IMG/GUI/2 BARS/HEALTHBAR5.PNG",
-    "IMG/GUI/2 BARS/HEALTHBAR6.PNG",
-    "IMG/GUI/2 BARS/HEALTHBAR7.PNG",
-    "IMG/GUI/2 BARS/HEALTHBAR8.PNG",
+    'img/GUI/2 Bars/HealthBar5.png',
+    'img/GUI/2 Bars/HealthBar6.png',
+    'img/GUI/2 Bars/HealthBar7.png',
+    'img/GUI/2 Bars/HealthBar8.png'
   ];
+  
 
   percentage = 100;
 
