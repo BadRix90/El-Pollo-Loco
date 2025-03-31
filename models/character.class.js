@@ -6,6 +6,7 @@ class Character extends MovableObject {
   energy = this.maxEnergy;
   deathPlayed = false;
 
+
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_1.png",
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_2.png",
@@ -117,13 +118,23 @@ class Character extends MovableObject {
         this.moveLeft();
       }
 
-      if (
-        !this.introRunning &&
-        this.world.keyboard.SPACE &&
-        !this.isAboveGround()
-      ) {
-        this.jump();
+      if (!this.introRunning && this.world.keyboard.SPACE) {
+        const now = Date.now();
+      
+        if (!this.isAboveGround()) {
+          this.canDoubleJump = true;
+        }
+      
+        if (now - this.lastJumpTime <= this.doubleJumpWindow && this.canDoubleJump && this.isAboveGround()) {
+          this.jump(true); // Double Jump
+          this.canDoubleJump = false;
+        } else if (!this.isAboveGround()) {
+          this.jump(); // Normaler Jump
+        }
+      
+        this.lastJumpTime = now;
       }
+      
 
       if (!this.introRunning && this.world.keyboard.q && !this.alreadyShot) {
         this.handleShooting();
