@@ -149,7 +149,7 @@ class World {
     this.addObjectsToMap(this.healItems);
 
     this.ctx.translate(-this.camera_x, 0);
-    this.applyDamageOverlay();
+
 
     let self = this;
     requestAnimationFrame(function () {
@@ -163,17 +163,6 @@ class World {
     this.ctx.fillText("HP: " + this.character.energy, 20 - this.camera_x, 30);
   }
 
-  applyDamageOverlay() {
-    const hpPercent = this.character.energy / this.character.maxEnergy;
-  
-    if (hpPercent < 0.4) { // Nur unter 50 % anzeigen
-      const pulse = Math.sin(Date.now() / 100) * 0.3 + 0.7; // Wert zwischen 0.4 – 1
-      const opacity = Math.min(1, (1 - hpPercent) * pulse);
-      this.ctx.fillStyle = `rgba(255, 0, 0, ${opacity})`;
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-  }
-  
 
   drawBackgroundObjects() {
     this.level.backgroundObjects.forEach((bgObj) => {
