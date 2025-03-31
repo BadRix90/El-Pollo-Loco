@@ -1,7 +1,7 @@
 class HealItem extends DrawableObject {
   constructor(x, y, world) {
     super().loadImage(
-      "img/cyberpunk-characters-pixel-art/icons/glitch effect/without background/18.png"
+      "img/GUI/9 Other/3 Skill icons/Skillicon7_11.png"
     );
     this.x = x;
     this.y = y;
