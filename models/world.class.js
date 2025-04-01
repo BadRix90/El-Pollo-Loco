@@ -12,6 +12,8 @@ class World {
   activeBombs = [];
   playerBullets = [];
   healItems = [];
+  showMainMenu = true;
+
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -22,6 +24,25 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    this.canvas.addEventListener("click", (e) => {
+      if (!this.showMainMenu) return;
+    
+      const rect = this.canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+    
+      this.menuButtons?.forEach(btn => {
+        if (
+          clickX >= btn.x &&
+          clickX <= btn.x + btn.w &&
+          clickY >= btn.y &&
+          clickY <= btn.y + btn.h
+        ) {
+          this.handleMenuAction(btn.action);
+        }
+      });
+    });
+    
   }
 
   setWorld() {
@@ -153,7 +174,57 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
+
+    if (this.showMainMenu) {
+      this.drawMainMenu();
+      return;
+    }
   }
+
+  drawMainMenu() {
+    const ctx = this.ctx;
+    const centerX = this.canvas.width / 2;
+  
+    ctx.save();
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.font = "32px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.fillText("Glitch Runner", centerX, 120);
+  
+    this.drawButton(centerX, 200, 200, 40, "Start Game", "start");
+    this.drawButton(centerX, 260, 200, 40, "Music On/Off", "music");
+    this.drawButton(centerX, 320, 200, 40, "Controls", "controls");
+  
+    ctx.restore();
+  }
+
+  drawButton(x, y, w, h, text, action) {
+    const ctx = this.ctx;
+    ctx.fillStyle = "thistle";
+    ctx.fillRect(x - w / 2, y - h / 2, w, h);
+    ctx.strokeStyle = "#000";
+    ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+    ctx.fillStyle = "#000";
+    ctx.font = "16px CyberpunkCraftpixPixel";
+    ctx.fillText(text, x, y + 5);
+  
+    this.menuButtons = this.menuButtons || [];
+    this.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action });
+  }
+  
+  handleMenuAction(action) {
+    if (action === "start") {
+      this.showMainMenu = false;
+    } else if (action === "music") {
+      toggleMusic(); // vorhandene Funktion
+    } else if (action === "controls") {
+      alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
+    }
+  }
+  
 
   drawHP() {
     this.ctx.font = "20px Arial";

@@ -62,7 +62,7 @@ canvas {
   font-size: clamp(20px, 7vw, 32px);
   text-align: center;
   pointer-events: none;
-  font-family: 'PressStart2P', monospace;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
   text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
   letter-spacing: 2px;
   display: inline-block;
@@ -127,26 +127,42 @@ canvas {
   background-image: url('img/5_background/backgrounds_cyberpunk/1/Day/5.png');
 }
 
-#title-menu,
-#in-game-menu {
-  position: absolute;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-radius: 5px;
-  color: #fff;
-  font-family: 'PressStart2P', monospace;
-}
-
 #title-menu {
-  top: 20px;
-  left: 20px;
-}
+  position: absolute;
+  left : 33px;
+  top: 90px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 344px;
+  height: 20px;
+  z-index: 2;
+  }
 
 #in-game-menu {
   top: 20px;
   right: 20px;
 }
+
+button{
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+}
+
+#menu-button,
+#start-button {
+  background-color: transparent;
+  color: thistle;
+  border: none;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#menu-button:hover,
+#start-button:hover {
+  color: black;
+} 
 
 .dropdown {
   position: relative;
@@ -154,13 +170,13 @@ canvas {
 }
 
 .dropdown-content {
-  display: none;
+  /* display: none; */
   position: absolute;
-  background-color: #f9f9f9;
+  background: none;
   min-width: 160px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   padding: 8px 12px;
   z-index: 1;
+  left: -14px;
 }
 
 .dropdown:hover .dropdown-content {
