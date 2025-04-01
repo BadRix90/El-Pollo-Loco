@@ -1,8 +1,6 @@
 class HealItem extends DrawableObject {
   constructor(x, y, world) {
-    super().loadImage(
-      "img/GUI/9 Other/3 Skill icons/Skillicon7_11.png"
-    );
+    super().loadImage("img/GUI/9 Other/3 Skill icons/Skillicon7_11.png");
     this.x = x;
     this.y = y;
     this.width = 48;
@@ -11,13 +9,15 @@ class HealItem extends DrawableObject {
   }
 
   isCollidingWithCharacter() {
-    const character = this.world.character;
-    const isColliding =
-      this.x < character.x + character.width &&
-      this.x + this.width > character.x &&
-      this.y < character.y + character.height &&
-      this.y + this.height > character.y;
-    return isColliding;
+    const a = this.getHitbox();
+    const b = this.world.character.getHitbox();
+
+    return (
+      a.x + a.width > b.x &&
+      a.x < b.x + b.width &&
+      a.y + a.height > b.y &&
+      a.y < b.y + b.height
+    );
   }
 
   collect() {
@@ -27,15 +27,25 @@ class HealItem extends DrawableObject {
       this.world.character.energy = this.world.character.maxEnergy;
       console.log(`🍀 Healed: ${healedAmount} HP`);
       console.log(`New HP: ${this.world.character.energy} HP`);
-  
+
       this.world.statusBar.setPercentage(
-        Math.round((this.world.character.energy / this.world.character.maxEnergy) * 100)
+        Math.round(
+          (this.world.character.energy / this.world.character.maxEnergy) * 100
+        )
       );
-  
+
       this.remove();
     }
   }
-  
+
+  getHitbox() {
+    return {
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height
+    };
+  }  
 
   remove() {
     const index = this.world.healItems.indexOf(this);

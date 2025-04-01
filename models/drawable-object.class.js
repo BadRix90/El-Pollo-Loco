@@ -45,15 +45,15 @@ class DrawableObject {
     });
   }
 
-  drawFrame(ctx) {
-    if (this instanceof MovableObject) {
-      const hitbox = this.getHitbox();
-      ctx.beginPath();
-      ctx.lineWidth = "2";
-      ctx.strokeStyle = "red";
-      ctx.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-      ctx.stroke();
-    }
-  }
+  // drawFrame(ctx) {
+  //   if (this instanceof MovableObject) {
+  //     const hitbox = this.getHitbox();
+  //     ctx.beginPath();
+  //     ctx.lineWidth = "2";
+  //     ctx.strokeStyle = "red";
+  //     ctx.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+  //     ctx.stroke();
+  //   }
+  // }
   
 }
