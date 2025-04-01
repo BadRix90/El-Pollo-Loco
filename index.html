@@ -143,23 +143,12 @@
       music.pause();
     }
   }
-  document.getElementById('toggle-music').addEventListener('click', toggleMusic);
-  document.getElementById('in-game-toggle-music').addEventListener('click', toggleMusic);
+
 
   function showControls() {
     alert("Controls:\n- Move Left: A  \n- Move Right: D \n- Jump: Space\n- Shoot: Q");
   }
-  document.getElementById('controls-button').addEventListener('click', showControls);
-  document.getElementById('in-game-controls-button').addEventListener('click', showControls);
 
-  document.getElementById('start-button').addEventListener('click', function () {
-    document.getElementById('title-menu').style.display = 'none';
-    document.getElementById('in-game-menu').style.display = 'block';
-  });
-
-  document.getElementById('end-button').addEventListener('click', function () {
-    location.reload();
-  });
 </script>
 
 
