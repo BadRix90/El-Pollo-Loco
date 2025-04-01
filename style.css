@@ -30,6 +30,7 @@ canvas {
   .glitch-title{
     display: none;
   }
+  
 }
 
 @media only screen and (max-height: 480px) {
@@ -41,13 +42,32 @@ canvas {
   }
 }
 
-.glitch-title {
+
+
+#game-logo {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+#title {
+  position: absolute;
+  left: 50%;
+  width: 375px;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: white;
+  font-size: clamp(20px, 7vw, 32px);
+  text-align: center;
+  pointer-events: none;
   font-family: 'PressStart2P', monospace;
-  font-size: 32px;
   text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
   letter-spacing: 2px;
   display: inline-block;
 }
+
 
 .glitch-letter {
   display: inline-block;
