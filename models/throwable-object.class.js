@@ -29,12 +29,20 @@ class Bullet extends MovableObject {
     this.height = 10;
     this.speed = 10;
     this.direction = direction;
-    this.maxDistance = 250;
+    this.maxDistance = 500;
     this.travelledDistance = 0;
     this.owner = owner;
     this.animate();
   }
 
+  getHitbox() {
+    return {
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height
+    };
+  }
 
   animate() {
     setInterval(() => {
