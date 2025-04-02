@@ -385,5 +385,15 @@ class World {
   
     ctx.restore();
   }
+
+  handleCharacterClick(choice) {
+    if (this.selectedCharacter === choice) {
+      this.confirmCharacter = true;
+      this.startGameWithCharacter();
+    } else {
+      this.selectedCharacter = choice;
+    }
+  }
+  
   
 }
