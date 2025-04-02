@@ -29,21 +29,31 @@ class World {
     this.draw();
     this.hoverX = 0;
     this.hoverY = 0;
-
+  
+    // Character zuweisen basierend auf Auswahl
+    if (window.selectedCharacter === 'punk') {
+      this.character = new CharacterPunk();
+    } else {
+      this.character = new CharacterCyborg();
+    }
+  
+    this.character.world = this;
+    this.character.animate();
+  
     this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
-
+  
       if (this.showCharacterSelect) {
         if (clickX >= 150 && clickX <= 290 && clickY >= 140 && clickY <= 360) {
           this.handleCharacterClick("punk");
         }
-
+  
         if (clickX >= 430 && clickX <= 570 && clickY >= 140 && clickY <= 360) {
           this.handleCharacterClick("cyborg");
         }
-
+  
         if (
           this.selectedCharacter &&
           clickX >= 280 &&
@@ -54,11 +64,12 @@ class World {
           this.confirmCharacter = true;
           this.startGameWithCharacter();
         }
-
+  
         return;
       }
     });
   }
+  
 
   setWorld() {
     this.character.world = this;
