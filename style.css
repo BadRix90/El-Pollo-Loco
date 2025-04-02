@@ -21,6 +21,7 @@ body {
 canvas {
   border: 3px solid black;
   display: block;
+  cursor: url("img/GUI/8 Cursors/2.png"), auto;
 }
 
 @media only screen and (max-width: 760px) {

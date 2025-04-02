@@ -24,25 +24,14 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
-    this.canvas.addEventListener("click", (e) => {
-      if (!this.showMainMenu) return;
+    this.hoverX = 0;
+    this.hoverY = 0;
     
+    this.canvas.addEventListener("mousemove", (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-    
-      this.menuButtons?.forEach(btn => {
-        if (
-          clickX >= btn.x &&
-          clickX <= btn.x + btn.w &&
-          clickY >= btn.y &&
-          clickY <= btn.y + btn.h
-        ) {
-          this.handleMenuAction(btn.action);
-        }
-      });
+      this.hoverX = e.clientX - rect.left;
+      this.hoverY = e.clientY - rect.top;
     });
-    
   }
 
   setWorld() {
@@ -203,17 +192,27 @@ class World {
 
   drawButton(x, y, w, h, text, action) {
     const ctx = this.ctx;
+    const isHovered =
+      this.hoverX >= x - w / 2 &&
+      this.hoverX <= x + w / 2 &&
+      this.hoverY >= y - h / 2 &&
+      this.hoverY <= y + h / 2;
+  
     ctx.fillStyle = "thistle";
     ctx.fillRect(x - w / 2, y - h / 2, w, h);
+  
     ctx.strokeStyle = "#000";
     ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-    ctx.fillStyle = "#000";
+  
+    ctx.fillStyle = isHovered ? "#444" : "#000";
     ctx.font = "16px CyberpunkCraftpixPixel";
+    ctx.textAlign = "center";
     ctx.fillText(text, x, y + 5);
   
     this.menuButtons = this.menuButtons || [];
     this.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action });
   }
+  
   
   handleMenuAction(action) {
     if (action === "start") {
