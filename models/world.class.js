@@ -33,10 +33,33 @@ class World {
     this.hoverX = 0;
     this.hoverY = 0;
 
-    this.canvas.addEventListener("mousemove", (e) => {
+    this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      this.hoverX = e.clientX - rect.left;
-      this.hoverY = e.clientY - rect.top;
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      if (this.showCharacterSelect) {
+        if (clickX >= 150 && clickX <= 290 && clickY >= 140 && clickY <= 360) {
+          this.handleCharacterClick("punk");
+        }
+
+        if (clickX >= 430 && clickX <= 570 && clickY >= 140 && clickY <= 360) {
+          this.handleCharacterClick("cyborg");
+        }
+
+        if (
+          this.selectedCharacter &&
+          clickX >= 280 &&
+          clickX <= 440 &&
+          clickY >= 380 &&
+          clickY <= 420
+        ) {
+          this.confirmCharacter = true;
+          this.startGameWithCharacter();
+        }
+
+        return;
+      }
     });
   }
 
@@ -154,7 +177,7 @@ class World {
       requestAnimationFrame(() => this.draw());
       return;
     }
-    
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -356,33 +379,40 @@ class World {
     const ctx = this.ctx;
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.font = "28px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.fillText("Choose Your Runner", this.canvas.width / 2, 80);
-  
+
     const punkX = 150;
     const punkY = 140;
-    ctx.fillStyle = this.selectedCharacter === 'punk' ? '#00ffff' : '#888';
+    ctx.fillStyle = this.selectedCharacter === "punk" ? "#00ffff" : "#888";
     ctx.fillRect(punkX, punkY, 140, 220);
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = "#000";
     ctx.fillText("PUNK", punkX + 70, punkY + 240);
-  
+
     const cyborgX = 430;
     const cyborgY = 140;
-    ctx.fillStyle = this.selectedCharacter === 'cyborg' ? '#00ffff' : '#888';
+    ctx.fillStyle = this.selectedCharacter === "cyborg" ? "#00ffff" : "#888";
     ctx.fillRect(cyborgX, cyborgY, 140, 220);
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = "#000";
     ctx.fillText("CYBORG", cyborgX + 70, cyborgY + 240);
-  
+
     if (this.selectedCharacter) {
-      this.drawButton(this.canvas.width / 2, 400, 160, 40, "CONFIRM", "confirm");
+      this.drawButton(
+        this.canvas.width / 2,
+        400,
+        160,
+        40,
+        "CONFIRM",
+        "confirm"
+      );
     }
-  
+
     ctx.restore();
   }
 
@@ -394,6 +424,4 @@ class World {
       this.selectedCharacter = choice;
     }
   }
-  
-  
 }
