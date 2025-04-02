@@ -1,3 +1,1 @@
-class Character extends MovableObject {
- 
-}
+class Character {}

@@ -1,4 +1,4 @@
-class CharacterPunk extends Character {
+class CharacterCyborg extends Character {
     height = 150;
     width = 100;
     speed = 5;
