@@ -13,7 +13,10 @@ class World {
   playerBullets = [];
   healItems = [];
   showMainMenu = true;
-
+  introY = -100;
+  showIntro = true;
+  showStartButton = false;
+  introStep = 0;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -26,7 +29,7 @@ class World {
     this.run();
     this.hoverX = 0;
     this.hoverY = 0;
-    
+
     this.canvas.addEventListener("mousemove", (e) => {
       const rect = this.canvas.getBoundingClientRect();
       this.hoverX = e.clientX - rect.left;
@@ -137,6 +140,12 @@ class World {
   }
 
   draw() {
+    if (this.showIntro) {
+      this.drawIntroScreen();
+      requestAnimationFrame(() => this.draw());
+      return;
+    }
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -173,20 +182,20 @@ class World {
   drawMainMenu() {
     const ctx = this.ctx;
     const centerX = this.canvas.width / 2;
-  
+
     ctx.save();
     ctx.fillStyle = "rgba(0,0,0,0.7)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.font = "32px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
-    ctx.fillText("Glitch Runner", centerX, 120);
-  
+    ctx.fillText("Blade Runner", centerX, 120);
+
     this.drawButton(centerX, 200, 200, 40, "Start Game", "start");
     this.drawButton(centerX, 260, 200, 40, "Music On/Off", "music");
     this.drawButton(centerX, 320, 200, 40, "Controls", "controls");
-  
+
     ctx.restore();
   }
 
@@ -197,33 +206,33 @@ class World {
       this.hoverX <= x + w / 2 &&
       this.hoverY >= y - h / 2 &&
       this.hoverY <= y + h / 2;
-  
+
     ctx.fillStyle = "thistle";
     ctx.fillRect(x - w / 2, y - h / 2, w, h);
-  
+
     ctx.strokeStyle = "#000";
     ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-  
+
     ctx.fillStyle = isHovered ? "#444" : "#000";
     ctx.font = "16px CyberpunkCraftpixPixel";
     ctx.textAlign = "center";
     ctx.fillText(text, x, y + 5);
-  
+
     this.menuButtons = this.menuButtons || [];
     this.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action });
   }
-  
-  
+
   handleMenuAction(action) {
     if (action === "start") {
+      this.showIntro = false;
       this.showMainMenu = false;
+      this.showCharacterSelect = true;
     } else if (action === "music") {
-      toggleMusic(); // vorhandene Funktion
+      toggleMusic();
     } else if (action === "controls") {
       alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
     }
   }
-  
 
   drawHP() {
     this.ctx.font = "20px Arial";
@@ -285,5 +294,52 @@ class World {
         this.camera_x = originalX + Math.sin(elapsed / 50) * intensity;
       }
     }, 16);
+  }
+
+  drawIntroScreen() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    ctx.font = "40px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "#00fff7";
+    ctx.textAlign = "center";
+    ctx.fillText("Blade Runner", this.canvas.width / 2, this.introY);
+
+    if (this.introY < 180) {
+      this.introY += 2;
+    } else if (this.introStep === 0) {
+      setTimeout(() => {
+        this.introStep = 1;
+        this.showStartButton = true;
+      }, 1000);
+      this.introStep = -1;
+    }
+
+    if (this.introStep >= 1) {
+      ctx.font = "20px CyberpunkCraftpixPixel";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(
+        "Created by Kay Dietrich",
+        this.canvas.width / 2,
+        this.introY + 60
+      );
+    }
+
+    if (this.showStartButton) {
+      this.drawButton(
+        this.canvas.width / 2,
+        this.introY + 120,
+        160,
+        40,
+        "START",
+        "start"
+      );
+    }
+
+    ctx.restore();
   }
 }
