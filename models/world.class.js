@@ -424,4 +424,19 @@ class World {
       this.selectedCharacter = choice;
     }
   }
+
+  startGameWithCharacter() {
+    if (this.selectedCharacter === 'cyborg') {
+      this.character = new CharacterCyborg();
+    } else if (this.selectedCharacter === 'punk') {
+      this.character = new CharacterPunk();
+    }
+  
+    this.character.world = this;
+    this.setWorld();
+    this.showCharacterSelect = false;
+    this.showMainMenu = false;
+    this.confirmCharacter = false;
+  }
+  
 }
