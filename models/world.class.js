@@ -345,4 +345,39 @@ class World {
 
     ctx.restore();
   }
+
+  drawCharacterSelection() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.font = "28px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.fillText("Choose Your Runner", this.canvas.width / 2, 80);
+  
+    const punkX = 150;
+    const punkY = 140;
+    ctx.fillStyle = this.selectedCharacter === 'punk' ? '#00ffff' : '#888';
+    ctx.fillRect(punkX, punkY, 140, 220);
+    ctx.fillStyle = '#000';
+    ctx.fillText("PUNK", punkX + 70, punkY + 240);
+  
+    const cyborgX = 430;
+    const cyborgY = 140;
+    ctx.fillStyle = this.selectedCharacter === 'cyborg' ? '#00ffff' : '#888';
+    ctx.fillRect(cyborgX, cyborgY, 140, 220);
+    ctx.fillStyle = '#000';
+    ctx.fillText("CYBORG", cyborgX + 70, cyborgY + 240);
+  
+    if (this.selectedCharacter) {
+      this.drawButton(this.canvas.width / 2, 400, 160, 40, "CONFIRM", "confirm");
+    }
+  
+    ctx.restore();
+  }
+  
 }
