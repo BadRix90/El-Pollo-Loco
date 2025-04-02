@@ -149,6 +149,12 @@ class World {
       return;
     }
 
+    if (this.showCharacterSelect) {
+      this.drawCharacterSelection();
+      requestAnimationFrame(() => this.draw());
+      return;
+    }
+    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
