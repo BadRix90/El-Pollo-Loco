@@ -20,6 +20,8 @@ class World {
   selectedCharacter = null;
   confirmCharacter = false;
   showCharacterSelect = false;
+  punkPreview = new Image();
+  cyborgPreview = new Image();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -27,6 +29,11 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.draw();
+    this.punkPreview.src =
+      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_6.png";
+    this.cyborgPreview.src =
+      "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_6.png";
+
     this.hoverX = 0;
     this.hoverY = 0;
 
@@ -416,45 +423,37 @@ class World {
     const ctx = this.ctx;
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.font = "28px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.fillText("Choose Your Runner", this.canvas.width / 2, 80);
-  
+
     const punkX = 150;
     const punkY = 140;
     const cyborgX = 430;
     const cyborgY = 140;
-  
-    let punkImg = new Image();
-    punkImg.src = "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_6.png";
-    ctx.drawImage(punkImg, punkX, punkY - 10, 140, 140);
-  
-    let cyborgImg = new Image();
-    cyborgImg.src = "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_6.png";
-    ctx.drawImage(cyborgImg, cyborgX, cyborgY - 10, 140, 140);
-  
-    ctx.fillStyle = this.selectedCharacter === "punk" ? "#00ffff" : "#888";
-    ctx.fillRect(punkX, punkY, 140, 220);
-    ctx.fillStyle = "#000";
-    ctx.fillText("PUNK", punkX + 70, punkY + 240);
-  
-    ctx.fillStyle = this.selectedCharacter === "cyborg" ? "#00ffff" : "#888";
-    ctx.fillRect(cyborgX, cyborgY, 140, 220);
-    ctx.fillStyle = "#000";
-    ctx.fillText("CYBORG", cyborgX + 70, cyborgY + 240);
-  
+
+    ctx.drawImage(this.punkPreview, punkX, punkY - 10, 140, 140);
+    ctx.drawImage(this.cyborgPreview, cyborgX, cyborgY - 10, 140, 140);
+
     if (this.selectedCharacter) {
-      this.drawButton(this.canvas.width / 2, 400, 160, 40, "CONFIRM", "confirm");
+      this.drawButton(
+        this.canvas.width / 2,
+        400,
+        160,
+        40,
+        "CONFIRM",
+        "confirm"
+      );
     }
-  
+
     ctx.restore();
   }
-  
+
   handleCharacterClick(choice) {
     if (this.selectedCharacter === choice) {
       this.confirmCharacter = true;
