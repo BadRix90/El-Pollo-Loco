@@ -229,13 +229,15 @@ class World {
     if (action === "start") {
       this.showIntro = false;
       this.showMainMenu = false;
+      this.setWorld();
+      this.run();
     } else if (action === "music") {
       toggleMusic();
     } else if (action === "controls") {
       alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
     }
   }
-
+ 
   drawHP() {
     this.ctx.font = "20px Arial";
     this.ctx.fillStyle = "white";
