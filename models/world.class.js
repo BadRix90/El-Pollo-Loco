@@ -1,6 +1,6 @@
 class World {
+  character = new Character();
   level = level1;
-  character = null;
   backgroundWidth = 719 * 2;
   ctx;
   canvas;
@@ -20,63 +20,18 @@ class World {
   selectedCharacter = null;
   confirmCharacter = false;
   showCharacterSelect = false;
-  punkPreview = new Image();
-  cyborgPreview = new Image();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.character.world = this;
     this.draw();
-    this.punkPreview.src =
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_6.png";
-    this.cyborgPreview.src =
-      "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_6.png";
-
+    this.setWorld();
+    this.run();
     this.hoverX = 0;
     this.hoverY = 0;
-
-    if (window.selectedCharacter === "punk") {
-      this.character = new CharacterPunk();
-    } else {
-      this.character = new CharacterCyborg();
-    }
-
-    this.character.world = this;
-    this.character.animate();
-
-    this.canvas.addEventListener("click", (e) => {
-      if (this.showMainMenu || (this.showIntro && this.showStartButton)) {
-        this.handleMenuClick(e);
-        return;
-      }
-
-      if (this.showCharacterSelect) {
-        const rect = this.canvas.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const clickY = e.clientY - rect.top;
-
-        if (clickX >= 150 && clickX <= 290 && clickY >= 140 && clickY <= 360) {
-          this.handleCharacterClick("punk");
-        }
-
-        if (clickX >= 430 && clickX <= 570 && clickY >= 140 && clickY <= 360) {
-          this.handleCharacterClick("cyborg");
-        }
-
-        if (
-          this.selectedCharacter &&
-          clickX >= 280 &&
-          clickX <= 440 &&
-          clickY >= 380 &&
-          clickY <= 420
-        ) {
-          this.confirmCharacter = true;
-          this.startGameWithCharacter();
-        }
-      }
-    });
 
     this.canvas.addEventListener("mousemove", (e) => {
       const rect = this.canvas.getBoundingClientRect();
@@ -194,12 +149,6 @@ class World {
       return;
     }
 
-    if (this.showCharacterSelect) {
-      this.drawCharacterSelection();
-      requestAnimationFrame(() => this.draw());
-      return;
-    }
-
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -276,31 +225,10 @@ class World {
     this.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action });
   }
 
-  handleMenuClick(e) {
-    const rect = this.canvas.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-
-    if (this.menuButtons) {
-      for (const button of this.menuButtons) {
-        if (
-          clickX >= button.x &&
-          clickX <= button.x + button.w &&
-          clickY >= button.y &&
-          clickY <= button.y + button.h
-        ) {
-          this.handleMenuAction(button.action);
-          return;
-        }
-      }
-    }
-  }
-
   handleMenuAction(action) {
     if (action === "start") {
       this.showIntro = false;
       this.showMainMenu = false;
-      this.showCharacterSelect = true;
     } else if (action === "music") {
       toggleMusic();
     } else if (action === "controls") {
@@ -375,8 +303,6 @@ class World {
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.menuButtons = [];
-
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -417,62 +343,5 @@ class World {
     }
 
     ctx.restore();
-  }
-
-  drawCharacterSelection() {
-    const ctx = this.ctx;
-    ctx.save();
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    ctx.font = "28px CyberpunkCraftpixPixel";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.fillText("Choose Your Runner", this.canvas.width / 2, 80);
-
-    const punkX = 150;
-    const punkY = 140;
-    const cyborgX = 430;
-    const cyborgY = 140;
-
-    ctx.drawImage(this.punkPreview, punkX, punkY - 10, 140, 140);
-    ctx.drawImage(this.cyborgPreview, cyborgX, cyborgY - 10, 140, 140);
-
-    if (this.selectedCharacter) {
-      this.drawButton(
-        this.canvas.width / 2,
-        400,
-        160,
-        40,
-        "CONFIRM",
-        "confirm"
-      );
-    }
-
-    ctx.restore();
-  }
-
-  handleCharacterClick(choice) {
-    if (this.selectedCharacter === choice) {
-      this.confirmCharacter = true;
-      this.startGameWithCharacter();
-    } else {
-      this.selectedCharacter = choice;
-    }
-  }
-
-  startGameWithCharacter() {
-    if (this.selectedCharacter === "cyborg") {
-      this.character = new CharacterCyborg();
-    } else {
-      this.character = new CharacterPunk();
-    }
-
-    this.character.world = this;
-    this.setWorld();
-    this.run();
-    this.showCharacterSelect = false;
   }
 }
