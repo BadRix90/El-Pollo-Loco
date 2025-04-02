@@ -17,6 +17,9 @@ class World {
   showIntro = true;
   showStartButton = false;
   introStep = 0;
+  selectedCharacter = null;
+  confirmCharacter = false;
+  showCharacterSelect = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
