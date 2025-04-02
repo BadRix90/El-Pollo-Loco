@@ -1,5 +1,6 @@
 class World {
   level = level1;
+  character = null;
   backgroundWidth = 719 * 2;
   ctx;
   canvas;
@@ -422,56 +423,55 @@ class World {
   }
 
   startGameWithCharacter() {
-    if (this.selectedCharacter === 'cyborg') {
+    if (this.selectedCharacter === "cyborg") {
       this.character = new CharacterCyborg();
-    } else if (this.selectedCharacter === 'punk') {
+    } else {
       this.character = new CharacterPunk();
     }
   
     this.character.world = this;
-    this.statusBar = new StatusBar();
-    this.showCharacterSelect = false;
     this.setWorld();
     this.run();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
