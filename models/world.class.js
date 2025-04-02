@@ -21,53 +21,56 @@ class World {
   confirmCharacter = false;
   showCharacterSelect = false;
 
-  constructor(canvas, keyboard) {
-    this.ctx = canvas.getContext("2d");
-    this.ctx.imageSmoothingEnabled = false;
-    this.canvas = canvas;
-    this.keyboard = keyboard;
-    this.draw();
-    this.hoverX = 0;
-    this.hoverY = 0;
+  constructor(canvas, keyboard)
+  {
+    this.ctx = canvas.getContext("2d")
+    this.ctx.imageSmoothingEnabled = false
+    this.canvas = canvas
+    this.keyboard = keyboard
+    this.draw()
+    this.hoverX = 0
+    this.hoverY = 0
   
-    // Character zuweisen basierend auf Auswahl
-    if (window.selectedCharacter === 'punk') {
-      this.character = new CharacterPunk();
+    if (window.selectedCharacter === "punk") {
+      this.character = new CharacterPunk()
     } else {
-      this.character = new CharacterCyborg();
+      this.character = new CharacterCyborg()
     }
   
-    this.character.world = this;
-    this.character.animate();
+    this.character.world = this
+    this.character.animate()
   
     this.canvas.addEventListener("click", (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
+      if (this.showMainMenu || (this.showIntro && this.showStartButton)) {
+        this.handleMenuClick(e)
+        return
+      }
   
       if (this.showCharacterSelect) {
+        const rect = this.canvas.getBoundingClientRect()
+        const clickX = e.clientX - rect.left
+        const clickY = e.clientY - rect.top
+  
         if (clickX >= 150 && clickX <= 290 && clickY >= 140 && clickY <= 360) {
-          this.handleCharacterClick("punk");
+          this.handleCharacterClick("punk")
         }
   
         if (clickX >= 430 && clickX <= 570 && clickY >= 140 && clickY <= 360) {
-          this.handleCharacterClick("cyborg");
+          this.handleCharacterClick("cyborg")
         }
   
-        if (
-          this.selectedCharacter &&
-          clickX >= 280 &&
-          clickX <= 440 &&
-          clickY >= 380 &&
-          clickY <= 420
-        ) {
-          this.confirmCharacter = true;
-          this.startGameWithCharacter();
+        if (this.selectedCharacter && clickX >= 280 && clickX <= 440 && clickY >= 380 && clickY <= 420) {
+          this.confirmCharacter = true
+          this.startGameWithCharacter()
         }
-  
-        return;
       }
-    });
+    })
+  
+    this.canvas.addEventListener("mousemove", (e) => {
+      const rect = this.canvas.getBoundingClientRect()
+      this.hoverX = e.clientX - rect.left
+      this.hoverY = e.clientY - rect.top
+    })
   }
   
 
@@ -179,7 +182,7 @@ class World {
       requestAnimationFrame(() => this.draw());
       return;
     }
-
+  
     if (this.showCharacterSelect) {
       this.drawCharacterSelection();
       requestAnimationFrame(() => this.draw());
@@ -262,6 +265,22 @@ class World {
     this.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action });
   }
 
+  handleMenuClick(e)
+{
+  const rect = this.canvas.getBoundingClientRect()
+  const clickX = e.clientX - rect.left
+  const clickY = e.clientY - rect.top
+
+  if (this.menuButtons) {
+    for (const button of this.menuButtons) {
+      if (clickX >= button.x && clickX <= button.x + button.w && clickY >= button.y && clickY <= button.y + button.h) {
+        this.handleMenuAction(button.action)
+        return;
+      }
+    }
+  }
+}
+
   handleMenuAction(action) {
     if (action === "start") {
       this.showIntro = false;
@@ -340,15 +359,17 @@ class World {
     const ctx = this.ctx;
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+  
+    this.menuButtons = [];
+  
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
+  
     ctx.font = "40px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#00fff7";
     ctx.textAlign = "center";
     ctx.fillText("Blade Runner", this.canvas.width / 2, this.introY);
-
+  
     if (this.introY < 180) {
       this.introY += 2;
     } else if (this.introStep === 0) {
@@ -358,30 +379,20 @@ class World {
       }, 1000);
       this.introStep = -1;
     }
-
+  
     if (this.introStep >= 1) {
       ctx.font = "20px CyberpunkCraftpixPixel";
       ctx.fillStyle = "#ffffff";
-      ctx.fillText(
-        "Created by Kay Dietrich",
-        this.canvas.width / 2,
-        this.introY + 60
-      );
+      ctx.fillText("Created by Kay Dietrich", this.canvas.width / 2, this.introY + 60);
     }
-
+  
     if (this.showStartButton) {
-      this.drawButton(
-        this.canvas.width / 2,
-        this.introY + 120,
-        160,
-        40,
-        "START",
-        "start"
-      );
+      this.drawButton(this.canvas.width / 2, this.introY + 120, 160, 40, "START", "start");
     }
-
+  
     ctx.restore();
   }
+  
 
   drawCharacterSelection() {
     const ctx = this.ctx;
@@ -443,6 +454,7 @@ class World {
     this.character.world = this;
     this.setWorld();
     this.run();
+    this.showCharacterSelect = false;
   }
   
 
