@@ -8,65 +8,65 @@ class CharacterCyborg extends Character {
   
   
     IMAGES_WALKING = [
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_run/Punk_run_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_run/Punk_run_frame_2.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_run/Punk_run_frame_3.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_run/Punk_run_frame_4.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_run/Punk_run_frame_5.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_run/Punk_run_frame_6.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_3.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_4.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_5.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_run/Cyborg_run_frame_6.png",
     ];
   
     IMAGES_JUMPING = [
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_jump/Punk_jump_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_jump/Punk_jump_frame_2.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_jump/Punk_jump_frame_3.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_jump/Punk_jump_frame_4.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_jump/Cyborg_jump_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_jump/Cyborg_jump_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_jump/Cyborg_jump_frame_3.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_jump/Cyborg_jump_frame_4.png",
     ];
   
     IMAGES_HURT = [
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_hurt/Punk_hurt_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_hurt/Punk_hurt_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_hurt/Cyborg_hurt_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_hurt/Cyborg_hurt_frame_2.png",
     ];
   
     IMAGES_DEAD = [
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_2.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_3.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_4.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_5.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_death/Punk_death_frame_6.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_death/Cyborg_death_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_death/Cyborg_death_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_death/Cyborg_death_frame_3.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_death/Cyborg_death_frame_4.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_death/Cyborg_death_frame_5.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_death/Cyborg_death_frame_6.png",
     ];
   
     IMAGES_IDLE = [
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_2.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_3.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_4.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_idle/Cyborg_idle_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_idle/Cyborg_idle_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_idle/Cyborg_idle_frame_3.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_idle/Cyborg_idle_frame_4.png",
     ];
   
     IMAGES_SHOOT = [
-      "img/cyberpunk-characters-pixel-art/guns/1 Characters/2 Punk/frames/Idle1/Idle1_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/guns/1 Characters/2 Punk/frames/Idle1/Idle1_frame_2.png",
-      "img/cyberpunk-characters-pixel-art/guns/1 Characters/2 Punk/frames/Idle1/Idle1_frame_3.png",
-      "img/cyberpunk-characters-pixel-art/guns/1 Characters/2 Punk/frames/Idle1/Idle1_frame_4.png",
+      "img/cyberCyborg-characters-pixel-art/guns/1 Characters/3 Cyborg/frames/Idle1/Idle1_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/guns/1 Characters/3 Cyborg/frames/Idle1/Idle1_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/guns/1 Characters/3 Cyborg/frames/Idle1/Idle1_frame_3.png",
+      "img/cyberCyborg-characters-pixel-art/guns/1 Characters/3 Cyborg/frames/Idle1/Idle1_frame_4.png",
     ];
   
     IMAGES_ATTACK = [
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_1.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_2.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_3.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_4.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_5.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_6.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_7.png",
-      "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_attack3/Punk_attack3_frame_8.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_1.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_2.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_3.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_4.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_5.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_6.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_7.png",
+      "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_8.png",
     ];
   
     world;
   
     constructor() {
       super().loadImage(
-        "img/cyberpunk-characters-pixel-art/2 Punk/frames/Punk_idle/Punk_idle_frame_1.png"
+        "img/cyberCyborg-characters-pixel-art/3 Cyborg/frames/Cyborg_idle/Cyborg_idle_frame_1.png"
       );
       this.loadImages(this.IMAGES_WALKING);
       this.loadImages(this.IMAGES_JUMPING);
