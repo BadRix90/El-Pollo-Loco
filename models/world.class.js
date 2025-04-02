@@ -1,5 +1,4 @@
 class World {
-  character = new Character();
   level = level1;
   backgroundWidth = 719 * 2;
   ctx;
@@ -433,10 +432,9 @@ class World {
     }
   
     this.character.world = this;
-    this.setWorld();
+    this.statusBar = new StatusBar();
     this.showCharacterSelect = false;
-    this.showMainMenu = false;
-    this.confirmCharacter = false;
+    this.setWorld();
+    this.run();
   }
-  
 }
