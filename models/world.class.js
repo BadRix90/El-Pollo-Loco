@@ -33,11 +33,26 @@ class World {
     this.hoverX = 0;
     this.hoverY = 0;
 
-    this.canvas.addEventListener("mousemove", (e) => {
+    this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
-      this.hoverX = e.clientX - rect.left;
-      this.hoverY = e.clientY - rect.top;
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+    
+      if (this.menuButtons) {
+        for (const button of this.menuButtons) {
+          if (
+            clickX >= button.x &&
+            clickX <= button.x + button.w &&
+            clickY >= button.y &&
+            clickY <= button.y + button.h
+          ) {
+            this.handleMenuAction(button.action);
+            return;
+          }
+        }
+      }
     });
+    
   }
 
   setWorld() {
@@ -304,6 +319,8 @@ class World {
     const ctx = this.ctx;
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.menuButtons = [];
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
