@@ -65,7 +65,7 @@ class Character extends MovableObject {
   world;
 
   constructor() {
-    super();
+    super()
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
@@ -80,6 +80,8 @@ class Character extends MovableObject {
     this.introRunning = true;
     this.x = -100;
     this.visible = true;
+      this.laserSound = new Audio('audio/laser-45816.mp3');
+this.laserSound.volume = 0.3; 
   }
 
   startIntroRun() {
@@ -175,38 +177,31 @@ class Character extends MovableObject {
 
   handleShooting() {
     if (this.isShooting || this.isDead()) return;
-
+  
     this.isShooting = true;
     this.currentImage = 0;
-    let bulletSpawned = false;
-
-    let shootInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_ATTACK);
-      if (
-        !bulletSpawned &&
-        this.currentImage >= this.IMAGES_ATTACK.length - 1
-      ) {
+  
+    let frameIndex = 0;
+  
+    const shootInterval = setInterval(() => {
+      this.img = this.imageCache[this.IMAGES_ATTACK[frameIndex]];
+      frameIndex++;
+  
+      if (frameIndex === this.IMAGES_ATTACK.length) {
         const bulletX = this.x + (this.otherDirection ? 30 : this.width - 40);
         const bulletY = this.y + this.height / 2 - 5;
         const direction = this.otherDirection ? -1 : 1;
+  
         this.world.spawnBullet(bulletX, bulletY, direction, this, 0);
-        bulletSpawned = true;
+        this.laserSound.currentTime = 0;
+        this.laserSound.play();
+  
+        clearInterval(shootInterval);
+        this.isShooting = false;
+        this.alreadyShot = false;
       }
     }, 50);
-
-    setTimeout(() => {
-      clearInterval(shootInterval);
-      this.isShooting = false;
-    }, 400);
   }
-
-  hit(damage = 5) {
-    super.hit(damage); // ruft MovableObject.hit() auf
-
-    if (this.world && this.world.statusBar) {
-      this.world.statusBar.setPercentage(
-        Math.round((this.energy / this.maxEnergy) * 100)
-      );
-    }
-  }
+  
+  
 }
