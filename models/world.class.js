@@ -25,10 +25,7 @@ class World {
     this.ctx.imageSmoothingEnabled = false;
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.character.world = this;
     this.draw();
-    this.setWorld();
-    this.run();
     this.hoverX = 0;
     this.hoverY = 0;
 
