@@ -244,7 +244,7 @@ class World {
     if (action === "start") {
       this.showIntro = false;
       this.showMainMenu = false;
-      
+      toggleMusic();
       this.character.startIntroRun();
     } else if (action === "music") {
       toggleMusic();
