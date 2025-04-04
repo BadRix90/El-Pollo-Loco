@@ -2,14 +2,18 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-function init(){
+function init() {
     canvas = document.getElementById('canvas')
     world = new World(canvas, keyboard)
     let backgroundMusic = document.getElementById('background-music');
     backgroundMusic.volume = 0.05;
-    }
+}
 
 window.addEventListener('keydown', (e) => {
+    if (e.key === "Escape" && world) {
+        world.showOptionsMenu = !world.showOptionsMenu;
+    }
+
     if (e.key === " ") {
         e.preventDefault();
         keyboard.SPACE = true;
