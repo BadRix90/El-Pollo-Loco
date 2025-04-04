@@ -259,7 +259,7 @@ class World {
       this.showMainMenu = false;
       toggleMusic();
       this.character.startIntroRun();
-    } else if (action === "music") {
+    } else if (action === "music" || action === "sound-toggle") {
       toggleMusic();
     } else if (action === "controls") {
       alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
@@ -381,7 +381,7 @@ class World {
     const centerX = this.canvas.width / 2;
 
     ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     ctx.font = "32px CyberpunkCraftpixPixel";
@@ -392,6 +392,7 @@ class World {
     this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle");
     this.drawButton(centerX, 260, 200, 40, "Restart Game", "restart");
     this.drawButton(centerX, 320, 200, 40, "Exit Game", "exit");
+    this.drawButton(centerX, 380, 200, 40, "Controls", "controls");
 
     ctx.restore();
   }
