@@ -39,7 +39,7 @@ class World {
       const rect = this.canvas.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
-    
+
       if (this.menuButtons) {
         for (const button of this.menuButtons) {
           if (
@@ -54,7 +54,7 @@ class World {
         }
       }
     });
-    
+
   }
 
   setWorld() {
@@ -170,7 +170,7 @@ class World {
       requestAnimationFrame(() => this.draw());
       return;
     }
-    
+
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -193,6 +193,11 @@ class World {
     this.addObjectsToMap(this.healItems);
 
     this.ctx.translate(-this.camera_x, 0);
+
+    this.ctx.font = "16px CyberpunkCraftpixPixel";
+    this.ctx.fillStyle = "white";
+    this.ctx.textAlign = "right";
+    this.ctx.fillText("ESC for Menu", this.canvas.width - 20, 30);
 
     let self = this;
     requestAnimationFrame(function () {
@@ -260,7 +265,7 @@ class World {
       alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
     }
   }
- 
+
   drawHP() {
     this.ctx.font = "20px Arial";
     this.ctx.fillStyle = "white";
@@ -374,21 +379,21 @@ class World {
   drawOptionsMenu() {
     const ctx = this.ctx;
     const centerX = this.canvas.width / 2;
-  
+
     ctx.save();
     ctx.fillStyle = "rgba(0,0,0,0.7)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.font = "32px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.fillText("MENU", centerX, 120);
-  
+
     this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle");
     this.drawButton(centerX, 260, 200, 40, "Restart Game", "restart");
     this.drawButton(centerX, 320, 200, 40, "Exit Game", "exit");
-  
+
     ctx.restore();
   }
-  
+
 }
