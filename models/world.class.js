@@ -149,8 +149,8 @@ class World {
     this.playerBullets = this.playerBullets.filter((b) => !b.markedForDeletion);
   }
 
-  spawnBullet(x, y, direction, owner, bulletType) {-nök
-
+  spawnBullet(x, y, direction, owner, bulletType) {
+    const bullet = new Bullet(x, y, direction, bulletType, owner);
     if (owner === this.character) {
       this.playerBullets.push(bullet);
     } else {
