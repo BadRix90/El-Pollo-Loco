@@ -21,6 +21,7 @@ class World {
   confirmCharacter = false;
   showCharacterSelect = false;
   showOptionsMenu = false;
+  showControlsOverlay = false;
 
 
   constructor(canvas, keyboard) {
@@ -165,6 +166,12 @@ class World {
       return;
     }
 
+    if (this.showControlsOverlay) {
+      this.drawControlsOverlay();
+      requestAnimationFrame(() => this.draw());
+      return;
+    }
+    
     if (this.showOptionsMenu) {
       this.drawOptionsMenu();
       requestAnimationFrame(() => this.draw());
@@ -204,10 +211,6 @@ class World {
       self.draw();
     });
 
-    if (this.showMainMenu) {
-      this.drawMainMenu();
-      return;
-    }
   }
 
   drawButton(x, y, w, h, text, action) {
@@ -241,13 +244,9 @@ class World {
       this.character.startIntroRun();
     } else if (action === "music" || action === "sound-toggle") {
       toggleMusic();
-    } else if (action === "controls") {
-      alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
-    }
-    else if (action === "restart") {
+    } else if (action === "restart") {
       this.restartGame();
-    }
-    else if (action === "exit") {
+    } else if (action === "exit") {
       this.showIntro = true;
       this.introY = -100;
       this.introStep = 0;
@@ -255,7 +254,13 @@ class World {
       this.showOptionsMenu = false;
       this.character = new Character();
       this.character.world = this;
+    } else if (action === "controls") {
+      this.showControlsOverlay = true;
+    } else if (action === "back-to-menu") {
+      this.showControlsOverlay = false;
+      this.showOptionsMenu = true;
     }
+    
 
   }
 
@@ -377,6 +382,8 @@ class World {
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+    this.menuButtons = [];
+
     ctx.font = "32px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
@@ -404,6 +411,40 @@ class World {
     this.setWorld();
     this.showOptionsMenu = false;
   }
+
+  drawControlsOverlay() {
+    const ctx = this.ctx;
+    const centerX = this.canvas.width / 2;
+
+    this.menuButtons = [];
+
+    ctx.save();
+    ctx.fillStyle = "rgba(0,0,0,1)";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    ctx.font = "32px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.fillText("CONTROLS", centerX, 100);
+
+    const lines = [
+      "A - Left",
+      "D - Right",
+      "SPACE - Jump",
+      "Q - Shoot",
+      "ESC - Menu"
+    ];
+
+    ctx.font = "18px CyberpunkCraftpixPixel";
+    lines.forEach((line, i) => {
+      ctx.fillText(line, centerX, 160 + i * 30);
+    });
+
+    this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu");
+
+    ctx.restore();
+  }
+
 
 
 }
