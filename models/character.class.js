@@ -81,8 +81,8 @@ class Character extends MovableObject {
     this.introRunning = true;
     this.x = -100;
     this.visible = true;
-      this.laserSound = new Audio('audio/laser-45816.mp3');
-this.laserSound.volume = 0.3; 
+    this.laserSound = new Audio('audio/laser-45816.mp3');
+    this.laserSound.volume = 0.3;
   }
 
   startIntroRun() {
@@ -121,21 +121,21 @@ this.laserSound.volume = 0.3;
 
       if (!this.introRunning && this.world.keyboard.SPACE) {
         const now = Date.now();
-      
+
         if (!this.isAboveGround()) {
           this.canDoubleJump = true;
         }
-      
+
         if (now - this.lastJumpTime <= this.doubleJumpWindow && this.canDoubleJump && this.isAboveGround()) {
           this.jump(true); // Double Jump
           this.canDoubleJump = false;
         } else if (!this.isAboveGround()) {
           this.jump(); // Normaler Jump
         }
-      
+
         this.lastJumpTime = now;
       }
-      
+
 
       if (!this.introRunning && this.world.keyboard.q && !this.alreadyShot) {
         this.handleShooting();
@@ -178,31 +178,31 @@ this.laserSound.volume = 0.3;
 
   handleShooting() {
     if (this.isShooting || this.isDead()) return;
-  
+
     this.isShooting = true;
     this.currentImage = 0;
-  
+
     let frameIndex = 0;
-  
+
     const shootInterval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_ATTACK[frameIndex]];
       frameIndex++;
-  
+
       if (frameIndex === this.IMAGES_ATTACK.length) {
         const bulletX = this.x + (this.otherDirection ? 30 : this.width - 40);
         const bulletY = this.y + this.height / 2 - 5;
         const direction = this.otherDirection ? -1 : 1;
-  
+
         this.world.spawnBullet(bulletX, bulletY, direction, this, 0);
         this.laserSound.currentTime = 0;
         this.laserSound.play();
-  
+
         clearInterval(shootInterval);
         this.isShooting = false;
         this.alreadyShot = false;
       }
     }, 50);
   }
-  
-  
+
+
 }

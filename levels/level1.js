@@ -3,6 +3,7 @@ let maxOffset = 20000;
 let tileSize = 32;
 let sectionWidth = 719;
 
+
 for (let x = -tileSize * 10; x <= maxOffset; x += tileSize) {
   streetTiles.push(new Street(x));
 }
@@ -80,5 +81,6 @@ sections.forEach(section => {
 level1 = new Level(
   initialEnemies,
   streetTiles,
-  backgroundObjects
+  backgroundObjects,
+  7000
 );

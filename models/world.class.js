@@ -171,7 +171,7 @@ class World {
       requestAnimationFrame(() => this.draw());
       return;
     }
-    
+
     if (this.showOptionsMenu) {
       this.drawOptionsMenu();
       requestAnimationFrame(() => this.draw());
@@ -199,6 +199,14 @@ class World {
     this.addObjectsToMap(this.activeBombs);
     this.addObjectsToMap(this.healItems);
 
+    this.ctx.save();
+    this.ctx.font = "32px CyberpunkCraftpixPixel";
+    this.ctx.fillStyle = "#ff00ff";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText("COMING SOON", 7100, 300);
+    this.ctx.fillText("--->", 7100, 250);
+    this.ctx.restore();
+
     this.ctx.translate(-this.camera_x, 0);
 
     this.ctx.font = "16px CyberpunkCraftpixPixel";
@@ -210,6 +218,7 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
+
 
   }
 
@@ -260,7 +269,7 @@ class World {
       this.showControlsOverlay = false;
       this.showOptionsMenu = true;
     }
-    
+
 
   }
 
