@@ -264,6 +264,9 @@ class World {
     } else if (action === "controls") {
       alert("Controls:\n- A/D = bewegen\n- SPACE = springen\n- Q = schießen");
     }
+    else if (action === "restart") {
+      this.restartGame();
+    }
   }
 
   drawHP() {
@@ -396,5 +399,21 @@ class World {
 
     ctx.restore();
   }
+
+  restartGame() {
+    this.level = level1;
+    this.character = new Character();
+    this.character.world = this;
+    this.statusBar = new StatusBar();
+    this.throwableObjects = [];
+    this.enemyBullets = [];
+    this.activeBombs = [];
+    this.playerBullets = [];
+    this.healItems = [];
+    this.camera_x = 0;
+    this.setWorld();
+    this.showOptionsMenu = false;
+  }
+  
 
 }
