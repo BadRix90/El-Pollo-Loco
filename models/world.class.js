@@ -210,26 +210,6 @@ class World {
     }
   }
 
-  drawMainMenu() {
-    const ctx = this.ctx;
-    const centerX = this.canvas.width / 2;
-
-    ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,0.7)";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    ctx.font = "32px CyberpunkCraftpixPixel";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.fillText("Blade Runner", centerX, 120);
-
-    this.drawButton(centerX, 200, 200, 40, "Start Game", "start");
-    this.drawButton(centerX, 260, 200, 40, "Music On/Off", "music");
-    this.drawButton(centerX, 320, 200, 40, "Controls", "controls");
-
-    ctx.restore();
-  }
-
   drawButton(x, y, w, h, text, action) {
     const ctx = this.ctx;
     const isHovered =
@@ -267,6 +247,16 @@ class World {
     else if (action === "restart") {
       this.restartGame();
     }
+    else if (action === "exit") {
+      this.showIntro = true;
+      this.introY = -100;
+      this.introStep = 0;
+      this.showStartButton = false;
+      this.showOptionsMenu = false;
+      this.character = new Character();
+      this.character.world = this;
+    }
+
   }
 
   drawHP() {
@@ -414,6 +404,6 @@ class World {
     this.setWorld();
     this.showOptionsMenu = false;
   }
-  
+
 
 }
