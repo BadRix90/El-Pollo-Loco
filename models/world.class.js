@@ -20,6 +20,8 @@ class World {
   selectedCharacter = null;
   confirmCharacter = false;
   showCharacterSelect = false;
+  showOptionsMenu = false;
+
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -147,8 +149,7 @@ class World {
     this.playerBullets = this.playerBullets.filter((b) => !b.markedForDeletion);
   }
 
-  spawnBullet(x, y, direction, owner, bulletType) {
-    const bullet = new Bullet(x, y, direction, bulletType, owner);
+  spawnBullet(x, y, direction, owner, bulletType) {-nök
 
     if (owner === this.character) {
       this.playerBullets.push(bullet);
@@ -163,6 +164,13 @@ class World {
       requestAnimationFrame(() => this.draw());
       return;
     }
+
+    if (this.showOptionsMenu) {
+      this.drawOptionsMenu();
+      requestAnimationFrame(() => this.draw());
+      return;
+    }
+    
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -363,4 +371,24 @@ class World {
 
     ctx.restore();
   }
+  drawOptionsMenu() {
+    const ctx = this.ctx;
+    const centerX = this.canvas.width / 2;
+  
+    ctx.save();
+    ctx.fillStyle = "rgba(0,0,0,0.7)";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.font = "32px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.fillText("MENU", centerX, 120);
+  
+    this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle");
+    this.drawButton(centerX, 260, 200, 40, "Restart Game", "restart");
+    this.drawButton(centerX, 320, 200, 40, "Exit Game", "exit");
+  
+    ctx.restore();
+  }
+  
 }
