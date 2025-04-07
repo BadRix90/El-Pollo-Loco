@@ -22,6 +22,7 @@ class World {
   showCharacterSelect = false;
   showOptionsMenu = false;
   showControlsOverlay = false;
+  policeCar = null;
 
 
   constructor(canvas, keyboard) {
@@ -231,6 +232,10 @@ class World {
     this.addObjectsToMap(this.activeBombs);
     this.addObjectsToMap(this.healItems);
 
+    if (this.policeCar) {
+      this.addToMap(this.policeCar);
+    }
+    
     this.ctx.save();
     this.ctx.font = "32px CyberpunkCraftpixPixel";
     this.ctx.fillStyle = "#ff00ff";
@@ -282,7 +287,7 @@ class World {
       this.showIntro = false;
       this.showMainMenu = false;
       toggleMusic();
-      this.character.startIntroRun();
+      this.policeCar = new PoliceCar(this);
     } else if (action === "music" || action === "sound-toggle") {
       toggleMusic();
     } else if (action === "restart") {

@@ -62,6 +62,8 @@ class Character extends MovableObject {
     "img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_attack3/Cyborg_attack3_frame_8.png",
   ];
 
+
+
   world;
 
   constructor() {
@@ -76,16 +78,17 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_ATTACK);
     this.applyGravity();
     this.animate();
-    this.startIntroRun();
+    // this.startIntroRun();
+    this.visible = false;
     this.deadPlayed = false;
     this.introRunning = true;
     this.x = -100;
-    this.visible = true;
     this.laserSound = new Audio('audio/laser-45816.mp3');
     this.laserSound.volume = 0.3;
   }
 
   startIntroRun() {
+    this.visible = true;
     const targetX = 100;
     let introFrame = 0;
 
