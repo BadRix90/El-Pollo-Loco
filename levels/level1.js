@@ -9,7 +9,7 @@ for (let x = -tileSize * 10; x <= maxOffset; x += tileSize) {
 }
 
 const enemyPositions = [
-  { x: 600, range: 50 },
+  { x: 900, range: 50 },
   { x: 1800, range: 60 },
   { x: 3000, range: 50 },
   { x: 4200, range: 60 },

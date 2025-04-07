@@ -78,7 +78,6 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_ATTACK);
     this.applyGravity();
     this.animate();
-    // this.startIntroRun();
     this.visible = false;
     this.deadPlayed = false;
     this.introRunning = true;
@@ -130,10 +129,10 @@ class Character extends MovableObject {
         }
 
         if (now - this.lastJumpTime <= this.doubleJumpWindow && this.canDoubleJump && this.isAboveGround()) {
-          this.jump(true); // Double Jump
+          this.jump(true);
           this.canDoubleJump = false;
         } else if (!this.isAboveGround()) {
-          this.jump(); // Normaler Jump
+          this.jump();
         }
 
         this.lastJumpTime = now;
@@ -162,6 +161,8 @@ class Character extends MovableObject {
 
       this.lastShotTime = now;
 
+      if (this.introRunning) return;
+
       if (this.isDead()) {
         if (!this.deadPlayed) this.playAnimation(this.IMAGES_DEAD);
         this.deadPlayed = true;
@@ -176,6 +177,7 @@ class Character extends MovableObject {
           this.playAnimation(this.IMAGES_IDLE);
         }
       }
+
     }, 100);
   }
 

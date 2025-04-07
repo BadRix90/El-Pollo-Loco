@@ -221,7 +221,6 @@ class World {
     this.addToMap(this.statusBar);
 
     this.ctx.translate(this.camera_x, 0);
-    this.drawHP();
     this.addObjectsToMap(this.level.street);
     if (this.policeCar) {
       this.addToMap(this.policeCar);

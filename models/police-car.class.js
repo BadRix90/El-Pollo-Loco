@@ -13,7 +13,7 @@ class PoliceCar extends MovableObject {
         super().loadImage(this.IMAGES_POLICECAR[0]);
         this.loadImages(this.IMAGES_POLICECAR);
         this.x = -this.width;
-        this.y = 340;
+        this.y = 338;
         this.width = 300;
         this.height = 150;
         this.speed = 4;
@@ -43,40 +43,63 @@ class PoliceCar extends MovableObject {
 
     draw(ctx) {
         if (!this.visible) return;
-      
+
         ctx.save();
         ctx.globalAlpha = 0.5;
         ctx.filter = 'blur(1px)';
-        super.draw(ctx); // normales Auto zeichnen
+        super.draw(ctx);
         ctx.restore();
-      
+
         this.drawPoliceLight(ctx);
-      }
-      
-      drawPoliceLight(ctx) {
+        this.drawPoliceReflection(ctx);
+    }
+
+    drawPoliceLight(ctx) {
         const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
         const isRed = [0, 1, 2, 3, 6].includes(currentFrame);
         const color = isRed ? 'red' : 'blue';
-      
-        const shimmerX = this.x + this.width / 1;
-        const shimmerY = this.y + this.height / 3; // TIEFER: näher an Dach
+
+        const shimmerX = this.x + this.width / 2.1;
+        const shimmerY = this.y + this.height / 3;
         const shimmerWidth = 50;
         const shimmerHeight = 10;
-      
+
         ctx.save();
         ctx.globalAlpha = 0.35;
         ctx.filter = `blur(6px)`;
         ctx.fillStyle = color;
         ctx.shadowColor = color;
         ctx.shadowBlur = 25;
-      
-        // Ovaler Lichtschimmer
+
         ctx.beginPath();
         ctx.ellipse(shimmerX, shimmerY, shimmerWidth, shimmerHeight, 0, 0, 2 * Math.PI);
         ctx.fill();
         ctx.restore();
-      }
-      
-      
+    }
+
+    drawPoliceReflection(ctx) {
+        const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
+        const isRed = [0, 1, 2, 3, 6].includes(currentFrame);
+        const color = isRed ? 'red' : 'blue';
+
+        const reflectionX = this.x + this.width / 2;
+        const reflectionY = this.y + this.height + 5; // direkt unter dem Auto
+        const reflectionWidth = 50;
+        const reflectionHeight = 10;
+
+        ctx.save();
+        ctx.globalAlpha = 0.25;
+        ctx.filter = `blur(12px)`;
+        ctx.fillStyle = color;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 20;
+
+        // Reflexion – elliptisch, nach unten
+        ctx.beginPath();
+        ctx.ellipse(reflectionX, reflectionY, reflectionWidth, reflectionHeight, 0, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+    }
+
 
 }
