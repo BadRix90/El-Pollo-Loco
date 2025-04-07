@@ -58,7 +58,7 @@ class Endboss extends MovableObject {
       if (!this.world || this.isDead() || this.isAttacking) return;
 
       const distance = Math.abs(this.world.character.x - this.x);
-      const attackRange = 250;
+      const attackRange = 500;
 
       if (distance < attackRange) {
         const r = Math.random();

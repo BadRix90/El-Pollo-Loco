@@ -35,6 +35,7 @@ class World {
     this.run();
     this.hoverX = 0;
     this.hoverY = 0;
+    this.lyricInterval = null;
 
     this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
@@ -55,6 +56,37 @@ class World {
         }
       }
     });
+
+    setInterval(() => {
+      if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
+        this.showLyrics = true;
+        this.lyricIndex = 0;
+        this.lyricInterval = setInterval(() => {
+          this.lyricIndex++;
+          if (this.lyricIndex >= this.introLyrics.length) {
+            clearInterval(this.lyricInterval);
+            this.lyricInterval = null;
+            this.showLyrics = false;
+            this.introStep = 1;
+            this.showStartButton = true;
+          }
+        }, 3000);
+      }
+    }, 100);
+    
+    
+
+    this.introLyrics = [
+      "The silence of a tortured heart",
+      "Is telling you to start",
+      "To fight the monsters that hurt you in the dark",
+      "They fear the fire and you're the spark",
+      "Power of the Beast is all you need"
+    ];
+    this.lyricIndex = 0;
+    this.lyricY = this.canvas.height - 80;
+    this.showLyrics = true;
+    
 
   }
 
@@ -339,28 +371,53 @@ class World {
     const ctx = this.ctx;
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.menuButtons = [];
-
+  
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
+  
+    // Titel anzeigen
     ctx.font = "40px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#00fff7";
     ctx.textAlign = "center";
     ctx.fillText("Blade Runner", this.canvas.width / 2, this.introY);
-
+  
+    // Phase 1: Titel fährt ein
     if (this.introY < 180) {
       this.introY += 2;
-    } else if (this.introStep === 0) {
-      setTimeout(() => {
-        this.introStep = 1;
-        this.showStartButton = true;
-      }, 1000);
-      this.introStep = -1;
+      ctx.restore();
+      return; // Stop here
     }
-
-    if (this.introStep >= 1) {
+  
+    // Phase 2: Lyrics starten, wenn noch nicht gestartet
+    if (this.introStep === 0) {
+      this.introStep = 1;
+      this.showLyrics = true;
+      this.lyricIndex = 0;
+  
+      this.lyricInterval = setInterval(() => {
+        this.lyricIndex++;
+        if (this.lyricIndex >= this.introLyrics.length) {
+          clearInterval(this.lyricInterval);
+          this.showLyrics = false;
+          this.introStep = 2; // Jetzt Rest anzeigen
+        }
+      }, 3000);
+    }
+  
+    // Phase 2: Lyrics anzeigen
+    if (this.showLyrics && this.introLyrics[this.lyricIndex]) {
+      ctx.font = "20px CyberpunkCraftpixPixel";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(
+        this.introLyrics[this.lyricIndex],
+        this.canvas.width / 2,
+        this.introY + 60
+      );
+    }
+  
+    // Phase 3: Abspann & Button
+    if (this.introStep === 2) {
       ctx.font = "20px CyberpunkCraftpixPixel";
       ctx.fillStyle = "#ffffff";
       ctx.fillText(
@@ -368,21 +425,32 @@ class World {
         this.canvas.width / 2,
         this.introY + 60
       );
-    }
-
-    if (this.showStartButton) {
+  
+      ctx.font = "14px CyberpunkCraftpixPixel";
+      ctx.fillText(
+        "Music: 'Beast in Black' by Beast in Black",
+        this.canvas.width / 2,
+        this.introY + 90
+      );
+      ctx.fillText(
+        "For private and educational use only",
+        this.canvas.width / 2,
+        this.introY + 110
+      );
+  
       this.drawButton(
         this.canvas.width / 2,
-        this.introY + 120,
+        this.introY + 150,
         160,
         40,
         "START",
         "start"
       );
     }
-
+  
     ctx.restore();
   }
+  
   drawOptionsMenu() {
     const ctx = this.ctx;
     const centerX = this.canvas.width / 2;
