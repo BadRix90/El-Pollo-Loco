@@ -223,6 +223,9 @@ class World {
     this.ctx.translate(this.camera_x, 0);
     this.drawHP();
     this.addObjectsToMap(this.level.street);
+    if (this.policeCar) {
+      this.addToMap(this.policeCar);
+    }
     this.addToMap(this.character);
 
     this.addObjectsToMap(this.level.enemies);
@@ -232,9 +235,7 @@ class World {
     this.addObjectsToMap(this.activeBombs);
     this.addObjectsToMap(this.healItems);
 
-    if (this.policeCar) {
-      this.addToMap(this.policeCar);
-    }
+
     
     this.ctx.save();
     this.ctx.font = "32px CyberpunkCraftpixPixel";

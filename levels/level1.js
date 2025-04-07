@@ -70,7 +70,7 @@ sections.forEach(section => {
   for (let layer = 1; layer <= 5; layer++) {
     backgroundObjects.push(
       new BackgroundObject(
-        `img/5_background/backgrounds_cyberpunk/${section.number}/Day/${layer}.png`,
+        `img/5_background/backgrounds_cyberpunk/${section.number}/Night/${layer}.png`,
         section.offset,
         parallaxFactors[layer - 1]
       )
