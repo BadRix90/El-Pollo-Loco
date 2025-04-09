@@ -1,5 +1,4 @@
 class TouchOverlay {
-
     constructor(canvas, keyboard) {
         if (window.innerWidth >= 768) {
             this.disabled = true;
@@ -16,8 +15,8 @@ class TouchOverlay {
         return [
             {
                 id: 'left',
-                x: 40,
-                y: this.canvas.height - 70,
+                relX: 40,
+                relY: -70,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -25,8 +24,8 @@ class TouchOverlay {
             },
             {
                 id: 'right',
-                x: 100,
-                y: this.canvas.height - 70,
+                relX: 100,
+                relY: -70,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -34,8 +33,8 @@ class TouchOverlay {
             },
             {
                 id: 'jump',
-                x: this.canvas.width - 100,
-                y: this.canvas.height - 70,
+                relX: -100,
+                relY: -70,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -43,8 +42,8 @@ class TouchOverlay {
             },
             {
                 id: 'shoot',
-                x: this.canvas.width - 160,
-                y: this.canvas.height - 70,
+                relX: -160,
+                relY: -70,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -52,7 +51,6 @@ class TouchOverlay {
             }
         ];
     }
-
 
     registerTouchEvents() {
         this.canvas.addEventListener('touchstart', (e) => this.handleTouch(e, true));
@@ -62,24 +60,26 @@ class TouchOverlay {
     handleTouch(e, isStart) {
         e.preventDefault();
         const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / this.canvas.clientWidth;
+        const scaleY = this.canvas.height / this.canvas.clientHeight;
+
         for (const touch of e.touches) {
-            const scaleX = this.canvas.width / this.canvas.clientWidth;
-            const scaleY = this.canvas.height / this.canvas.clientHeight;
             const x = (touch.clientX - rect.left) * scaleX;
             const y = (touch.clientY - rect.top) * scaleY;
-            
 
             this.buttons.forEach(btn => {
+                const btnX = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
+                const btnY = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
+
                 if (
-                    x >= btn.x &&
-                    x <= btn.x + btn.width &&
-                    y >= btn.y &&
-                    y <= btn.y + btn.height
+                    x >= btnX &&
+                    x <= btnX + btn.width &&
+                    y >= btnY &&
+                    y <= btnY + btn.height
                 ) {
                     this.keyboard[btn.key] = isStart;
                 }
             });
-
         }
     }
 
@@ -88,7 +88,6 @@ class TouchOverlay {
             this.keyboard[btn.key] = false;
         });
     }
-
 
     draw(ctx) {
         if (this.disabled) return;
@@ -102,9 +101,12 @@ class TouchOverlay {
                 }
             }
 
+            const x = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
+            const y = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
+
             ctx.save();
             ctx.globalAlpha = 0.6;
-            ctx.drawImage(btn.img, btn.x, btn.y, btn.width, btn.height);
+            ctx.drawImage(btn.img, x, y, btn.width, btn.height);
             ctx.restore();
         });
     }

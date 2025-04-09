@@ -275,7 +275,9 @@ class World {
     this.ctx.font = "16px CyberpunkCraftpixPixel";
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "right";
-    this.ctx.fillText("Click for Menu", this.canvas.width - 20, 30);
+    const menuText = window.innerWidth >= 768 ? "ESC for Menu" : "Click for Menu";
+    this.ctx.fillText(menuText, this.canvas.width - 20, 30);
+
 
     this.menuButtons = this.menuButtons || [];
     this.menuButtons.push({
