@@ -63,8 +63,11 @@ class TouchOverlay {
         e.preventDefault();
         const rect = this.canvas.getBoundingClientRect();
         for (const touch of e.touches) {
-            const x = touch.clientX - rect.left;
-            const y = touch.clientY - rect.top;
+            const scaleX = this.canvas.width / this.canvas.clientWidth;
+            const scaleY = this.canvas.height / this.canvas.clientHeight;
+            const x = (touch.clientX - rect.left) * scaleX;
+            const y = (touch.clientY - rect.top) * scaleY;
+            
 
             this.buttons.forEach(btn => {
                 if (
@@ -76,7 +79,7 @@ class TouchOverlay {
                     this.keyboard[btn.key] = isStart;
                 }
             });
-            
+
         }
     }
 
