@@ -341,8 +341,12 @@ class World {
     } else if (action === "controls") {
       this.showControlsOverlay = true;
     } else if (action === "back-to-menu") {
-      this.showControlsOverlay = false;
-      this.showOptionsMenu = true;
+      if (this.showControlsOverlay) {
+        this.showControlsOverlay = false;
+        this.showOptionsMenu = true;
+      } else {
+        this.showOptionsMenu = false;
+      }
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
@@ -508,6 +512,8 @@ class World {
     this.drawButton(centerX, 260, 200, 40, "Restart Game", "restart");
     this.drawButton(centerX, 320, 200, 40, "Exit Game", "exit");
     this.drawButton(centerX, 380, 200, 40, "Controls", "controls");
+    this.drawButton(this.canvas.width - 80, 40, 100, 30, "BACK", "back-to-menu");
+
 
     ctx.restore();
   }
