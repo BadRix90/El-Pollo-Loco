@@ -37,6 +37,7 @@ class World {
     this.hoverX = 0;
     this.hoverY = 0;
     this.lyricInterval = null;
+    this.raindrops = this.createRaindrops(120);
 
     this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
@@ -250,6 +251,7 @@ class World {
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "right";
     this.ctx.fillText("ESC for Menu", this.canvas.width - 20, 30);
+    this.drawRain();
 
     let self = this;
     requestAnimationFrame(function () {
@@ -527,6 +529,41 @@ class World {
     ctx.restore();
   }
 
-
+  createRaindrops(count) {
+    const drops = [];
+    for (let i = 0; i < count; i++) {
+      drops.push({
+        x: Math.random() * this.canvas.width,
+        y: Math.random() * this.canvas.height,
+        length: Math.random() * 15 + 10,
+        speed: Math.random() * 5 + 4
+      });
+    }
+    return drops;
+  }
+  
+  drawRain() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(173,216,230,0.3)';
+    ctx.lineWidth = 1.2;
+    ctx.lineCap = 'round';
+  
+    this.raindrops.forEach(drop => {
+      ctx.beginPath();
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x, drop.y + drop.length);
+      ctx.stroke();
+  
+      drop.y += drop.speed;
+      if (drop.y > this.canvas.height) {
+        drop.y = -drop.length;
+        drop.x = Math.random() * this.canvas.width;
+      }
+    });
+  
+    ctx.restore();
+  }
+  
 
 }
