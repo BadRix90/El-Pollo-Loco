@@ -1,5 +1,11 @@
 class TouchOverlay {
+
     constructor(canvas, keyboard) {
+        if (window.innerWidth >= 768) {
+            this.disabled = true;
+            return;
+        }
+
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.buttons = this.createButtons();
@@ -73,6 +79,7 @@ class TouchOverlay {
     }
 
     draw(ctx) {
+        if (this.disabled) return;
         this.buttons.forEach(btn => {
             if (!btn.img.src) {
                 switch (btn.id) {
