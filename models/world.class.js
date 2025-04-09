@@ -23,6 +23,7 @@ class World {
   showOptionsMenu = false;
   showControlsOverlay = false;
   policeCar = null;
+  touchOverlay = null;
 
 
   constructor(canvas, keyboard) {
@@ -31,6 +32,7 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.character.world = this;
+    this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard);
     this.draw();
     this.setWorld();
     this.run();
@@ -59,6 +61,7 @@ class World {
       }
     });
 
+  
     setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
         this.showLyrics = true;
@@ -75,8 +78,8 @@ class World {
         }, 3000);
       }
     }, 100);
-    
-    
+
+
 
     this.introLyrics = [
       "The silence of a tortured heart",
@@ -88,7 +91,7 @@ class World {
     this.lyricIndex = 0;
     this.lyricY = this.canvas.height - 80;
     this.showLyrics = true;
-    
+
 
   }
 
@@ -236,7 +239,7 @@ class World {
     this.addObjectsToMap(this.healItems);
 
 
-    
+
     this.ctx.save();
     this.ctx.font = "32px CyberpunkCraftpixPixel";
     this.ctx.fillStyle = "#ff00ff";
@@ -252,6 +255,7 @@ class World {
     this.ctx.textAlign = "right";
     this.ctx.fillText("ESC for Menu", this.canvas.width - 20, 30);
     this.drawRain();
+    this.touchOverlay.draw(this.ctx);
 
     let self = this;
     requestAnimationFrame(function () {
@@ -379,40 +383,35 @@ class World {
     ctx.save();
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.menuButtons = [];
-  
+
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
-    // Titel anzeigen
+
     ctx.font = "40px CyberpunkCraftpixPixel";
     ctx.fillStyle = "#00fff7";
     ctx.textAlign = "center";
     ctx.fillText("Blade Runner", this.canvas.width / 2, this.introY);
-  
-    // Phase 1: Titel fährt ein
+
     if (this.introY < 180) {
       this.introY += 2;
       ctx.restore();
-      return; // Stop here
+      return;
     }
-  
-    // Phase 2: Lyrics starten, wenn noch nicht gestartet
     if (this.introStep === 0) {
       this.introStep = 1;
       this.showLyrics = true;
       this.lyricIndex = 0;
-  
+
       this.lyricInterval = setInterval(() => {
         this.lyricIndex++;
         if (this.lyricIndex >= this.introLyrics.length) {
           clearInterval(this.lyricInterval);
           this.showLyrics = false;
-          this.introStep = 2; // Jetzt Rest anzeigen
+          this.introStep = 2;
         }
       }, 3000);
     }
-  
-    // Phase 2: Lyrics anzeigen
+
     if (this.showLyrics && this.introLyrics[this.lyricIndex]) {
       ctx.font = "20px CyberpunkCraftpixPixel";
       ctx.fillStyle = "#ffffff";
@@ -422,8 +421,7 @@ class World {
         this.introY + 60
       );
     }
-  
-    // Phase 3: Abspann & Button
+
     if (this.introStep === 2) {
       ctx.font = "20px CyberpunkCraftpixPixel";
       ctx.fillStyle = "#ffffff";
@@ -432,7 +430,7 @@ class World {
         this.canvas.width / 2,
         this.introY + 60
       );
-  
+
       ctx.font = "14px CyberpunkCraftpixPixel";
       ctx.fillText(
         "Music: 'Beast in Black' by Beast in Black",
@@ -444,7 +442,7 @@ class World {
         this.canvas.width / 2,
         this.introY + 110
       );
-  
+
       this.drawButton(
         this.canvas.width / 2,
         this.introY + 150,
@@ -454,10 +452,10 @@ class World {
         "start"
       );
     }
-  
+
     ctx.restore();
   }
-  
+
   drawOptionsMenu() {
     const ctx = this.ctx;
     const centerX = this.canvas.width / 2;
@@ -541,29 +539,29 @@ class World {
     }
     return drops;
   }
-  
+
   drawRain() {
     const ctx = this.ctx;
     ctx.save();
     ctx.strokeStyle = 'rgba(173,216,230,0.3)';
     ctx.lineWidth = 1.2;
     ctx.lineCap = 'round';
-  
+
     this.raindrops.forEach(drop => {
       ctx.beginPath();
       ctx.moveTo(drop.x, drop.y);
       ctx.lineTo(drop.x, drop.y + drop.length);
       ctx.stroke();
-  
+
       drop.y += drop.speed;
       if (drop.y > this.canvas.height) {
         drop.y = -drop.length;
         drop.x = Math.random() * this.canvas.width;
       }
     });
-  
+
     ctx.restore();
   }
-  
+
 
 }
