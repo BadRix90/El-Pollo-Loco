@@ -61,7 +61,29 @@ class World {
       }
     });
 
-  
+    this.canvas.addEventListener("touchstart", (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const scaleX = this.canvas.width / this.canvas.clientWidth;
+      const scaleY = this.canvas.height / this.canvas.clientHeight;
+      const clickX = (touch.clientX - rect.left) * scaleX;
+      const clickY = (touch.clientY - rect.top) * scaleY;
+
+      if (this.menuButtons) {
+        for (const button of this.menuButtons) {
+          if (
+            clickX >= button.x &&
+            clickX <= button.x + button.w &&
+            clickY >= button.y &&
+            clickY <= button.y + button.h
+          ) {
+            this.handleMenuAction(button.action);
+            return;
+          }
+        }
+      }
+    });
+
     setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
         this.showLyrics = true;
@@ -254,16 +276,16 @@ class World {
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "right";
     this.ctx.fillText("Click for Menu", this.canvas.width - 20, 30);
-    
+
     this.menuButtons = this.menuButtons || [];
     this.menuButtons.push({
-      x: this.canvas.width - 140, 
-      y: 15,                      
+      x: this.canvas.width - 140,
+      y: 15,
       w: 120,
       h: 20,
       action: "toggle-menu"
     });
-    
+
     this.drawRain();
     this.touchOverlay.draw(this.ctx);
 
@@ -324,7 +346,7 @@ class World {
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
-    
+
   }
 
   drawHP() {

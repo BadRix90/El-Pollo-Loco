@@ -60,6 +60,7 @@ class TouchOverlay {
     }
 
     handleTouch(e, isStart) {
+        e.preventDefault();
         const rect = this.canvas.getBoundingClientRect();
         for (const touch of e.touches) {
             const x = touch.clientX - rect.left;
@@ -75,6 +76,7 @@ class TouchOverlay {
                     this.keyboard[btn.key] = isStart;
                 }
             });
+            
         }
     }
 
