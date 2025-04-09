@@ -56,7 +56,7 @@ class TouchOverlay {
 
     registerTouchEvents() {
         this.canvas.addEventListener('touchstart', (e) => this.handleTouch(e, true));
-        this.canvas.addEventListener('touchend', (e) => this.handleTouch(e, false));
+        this.canvas.addEventListener('touchend', (e) => this.resetButtons());
     }
 
     handleTouch(e, isStart) {
@@ -77,6 +77,13 @@ class TouchOverlay {
             });
         }
     }
+
+    resetButtons() {
+        this.buttons.forEach(btn => {
+            this.keyboard[btn.key] = false;
+        });
+    }
+
 
     draw(ctx) {
         if (this.disabled) return;

@@ -253,7 +253,17 @@ class World {
     this.ctx.font = "16px CyberpunkCraftpixPixel";
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "right";
-    this.ctx.fillText("ESC for Menu", this.canvas.width - 20, 30);
+    this.ctx.fillText("Click for Menu", this.canvas.width - 20, 30);
+    
+    this.menuButtons = this.menuButtons || [];
+    this.menuButtons.push({
+      x: this.canvas.width - 140, 
+      y: 15,                      
+      w: 120,
+      h: 20,
+      action: "toggle-menu"
+    });
+    
     this.drawRain();
     this.touchOverlay.draw(this.ctx);
 
@@ -311,9 +321,10 @@ class World {
     } else if (action === "back-to-menu") {
       this.showControlsOverlay = false;
       this.showOptionsMenu = true;
+    } else if (action === "toggle-menu") {
+      this.showOptionsMenu = !this.showOptionsMenu;
     }
-
-
+    
   }
 
   drawHP() {
