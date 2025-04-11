@@ -206,7 +206,10 @@ class World {
     this.ctx.font = "16px CyberpunkCraftpixPixel";
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "right";
-    const menuText = window.innerWidth >= 768 ? "ESC for Menu" : "Click for Menu";
+    
+    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+    const menuText = isMobile || window.innerWidth < 768 ? "Click for Menu" : "ESC for Menu";
+
     this.ctx.fillText(menuText, this.canvas.width - 20, 30);
 
     if (menuText === "Click for Menu") {
@@ -265,14 +268,14 @@ class World {
       }
 
       if (introMusic) {
-        introMusic.pause();                
-        introMusic.currentTime = 32;       
-        introMusic.volume = 0.02;          
+        introMusic.pause();
+        introMusic.currentTime = 32;
+        introMusic.volume = 0.02;
         setTimeout(() => {
           introMusic.play();
         }, 100);
       }
-      
+
 
       this.level = level1;
       this.character = new Character();
