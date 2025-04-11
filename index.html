@@ -34,13 +34,8 @@
 </head>
 
 <body onload="init()">
-  <div style="position: relative; display: inline-block;">
-    <img src="img/GUI/5 Logo/Logo3.png" alt="Game Logo" id="game-logo">
-    <h1 id="title" class="glitch-title">Power of the Beast</h1>
-  </div>
 
   <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop></audio>
-
 
   <canvas id="canvas" width="720" height="480"></canvas>
 
@@ -86,46 +81,6 @@
 </body>
 
 <script>
-  const title = "Power of the Beast";
-  const colors = [
-    "#00fff7", "#ff00f7", "#faff00", "#00ff00", "#ff0066", "#00ccff",
-    "#ff9900", "#cc00ff", "#ff0000", "#33ffcc", "#ff33cc", "#6600ff"
-  ];
-
-  const glitchTitle = [...title].map((char, i) => {
-    if (char === " ") return " ";
-    return `<span class="glitch-letter" style="color: ${colors[i % colors.length]}">${char}</span>`;
-  }).join("");
-
-  document.getElementById("title").innerHTML = glitchTitle;
-
-  setInterval(() => {
-    const letters = document.querySelectorAll('.glitch-letter');
-    const randIndex = Math.floor(Math.random() * letters.length);
-    const el = letters[randIndex];
-
-    el.classList.add('glitch-off');
-    setTimeout(() => el.classList.remove('glitch-off'), 100 + Math.random() * 200);
-  }, 500);
-
-
-  const speeds = [0.1, 0.2, 0.4, 0.6, 0.8];
-  const layers = speeds.map((_, i) => document.getElementById(`layer${i + 1}`));
-  let positions = [0, 0, 0, 0, 0];
-
-  function animateParallax() {
-    positions = positions.map((pos, i) => {
-      pos -= speeds[i];
-      if (pos <= -window.innerWidth) pos = 0;
-      layers[i].style.transform = `translateX(${pos}px)`;
-      return pos;
-    });
-
-    requestAnimationFrame(animateParallax);
-  }
-
-  animateParallax();
-
   const music = document.getElementById('background-music');
   function toggleMusic() {
     if (music.paused) {
@@ -141,7 +96,5 @@
   }
 
 </script>
-
-
 
 </html>
