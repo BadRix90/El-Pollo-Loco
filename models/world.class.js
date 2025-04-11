@@ -66,11 +66,11 @@ class World {
 
 
     this.introLyrics = [
-      "The silence of a tortured heart",
-      "Is telling you to start",
-      "To fight the monsters that hurt you in the dark",
-      "They fear the fire and you're the spark",
-      "Power of the Beast is all you need"
+      "Neon fire cuts through night",
+      "Broken code begins to fight",
+      "Steel and soul now intertwined",
+      "No more chains, I draw the line",
+      "The beast awakens — I am power"
     ];
     this.lyricIndex = 0;
     this.lyricY = this.canvas.height - 80;
@@ -136,6 +136,21 @@ class World {
   }
 
   draw() {
+    const introMusic = document.getElementById('intro-music');
+    if (this.showIntro || (this.showControlsOverlay && this.fromIntroToControls)) {
+
+      if (introMusic && introMusic.paused) {
+        introMusic.volume = 0.01;
+        introMusic.currentTime = 32;
+        introMusic.play();
+      }
+    } else {
+      if (introMusic && !introMusic.paused) {
+        introMusic.pause();
+        introMusic.currentTime = 0;
+      }
+    }
+
     if (this.showIntro) {
       this.ui.drawIntroScreen();
       requestAnimationFrame(() => this.draw());
@@ -212,26 +227,50 @@ class World {
   }
 
   handleMenuAction(action) {
+    const bgm = document.getElementById('background-music');
+    const introMusic = document.getElementById('intro-music');
+
     if (action === "start") {
+      if (introMusic) {
+        introMusic.pause();
+        introMusic.currentTime = 0;
+      }
+
       this.showIntro = false;
       this.showMainMenu = false;
       toggleMusic();
       this.policeCar = new PoliceCar(this);
+
     } else if (action === "music" || action === "sound-toggle") {
       toggleMusic();
+
     } else if (action === "restart") {
+      if (introMusic) {
+        introMusic.pause();
+        introMusic.currentTime = 0;
+      }
       this.restartGame();
+
     } else if (action === "exit") {
       clearInterval(this.lyricSetupInterval);
       clearInterval(this.lyricInterval);
       this.lyricInterval = null;
       this.lyricSetupInterval = null;
 
-      const bgm = document.getElementById('background-music');
       if (bgm) {
         bgm.pause();
         bgm.currentTime = 0;
       }
+
+      if (introMusic) {
+        introMusic.pause();                
+        introMusic.currentTime = 32;       
+        introMusic.volume = 0.02;          
+        setTimeout(() => {
+          introMusic.play();
+        }, 100);
+      }
+      
 
       this.level = level1;
       this.character = new Character();
@@ -252,6 +291,7 @@ class World {
       this.showOptionsMenu = false;
 
       this.setWorld();
+
     } else if (action === "controls") {
       if (this.showIntro) {
         this.fromIntroToControls = true;
@@ -273,6 +313,7 @@ class World {
           this.showOptionsMenu = true;
         }
       }
+
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }

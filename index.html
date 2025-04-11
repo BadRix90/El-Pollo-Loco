@@ -7,7 +7,7 @@
   <link rel="icon" href="img/cyberpunk-characters-pixel-art/icons/glitch effect/without background/8.png">
 
   <link rel="stylesheet" href="style.css">
-  <title>Blade Runner</title>
+  <title>Power of the Beast</title>
   <script src="models/drawable-object.class.js"></script>
   <script src="models/movable-object.class.js"></script>
   <script src="models/enemy.class.js"></script>
@@ -36,8 +36,10 @@
 <body onload="init()">
   <div style="position: relative; display: inline-block;">
     <img src="img/GUI/5 Logo/Logo3.png" alt="Game Logo" id="game-logo">
-    <h1 id="title" class="glitch-title">Blade Runner</h1>
+    <h1 id="title" class="glitch-title">Power of the Beast</h1>
   </div>
+
+  <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop></audio>
 
 
   <canvas id="canvas" width="720" height="480"></canvas>
@@ -84,7 +86,7 @@
 </body>
 
 <script>
-  const title = "Blade Runner";
+  const title = "Power of the Beast";
   const colors = [
     "#00fff7", "#ff00f7", "#faff00", "#00ff00", "#ff0066", "#00ccff",
     "#ff9900", "#cc00ff", "#ff0000", "#33ffcc", "#ff33cc", "#6600ff"

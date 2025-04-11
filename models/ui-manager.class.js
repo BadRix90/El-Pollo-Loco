@@ -40,7 +40,7 @@ class UIManager {
         ctx.font = "40px CyberpunkCraftpixPixel";
         ctx.fillStyle = "#00fff7";
         ctx.textAlign = "center";
-        ctx.fillText("Blade Runner", this.canvas.width / 2, this.world.introY);
+        ctx.fillText("Power of the Beast", this.canvas.width / 2, this.world.introY);
 
         if (this.world.introY < 180 && !this.world.showStartButton) {
             this.world.introY += 2;

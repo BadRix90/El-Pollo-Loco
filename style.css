@@ -56,18 +56,19 @@ canvas {
 
 #title {
   position: absolute;
-  left: 50%;
+  left: 51%;
   width: 375px;
   transform: translateX(-50%);
   z-index: 2;
   color: white;
-  font-size: clamp(20px, 7vw, 32px);
+  font-size: clamp(15px, 7vw, 27px);
   text-align: center;
   pointer-events: none;
   font-family: 'CyberpunkCraftpixPixel', monospace;
   text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
   letter-spacing: 2px;
   display: inline-block;
+  margin-top: 26px;
 }
 
 
