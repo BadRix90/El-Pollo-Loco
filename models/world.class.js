@@ -32,6 +32,7 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.character.world = this;
+    this.ui = new UIManager(this);
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard);
     this.draw();
     this.setWorld();
@@ -40,6 +41,7 @@ class World {
     this.hoverY = 0;
     this.lyricInterval = null;
     this.raindrops = this.createRaindrops(120);
+
 
     this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
@@ -220,24 +222,23 @@ class World {
 
   draw() {
     if (this.showIntro) {
-      this.drawIntroScreen();
+      this.ui.drawIntroScreen();
       requestAnimationFrame(() => this.draw());
       return;
     }
-
+    
     if (this.showControlsOverlay) {
-      this.drawControlsOverlay();
+      this.ui.drawControlsOverlay();
       requestAnimationFrame(() => this.draw());
       return;
     }
-
+    
     if (this.showOptionsMenu) {
-      this.drawOptionsMenu();
+      this.ui.drawOptionsMenu();
       requestAnimationFrame(() => this.draw());
       return;
     }
-
-
+    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -295,31 +296,6 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
-
-
-  }
-
-  drawButton(x, y, w, h, text, action) {
-    const ctx = this.ctx;
-    const isHovered =
-      this.hoverX >= x - w / 2 &&
-      this.hoverX <= x + w / 2 &&
-      this.hoverY >= y - h / 2 &&
-      this.hoverY <= y + h / 2;
-
-    ctx.fillStyle = "thistle";
-    ctx.fillRect(x - w / 2, y - h / 2, w, h);
-
-    ctx.strokeStyle = "#000";
-    ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-
-    ctx.fillStyle = isHovered ? "#444" : "#000";
-    ctx.font = "16px CyberpunkCraftpixPixel";
-    ctx.textAlign = "center";
-    ctx.fillText(text, x, y + 5);
-
-    this.menuButtons = this.menuButtons || [];
-    this.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action });
   }
 
   handleMenuAction(action) {
@@ -417,108 +393,9 @@ class World {
     }, 16);
   }
 
-  drawIntroScreen() {
-    const ctx = this.ctx;
-    ctx.save();
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.menuButtons = [];
-
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    ctx.font = "40px CyberpunkCraftpixPixel";
-    ctx.fillStyle = "#00fff7";
-    ctx.textAlign = "center";
-    ctx.fillText("Blade Runner", this.canvas.width / 2, this.introY);
-
-    if (this.introY < 180) {
-      this.introY += 2;
-      ctx.restore();
-      return;
-    }
-    if (this.introStep === 0) {
-      this.introStep = 1;
-      this.showLyrics = true;
-      this.lyricIndex = 0;
-
-      this.lyricInterval = setInterval(() => {
-        this.lyricIndex++;
-        if (this.lyricIndex >= this.introLyrics.length) {
-          clearInterval(this.lyricInterval);
-          this.showLyrics = false;
-          this.introStep = 2;
-        }
-      }, 3000);
-    }
-
-    if (this.showLyrics && this.introLyrics[this.lyricIndex]) {
-      ctx.font = "20px CyberpunkCraftpixPixel";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillText(
-        this.introLyrics[this.lyricIndex],
-        this.canvas.width / 2,
-        this.introY + 60
-      );
-    }
-
-    if (this.introStep === 2) {
-      ctx.font = "20px CyberpunkCraftpixPixel";
-      ctx.fillStyle = "#ffffff";
-      ctx.fillText(
-        "Created by Kay Dietrich",
-        this.canvas.width / 2,
-        this.introY + 60
-      );
-
-      ctx.font = "14px CyberpunkCraftpixPixel";
-      ctx.fillText(
-        "Music: 'Beast in Black' by Beast in Black",
-        this.canvas.width / 2,
-        this.introY + 90
-      );
-      ctx.fillText(
-        "For private and educational use only",
-        this.canvas.width / 2,
-        this.introY + 110
-      );
-
-      this.drawButton(
-        this.canvas.width / 2,
-        this.introY + 150,
-        160,
-        40,
-        "START",
-        "start"
-      );
-    }
-
-    ctx.restore();
-  }
-
-  drawOptionsMenu() {
-    const ctx = this.ctx;
-    const centerX = this.canvas.width / 2;
-
-    ctx.save();
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.menuButtons = [];
-
-    ctx.font = "32px CyberpunkCraftpixPixel";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.fillText("MENU", centerX, 120);
-
-    this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle");
-    this.drawButton(centerX, 260, 200, 40, "Restart Game", "restart");
-    this.drawButton(centerX, 320, 200, 40, "Exit Game", "exit");
-    this.drawButton(centerX, 380, 200, 40, "Controls", "controls");
-    this.drawButton(this.canvas.width - 80, 40, 100, 30, "BACK", "back-to-menu");
 
 
-    ctx.restore();
-  }
+
 
   restartGame() {
     this.level = level1;
@@ -535,38 +412,7 @@ class World {
     this.showOptionsMenu = false;
   }
 
-  drawControlsOverlay() {
-    const ctx = this.ctx;
-    const centerX = this.canvas.width / 2;
 
-    this.menuButtons = [];
-
-    ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,1)";
-    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    ctx.font = "32px CyberpunkCraftpixPixel";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.fillText("CONTROLS", centerX, 100);
-
-    const lines = [
-      "A - Left",
-      "D - Right",
-      "SPACE - Jump",
-      "Q - Shoot",
-      "ESC - Menu"
-    ];
-
-    ctx.font = "18px CyberpunkCraftpixPixel";
-    lines.forEach((line, i) => {
-      ctx.fillText(line, centerX, 160 + i * 30);
-    });
-
-    this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu");
-
-    ctx.restore();
-  }
 
   createRaindrops(count) {
     const drops = [];
