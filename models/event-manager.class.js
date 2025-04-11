@@ -32,26 +32,29 @@ class EventManager {
     registerTouchEvents() {
       this.canvas.addEventListener("touchstart", (e) => {
         const rect = this.canvas.getBoundingClientRect();
-        const touch = e.touches[0];
         const scaleX = this.canvas.width / this.canvas.clientWidth;
         const scaleY = this.canvas.height / this.canvas.clientHeight;
-        const clickX = (touch.clientX - rect.left) * scaleX;
-        const clickY = (touch.clientY - rect.top) * scaleY;
-  
-        if (this.world.menuButtons) {
-          for (const button of this.world.menuButtons) {
-            if (
-              clickX >= button.x &&
-              clickX <= button.x + button.w &&
-              clickY >= button.y &&
-              clickY <= button.y + button.h
-            ) {
-              this.world.handleMenuAction(button.action);
-              return;
+    
+        for (const touch of e.changedTouches) {
+          const clickX = (touch.clientX - rect.left) * scaleX;
+          const clickY = (touch.clientY - rect.top) * scaleY;
+    
+          if (this.world.menuButtons) {
+            for (const button of this.world.menuButtons) {
+              if (
+                clickX >= button.x &&
+                clickX <= button.x + button.w &&
+                clickY >= button.y &&
+                clickY <= button.y + button.h
+              ) {
+                this.world.handleMenuAction(button.action);
+                return;
+              }
             }
           }
         }
       });
     }
+    
   }
   

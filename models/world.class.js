@@ -136,6 +136,8 @@ class World {
   }
 
   draw() {
+    this.menuButtons = [];
+
     const introMusic = document.getElementById('intro-music');
     if (this.showIntro || (this.showControlsOverlay && this.fromIntroToControls)) {
 
@@ -207,15 +209,15 @@ class World {
     const menuText = window.innerWidth >= 768 ? "ESC for Menu" : "Click for Menu";
     this.ctx.fillText(menuText, this.canvas.width - 20, 30);
 
-
-    this.menuButtons = this.menuButtons || [];
-    this.menuButtons.push({
-      x: this.canvas.width - 140,
-      y: 15,
-      w: 120,
-      h: 20,
-      action: "toggle-menu"
-    });
+    if (menuText === "Click for Menu") {
+      this.menuButtons.push({
+        x: this.canvas.width - 140,
+        y: 15,
+        w: 120,
+        h: 20,
+        action: "toggle-menu"
+      });
+    }
 
     this.weather.drawRain();
     this.touchOverlay.draw(this.ctx);
