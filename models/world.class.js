@@ -43,6 +43,7 @@ class World {
     this.hoverX = 0;
     this.hoverY = 0;
     this.lyricInterval = null;
+    this.fromIntroToControls = false;
 
     this.lyricSetupInterval = setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
@@ -250,13 +251,25 @@ class World {
 
       this.setWorld();
     } else if (action === "controls") {
+      if (this.showIntro) {
+        this.fromIntroToControls = true;
+        this.showIntro = false;
+      } else {
+        this.fromIntroToControls = false;
+      }
+
       this.showControlsOverlay = true;
+
     } else if (action === "back-to-menu") {
       if (this.showControlsOverlay) {
         this.showControlsOverlay = false;
-        this.showOptionsMenu = true;
-      } else {
-        this.showOptionsMenu = false;
+        if (this.fromIntroToControls) {
+          this.showIntro = true;
+          this.showStartButton = true;
+          this.introStep = 2;
+        } else {
+          this.showOptionsMenu = true;
+        }
       }
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;

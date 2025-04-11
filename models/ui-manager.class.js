@@ -105,6 +105,16 @@ class UIManager {
                 "START",
                 "start"
             );
+            
+            this.drawButton(
+                this.canvas.width / 2,
+                this.world.introY + 200,
+                160,
+                40,
+                "CONTROLS",
+                "controls"
+              );
+              
         }
 
         ctx.restore();
