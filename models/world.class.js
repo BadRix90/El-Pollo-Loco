@@ -34,6 +34,7 @@ class World {
     this.character.world = this;
     this.events = new EventManager(this);
     this.ui = new UIManager(this);
+    this.weather = new WeatherSystem(this.canvas);
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard);
     this.draw();
     this.setWorld();
@@ -41,8 +42,7 @@ class World {
     this.hoverX = 0;
     this.hoverY = 0;
     this.lyricInterval = null;
-    this.raindrops = this.createRaindrops(120);
-
+  
     setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
         this.showLyrics = true;
@@ -242,7 +242,7 @@ class World {
       action: "toggle-menu"
     });
 
-    this.drawRain();
+    this.weather.drawRain();
     this.touchOverlay.draw(this.ctx);
 
     let self = this;
@@ -364,44 +364,5 @@ class World {
     this.setWorld();
     this.showOptionsMenu = false;
   }
-
-
-
-  createRaindrops(count) {
-    const drops = [];
-    for (let i = 0; i < count; i++) {
-      drops.push({
-        x: Math.random() * this.canvas.width,
-        y: Math.random() * this.canvas.height,
-        length: Math.random() * 15 + 10,
-        speed: Math.random() * 5 + 4
-      });
-    }
-    return drops;
-  }
-
-  drawRain() {
-    const ctx = this.ctx;
-    ctx.save();
-    ctx.strokeStyle = 'rgba(173,216,230,0.3)';
-    ctx.lineWidth = 1.2;
-    ctx.lineCap = 'round';
-
-    this.raindrops.forEach(drop => {
-      ctx.beginPath();
-      ctx.moveTo(drop.x, drop.y);
-      ctx.lineTo(drop.x, drop.y + drop.length);
-      ctx.stroke();
-
-      drop.y += drop.speed;
-      if (drop.y > this.canvas.height) {
-        drop.y = -drop.length;
-        drop.x = Math.random() * this.canvas.width;
-      }
-    });
-
-    ctx.restore();
-  }
-
 
 }
