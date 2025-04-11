@@ -42,7 +42,7 @@ class UIManager {
         ctx.textAlign = "center";
         ctx.fillText("Blade Runner", this.canvas.width / 2, this.world.introY);
 
-        if (this.world.introY < 180) {
+        if (this.world.introY < 180 && !this.world.showStartButton) {
             this.world.introY += 2;
             ctx.restore();
             return;

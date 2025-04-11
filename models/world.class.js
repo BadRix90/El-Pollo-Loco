@@ -43,8 +43,8 @@ class World {
     this.hoverX = 0;
     this.hoverY = 0;
     this.lyricInterval = null;
-  
-    setInterval(() => {
+
+    this.lyricSetupInterval = setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
         this.showLyrics = true;
         this.lyricIndex = 0;
@@ -60,6 +60,7 @@ class World {
         }, 3000);
       }
     }, 100);
+
 
     this.introLyrics = [
       "The silence of a tortured heart",
@@ -137,19 +138,19 @@ class World {
       requestAnimationFrame(() => this.draw());
       return;
     }
-    
+
     if (this.showControlsOverlay) {
       this.ui.drawControlsOverlay();
       requestAnimationFrame(() => this.draw());
       return;
     }
-    
+
     if (this.showOptionsMenu) {
       this.ui.drawOptionsMenu();
       requestAnimationFrame(() => this.draw());
       return;
     }
-    
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -171,8 +172,6 @@ class World {
     this.addObjectsToMap(this.enemyBullets);
     this.addObjectsToMap(this.activeBombs);
     this.addObjectsToMap(this.healItems);
-
-
 
     this.ctx.save();
     this.ctx.font = "32px CyberpunkCraftpixPixel";
@@ -220,13 +219,30 @@ class World {
     } else if (action === "restart") {
       this.restartGame();
     } else if (action === "exit") {
-      this.showIntro = true;
-      this.introY = -100;
-      this.introStep = 0;
-      this.showStartButton = false;
-      this.showOptionsMenu = false;
+      clearInterval(this.lyricSetupInterval);
+      clearInterval(this.lyricInterval);
+      this.lyricInterval = null;
+      this.lyricSetupInterval = null;
+
+      this.level = level1;
       this.character = new Character();
       this.character.world = this;
+      this.statusBar = new StatusBar();
+      this.throwableObjects = [];
+      this.enemyBullets = [];
+      this.activeBombs = [];
+      this.playerBullets = [];
+      this.healItems = [];
+      this.camera_x = 0;
+
+      this.introY = 180;             
+      this.introStep = 2;             
+      this.showLyrics = false;
+      this.showIntro = true;
+      this.showStartButton = true;   
+      this.showOptionsMenu = false;
+
+      this.setWorld();
     } else if (action === "controls") {
       this.showControlsOverlay = true;
     } else if (action === "back-to-menu") {
@@ -239,7 +255,6 @@ class World {
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
-
   }
 
   drawHP() {
@@ -305,6 +320,11 @@ class World {
   }
 
   restartGame() {
+    clearInterval(this.lyricSetupInterval);
+    clearInterval(this.lyricInterval);
+    this.lyricInterval = null;
+    this.lyricSetupInterval = null;
+
     this.level = level1;
     this.character = new Character();
     this.character.world = this;
@@ -315,9 +335,14 @@ class World {
     this.playerBullets = [];
     this.healItems = [];
     this.camera_x = 0;
-    this.setWorld();
+    this.introY = -100;
+    this.introStep = 1;
+    this.showLyrics = false;
+    this.showIntro = false;
     this.showOptionsMenu = false;
-    this.character.energy = 0;
+
+    this.setWorld();
   }
+
 
 }
