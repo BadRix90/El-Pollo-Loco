@@ -224,6 +224,12 @@ class World {
       this.lyricInterval = null;
       this.lyricSetupInterval = null;
 
+      const bgm = document.getElementById('background-music');
+      if (bgm) {
+        bgm.pause();
+        bgm.currentTime = 0;
+      }
+
       this.level = level1;
       this.character = new Character();
       this.character.world = this;
@@ -235,11 +241,11 @@ class World {
       this.healItems = [];
       this.camera_x = 0;
 
-      this.introY = 180;             
-      this.introStep = 2;             
+      this.introY = 180;
+      this.introStep = 2;
       this.showLyrics = false;
       this.showIntro = true;
-      this.showStartButton = true;   
+      this.showStartButton = true;
       this.showOptionsMenu = false;
 
       this.setWorld();
@@ -335,14 +341,23 @@ class World {
     this.playerBullets = [];
     this.healItems = [];
     this.camera_x = 0;
-    this.introY = -100;
-    this.introStep = 1;
-    this.showLyrics = false;
+    this.policeCar = new PoliceCar(this);
     this.showIntro = false;
+    this.showMainMenu = false;
     this.showOptionsMenu = false;
+    this.showStartButton = false;
+    this.showLyrics = false;
+    this.introStep = 1;
+    this.introY = -100;
+
+    const bgm = document.getElementById('background-music');
+    if (bgm) {
+      bgm.pause();
+      bgm.currentTime = 0;
+      bgm.play();
+    }
 
     this.setWorld();
   }
-
 
 }
