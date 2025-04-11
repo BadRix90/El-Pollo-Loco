@@ -35,6 +35,7 @@ class World {
     this.events = new EventManager(this);
     this.ui = new UIManager(this);
     this.weather = new WeatherSystem(this.canvas);
+    this.bullets = new BulletManager(this);
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard);
     this.draw();
     this.setWorld();
@@ -95,10 +96,9 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkBulletHits();
-      this.removeOffscreenBullets();
+      this.bullets.checkBulletHits();
+      this.bullets.removeOffscreenBullets();
       this.checkEndbossAttack();
-      this.checkCollisions();
     }, 100);
   }
 
@@ -127,49 +127,6 @@ class World {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
       }
-    }
-  }
-
-  checkBulletHits() {
-    this.playerBullets.forEach((bullet) => {
-      if (!bullet.markedForDeletion) {
-        this.level.enemies.forEach((enemy) => {
-          if (bullet.isColliding(enemy)) {
-            enemy.hit(50);
-            bullet.markedForDeletion = true;
-          }
-        });
-
-        if (this.level.endboss && bullet.isColliding(this.level.endboss)) {
-          this.level.endboss.hit(30);
-          bullet.markedForDeletion = true;
-        }
-      }
-    });
-
-    this.enemyBullets.forEach((bullet) => {
-      if (!bullet.markedForDeletion && bullet.isColliding(this.character)) {
-        const damage = 10;
-        this.character.hit(damage);
-        this.statusBar.setPercentage(this.character.energy);
-        bullet.markedForDeletion = true;
-      }
-    });
-
-    this.playerBullets = this.playerBullets.filter((b) => !b.markedForDeletion);
-    this.enemyBullets = this.enemyBullets.filter((b) => !b.markedForDeletion);
-  }
-
-  removeOffscreenBullets() {
-    this.playerBullets = this.playerBullets.filter((b) => !b.markedForDeletion);
-  }
-
-  spawnBullet(x, y, direction, owner, bulletType) {
-    const bullet = new Bullet(x, y, direction, bulletType, owner);
-    if (owner === this.character) {
-      this.playerBullets.push(bullet);
-    } else {
-      this.enemyBullets.push(bullet);
     }
   }
 

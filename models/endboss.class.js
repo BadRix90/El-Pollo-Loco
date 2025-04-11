@@ -91,7 +91,7 @@ class Endboss extends MovableObject {
         const direction = this.world.character.x < this.x ? -1 : 1;
         const bulletX = this.x + (direction === 1 ? this.width - 40 : 30);
         const bulletY = this.y + this.height - 100;
-        this.world.spawnBullet(bulletX, bulletY, direction, this, 1);
+        this.world.bullets.spawnBullet(bulletX, bulletY, direction, this, 1);
       }
   
       if (i >= this.IMAGES_ATTACK.length) {

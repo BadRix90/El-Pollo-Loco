@@ -198,7 +198,7 @@ class Character extends MovableObject {
         const bulletY = this.y + this.height / 2 - 5;
         const direction = this.otherDirection ? -1 : 1;
 
-        this.world.spawnBullet(bulletX, bulletY, direction, this, 0);
+        this.world.bullets.spawnBullet(bulletX, bulletY, direction, this, 0);
         this.laserSound.currentTime = 0;
         this.laserSound.play();
 
@@ -208,6 +208,4 @@ class Character extends MovableObject {
       }
     }, 50);
   }
-
-
 }

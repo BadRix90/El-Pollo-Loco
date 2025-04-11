@@ -19,7 +19,7 @@ class Bullet extends MovableObject {
 
   constructor(x, y, direction, bulletType, owner) {
     super().loadImage(this.IMAGES_BULLETS[bulletType]);
-    console.log("Lade Bild von Pfad:", this.IMAGES_BULLETS[bulletType]);
+    console.log(this.IMAGES_BULLETS[bulletType]);
     this.bulletType = bulletType;
     this.loadImages(this.IMAGES_BULLETS);
     this.loadImages(this.IMAGES_SHOOT_EFFECT);
@@ -57,5 +57,56 @@ class Bullet extends MovableObject {
       this.playAnimation([this.IMAGES_BULLETS[this.bulletType]]);
     }, 50);
 
+  }
+}
+
+class BulletManager {
+  constructor(world) {
+    this.world = world;
+  }
+
+  spawnBullet(x, y, direction, owner, bulletType) {
+    const bullet = new Bullet(x, y, direction, bulletType, owner);
+    if (owner === this.world.character) {
+      this.world.playerBullets.push(bullet);
+    } else {
+      this.world.enemyBullets.push(bullet);
+    }
+  }
+
+  checkBulletHits() {
+    const world = this.world;
+
+    world.playerBullets.forEach((bullet) => {
+      if (!bullet.markedForDeletion) {
+        world.level.enemies.forEach((enemy) => {
+          if (bullet.isColliding(enemy)) {
+            enemy.hit(50);
+            bullet.markedForDeletion = true;
+          }
+        });
+
+        if (world.level.endboss && bullet.isColliding(world.level.endboss)) {
+          world.level.endboss.hit(30);
+          bullet.markedForDeletion = true;
+        }
+      }
+    });
+
+    world.enemyBullets.forEach((bullet) => {
+      if (!bullet.markedForDeletion && bullet.isColliding(world.character)) {
+        const damage = 10;
+        world.character.hit(damage);
+        world.statusBar.setPercentage(world.character.energy);
+        bullet.markedForDeletion = true;
+      }
+    });
+
+    world.playerBullets = world.playerBullets.filter(b => !b.markedForDeletion);
+    world.enemyBullets = world.enemyBullets.filter(b => !b.markedForDeletion);
+  }
+
+  removeOffscreenBullets() {
+    this.world.playerBullets = this.world.playerBullets.filter(b => !b.markedForDeletion);
   }
 }
