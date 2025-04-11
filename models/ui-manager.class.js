@@ -87,7 +87,7 @@ class UIManager {
 
             ctx.font = "14px CyberpunkCraftpixPixel";
             ctx.fillText(
-                "Music: 'Beast in Black' by Beast in Black",
+                "Music: 'Power of the Beast' by Beast in Black",
                 this.canvas.width / 2,
                 this.world.introY + 90
             );
@@ -105,7 +105,7 @@ class UIManager {
                 "START",
                 "start"
             );
-            
+
             this.drawButton(
                 this.canvas.width / 2,
                 this.world.introY + 200,

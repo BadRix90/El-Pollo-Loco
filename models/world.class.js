@@ -44,6 +44,8 @@ class World {
     this.hoverY = 0;
     this.lyricInterval = null;
     this.fromIntroToControls = false;
+    this.lyricSpeed = 1500;
+
 
     this.lyricSetupInterval = setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
@@ -58,7 +60,7 @@ class World {
             this.introStep = 1;
             this.showStartButton = true;
           }
-        }, 3000);
+        }, this.lyricSpeed);
       }
     }, 100);
 
