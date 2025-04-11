@@ -99,6 +99,7 @@ class World {
       this.bullets.checkBulletHits();
       this.bullets.removeOffscreenBullets();
       this.checkEndbossAttack();
+      this.throwableObjects = this.throwableObjects.filter(o => !o.markedForDeletion);
     }, 100);
   }
 
@@ -303,10 +304,6 @@ class World {
     }, 16);
   }
 
-
-
-
-
   restartGame() {
     this.level = level1;
     this.character = new Character();
@@ -320,6 +317,7 @@ class World {
     this.camera_x = 0;
     this.setWorld();
     this.showOptionsMenu = false;
+    this.character.energy = 0;
   }
 
 }

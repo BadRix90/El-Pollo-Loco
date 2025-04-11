@@ -69,6 +69,7 @@ class BulletManager {
     const bullet = new Bullet(x, y, direction, bulletType, owner);
     if (owner === this.world.character) {
       this.world.playerBullets.push(bullet);
+      this.world.throwableObjects.push(new ShootEffect(x, y));
     } else {
       this.world.enemyBullets.push(bullet);
     }
@@ -108,5 +109,29 @@ class BulletManager {
 
   removeOffscreenBullets() {
     this.world.playerBullets = this.world.playerBullets.filter(b => !b.markedForDeletion);
+  }
+}
+
+
+class ShootEffect extends MovableObject {
+  constructor(x, y) {
+    super();
+    this.x = x;
+    this.y = y;
+    this.width = 40;
+    this.height = 40;
+    this.lifeTime = 200;
+
+    this.IMAGES = [
+      "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/1_1.png",
+      "img/cyberpunk-characters-pixel-art/guns/4 Shoot_effects/1_2.png"
+    ];
+
+    this.loadImages(this.IMAGES);
+    this.playAnimation(this.IMAGES);
+
+    setTimeout(() => {
+      this.markedForDeletion = true;
+    }, this.lifeTime);
   }
 }
