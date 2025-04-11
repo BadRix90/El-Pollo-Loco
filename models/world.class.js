@@ -32,6 +32,7 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.character.world = this;
+    this.events = new EventManager(this);
     this.ui = new UIManager(this);
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard);
     this.draw();
@@ -41,50 +42,6 @@ class World {
     this.hoverY = 0;
     this.lyricInterval = null;
     this.raindrops = this.createRaindrops(120);
-
-
-    this.canvas.addEventListener("click", (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-
-      if (this.menuButtons) {
-        for (const button of this.menuButtons) {
-          if (
-            clickX >= button.x &&
-            clickX <= button.x + button.w &&
-            clickY >= button.y &&
-            clickY <= button.y + button.h
-          ) {
-            this.handleMenuAction(button.action);
-            return;
-          }
-        }
-      }
-    });
-
-    this.canvas.addEventListener("touchstart", (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const touch = e.touches[0];
-      const scaleX = this.canvas.width / this.canvas.clientWidth;
-      const scaleY = this.canvas.height / this.canvas.clientHeight;
-      const clickX = (touch.clientX - rect.left) * scaleX;
-      const clickY = (touch.clientY - rect.top) * scaleY;
-
-      if (this.menuButtons) {
-        for (const button of this.menuButtons) {
-          if (
-            clickX >= button.x &&
-            clickX <= button.x + button.w &&
-            clickY >= button.y &&
-            clickY <= button.y + button.h
-          ) {
-            this.handleMenuAction(button.action);
-            return;
-          }
-        }
-      }
-    });
 
     setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
@@ -103,8 +60,6 @@ class World {
       }
     }, 100);
 
-
-
     this.introLyrics = [
       "The silence of a tortured heart",
       "Is telling you to start",
@@ -115,8 +70,6 @@ class World {
     this.lyricIndex = 0;
     this.lyricY = this.canvas.height - 80;
     this.showLyrics = true;
-
-
   }
 
   setWorld() {
