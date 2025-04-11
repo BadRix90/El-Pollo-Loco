@@ -90,7 +90,9 @@ class TouchOverlay {
     }
 
     draw(ctx) {
+        this.disabled = window.innerWidth >= 768;
         if (this.disabled) return;
+
         this.buttons.forEach(btn => {
             if (!btn.img.src) {
                 switch (btn.id) {
