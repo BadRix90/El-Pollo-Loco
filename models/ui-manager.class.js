@@ -166,6 +166,8 @@ class UIManager {
 
     this.world.character = new Character();
     this.world.character.world = this.world;
+    this.world.character.introRunning = true;
+
     this.world.statusBar = new StatusBar();
     this.world.camera_x = 0;
     this.world.level = level1;
