@@ -26,6 +26,7 @@ class World {
   touchOverlay = null;
   endbossDefeatedAt = null;
   showReturnTimer = false;
+  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -46,7 +47,11 @@ class World {
     this.lyricInterval = null;
     this.fromIntroToControls = false;
     this.lyricSpeed = 1500;
-
+    this.gameOverHandled = false;
+    this.showGameOver = false;
+    this.gameOverY = -50;
+    this.gameOverHandled = false;
+    
 
     this.lyricSetupInterval = setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
@@ -227,6 +232,19 @@ class World {
       self.draw();
     });
 
+    if (this.showGameOver) {
+      if (this.gameOverY < this.canvas.height / 2) {
+        this.gameOverY += 5;
+      }
+    
+      this.ctx.save();
+      this.ctx.font = "48px CyberpunkCraftpixPixel";
+      this.ctx.fillStyle = "#ff0066";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
+      this.ctx.restore();
+    }
+    
 
   }
 

@@ -155,19 +155,32 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isShooting || this.isDead()) return;
+      if (this.introRunning) return;
+
+      if (this.isDead()) {
+        if (!this.deadPlayed) this.playAnimation(this.IMAGES_DEAD);
+        this.deadPlayed = true;
+
+        if (!this.world.gameOverHandled) {
+          this.world.showGameOver = true;
+          this.world.gameOverHandled = true;
+
+          setTimeout(() => {
+            stopGame();
+          }, 2000);
+        }
+
+        return;
+      }
+
+      if (this.isShooting) return;
 
       const now = Date.now();
       if (now - this.lastShotTime < this.shootCooldown) return;
 
       this.lastShotTime = now;
 
-      if (this.introRunning) return;
-
-      if (this.isDead()) {
-        if (!this.deadPlayed) this.playAnimation(this.IMAGES_DEAD);
-        this.deadPlayed = true;
-      } else if (this.isHurt()) {
+      if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
@@ -178,8 +191,8 @@ class Character extends MovableObject {
           this.playAnimation(this.IMAGES_IDLE);
         }
       }
-
     }, 100);
+
   }
 
   handleShooting() {
