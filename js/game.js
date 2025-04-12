@@ -11,7 +11,6 @@ function init() {
     world = new World(canvas, keyboard);
 }
 
-
 function toggleMusic() {
     if (!backgroundMusic) return;
 
@@ -20,6 +19,7 @@ function toggleMusic() {
     if (backgroundMusic.paused) {
         backgroundMusic.play();
         btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
+    } else {
         backgroundMusic.pause();
         btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
     }
