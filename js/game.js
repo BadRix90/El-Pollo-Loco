@@ -1,37 +1,51 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let backgroundMusic;
 
 function init() {
-    canvas = document.getElementById('canvas')
-    world = new World(canvas, keyboard)
-    let backgroundMusic = document.getElementById('background-music');
+    canvas = document.getElementById('canvas');
+    backgroundMusic = document.getElementById('background-music');
     backgroundMusic.volume = 0.015;
+    
+    world = new World(canvas, keyboard);
 }
+
+
+function toggleMusic() {
+    console.log("TOGGLE MUSIC");
+    if (!backgroundMusic) return;
+    if (backgroundMusic.paused) {
+        backgroundMusic.play();
+    } else {
+        backgroundMusic.pause();
+    }
+}
+
 
 function stopGame() {
     const bgm = document.getElementById('background-music');
     if (bgm) {
-      bgm.pause();
-      bgm.currentTime = 0;
+        bgm.pause();
+        bgm.currentTime = 0;
     }
-  
+
     const introMusic = document.getElementById('intro-music');
     if (introMusic) {
-      introMusic.volume = 0.02;
-      introMusic.currentTime = 32;
-      introMusic.play();
+        introMusic.volume = 0.02;
+        introMusic.currentTime = 32;
+        introMusic.play();
     }
 
     if (world) {
         clearInterval(world.lyricInterval);
         clearInterval(world.lyricSetupInterval);
         cancelAnimationFrame(world.drawLoopId); // <- das war wichtig!
-      }
-  
+    }
+
     world = new World(canvas, keyboard);
-  }
-  
+}
+
 
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" && world) {
