@@ -1,17 +1,20 @@
 class TouchOverlay {
     constructor(canvas, keyboard) {
         const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
-
+    
+        this.canvas = canvas;
+        this.keyboard = keyboard;
+        this.buttons = []; 
+    
         if (!isMobile && window.innerWidth >= 768) {
             this.disabled = true;
             return;
         }
-
-        this.canvas = canvas;
-        this.keyboard = keyboard;
+    
         this.buttons = this.createButtons();
         this.registerTouchEvents();
     }
+    
 
     createButtons() {
         return [
