@@ -91,6 +91,17 @@ class BulletManager {
           world.level.endboss.hit(30);
           bullet.markedForDeletion = true;
         }
+
+        if (world.level.endboss && bullet.isColliding(world.level.endboss)) {
+          world.level.endboss.hit(30);
+          bullet.markedForDeletion = true;
+        
+          if (world.level.endboss.isDead() && !world.endbossDefeatedAt) {
+            world.endbossDefeatedAt = Date.now();
+            world.showReturnTimer = true;
+          }
+        }
+        
       }
     });
 

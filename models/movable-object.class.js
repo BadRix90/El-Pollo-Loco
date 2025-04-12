@@ -110,7 +110,6 @@ class MovableObject extends DrawableObject {
       if (!this.deathPlayed) {
         this.deathPlayed = true;
         this.playDeathAnimation();
-        this.world.triggerGameOver();
       }
     } else {
       this.playHurtAnimation();

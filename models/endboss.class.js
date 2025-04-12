@@ -139,22 +139,28 @@ class Endboss extends MovableObject {
     this.sinusBombSound.play();
   }
 
-
   hit(damage = 20) {
     if (this.isDead() || this.deathPlayed) return;
-
+  
     this.energy -= damage;
-
+  
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
       this.deathPlayed = true;
       this.playDeathAnimation();
+  
+      if (this.world && !this.world.endbossDefeatedAt) {
+        this.world.endbossDefeatedAt = Date.now();
+        this.world.showReturnTimer = true;
+      }
+  
     } else {
       this.mode = "hurt";
       this.playHurtAnimation();
     }
   }
+ 
 
   playDeathAnimation() {
     let i = 0;

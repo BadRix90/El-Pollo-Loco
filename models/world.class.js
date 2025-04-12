@@ -24,8 +24,8 @@ class World {
   showControlsOverlay = false;
   policeCar = null;
   touchOverlay = null;
-
-
+  endbossDefeatedAt = null;
+  showReturnTimer = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -226,6 +226,20 @@ class World {
     this.weather.drawRain();
     this.touchOverlay.draw(this.ctx);
 
+    if (this.showReturnTimer) {
+      const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000);
+      const secondsLeft = Math.max(0, 10 - secondsPassed);
+
+      this.ctx.font = "28px CyberpunkCraftpixPixel";
+      this.ctx.fillStyle = "white";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60);
+
+      if (secondsLeft <= 0) {
+        this.returnToMainMenu();
+      }
+    }
+
     let self = this;
     this.drawLoopId = requestAnimationFrame(function () {
       self.draw();
@@ -389,6 +403,43 @@ class World {
     }, 16);
   }
 
+  returnToMainMenu() {
+    const bgm = document.getElementById('background-music');
+    const introMusic = document.getElementById('intro-music');
+
+    if (bgm) {
+      bgm.pause();
+      bgm.currentTime = 0;
+    }
+
+    if (introMusic) {
+      introMusic.currentTime = 32;
+      introMusic.volume = 0.02;
+      introMusic.play();
+    }
+    clearInterval(this.lyricSetupInterval);
+    clearInterval(this.lyricInterval);
+    this.lyricInterval = null;
+    this.lyricSetupInterval = null;
+    this.showLyrics = false;
+
+    this.showIntro = true;
+    this.introY = -100;
+    this.introStep = 0;
+    this.showStartButton = false;
+    this.showOptionsMenu = false;
+
+    this.character = new Character();
+    this.character.world = this;
+    this.statusBar = new StatusBar();
+    this.camera_x = 0;
+    this.level = level1;
+
+    this.endbossDefeatedAt = null;
+    this.showReturnTimer = false;
+
+    this.setWorld();
+  }
 
 
 }
