@@ -1,14 +1,14 @@
 class TouchOverlay {
-    constructor(canvas, keyboard) { 
+    constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.buttons = []; 
+        this.buttons = [];
         this.disabled = false;
 
         this.buttons = this.createButtons();
         this.registerTouchEvents();
     }
-    
+
 
     createButtons() {
         return [
@@ -52,24 +52,26 @@ class TouchOverlay {
     }
 
     registerTouchEvents() {
-        this.canvas.addEventListener('touchstart', (e) => this.handleTouch(e, true));
-        this.canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e));
-        
+        this.canvas.addEventListener('touchstart', (e) => this.updateTouches(e));
+        this.canvas.addEventListener('touchmove', (e) => this.updateTouches(e));
+        this.canvas.addEventListener('touchend', (e) => this.updateTouches(e));
+        this.canvas.addEventListener('touchcancel', (e) => this.updateTouches(e));
+
         this.canvas.addEventListener('mousedown', (e) => this.handleMouse(e, true));
         this.canvas.addEventListener('mouseup', () => this.resetButtons());
     }
-    
+
 
     handleTouchEnd(e) {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / this.canvas.clientWidth;
         const scaleY = this.canvas.height / this.canvas.clientHeight;
-    
+
         const remainingTouches = Array.from(e.touches).map(touch => ({
             x: (touch.clientX - rect.left) * scaleX,
             y: (touch.clientY - rect.top) * scaleY
         }));
-    
+
         this.buttons.forEach(btn => {
             this.keyboard[btn.key] = false;
         });
@@ -78,7 +80,7 @@ class TouchOverlay {
             this.buttons.forEach(btn => {
                 const btnX = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
                 const btnY = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
-    
+
                 if (
                     touch.x >= btnX &&
                     touch.x <= btnX + btn.width &&
@@ -90,19 +92,50 @@ class TouchOverlay {
             });
         }
     }
-    
+
+    updateTouches(e) {
+        e.preventDefault();
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / this.canvas.clientWidth;
+        const scaleY = this.canvas.height / this.canvas.clientHeight;
+
+        this.buttons.forEach(btn => {
+            this.keyboard[btn.key] = false;
+        });
+
+        for (const touch of e.touches) {
+            const x = (touch.clientX - rect.left) * scaleX;
+            const y = (touch.clientY - rect.top) * scaleY;
+
+            this.buttons.forEach(btn => {
+                const btnX = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
+                const btnY = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
+
+                if (
+                    x >= btnX &&
+                    x <= btnX + btn.width &&
+                    y >= btnY &&
+                    y <= btnY + btn.height
+                ) {
+                    this.keyboard[btn.key] = true;
+                }
+            });
+        }
+    }
+
+
     handleMouse(e, isStart) {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / this.canvas.clientWidth;
         const scaleY = this.canvas.height / this.canvas.clientHeight;
-    
+
         const x = (e.clientX - rect.left) * scaleX;
         const y = (e.clientY - rect.top) * scaleY;
-    
+
         this.buttons.forEach(btn => {
             const btnX = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
             const btnY = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
-    
+
             if (
                 x >= btnX &&
                 x <= btnX + btn.width &&
@@ -113,7 +146,7 @@ class TouchOverlay {
             }
         });
     }
-    
+
 
     resetButtons() {
         this.buttons.forEach(btn => {
@@ -144,5 +177,5 @@ class TouchOverlay {
         });
     }
 
-    
+
 }
