@@ -104,7 +104,7 @@ class World {
       this.bullets.removeOffscreenBullets();
       this.checkEndbossAttack();
       this.throwableObjects = this.throwableObjects.filter(o => !o.markedForDeletion);
-    }, 100);
+    }, 1000 / 60);
   }
 
   checkCollisions() {
