@@ -109,6 +109,7 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
+      if (this.world.showIntro) return;
       if (
         !this.introRunning &&
         this.world.keyboard.RIGHT &&
