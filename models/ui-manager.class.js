@@ -102,6 +102,7 @@ class UIManager {
     ctx.fillText("MENU", centerX, 120)
 
     this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle")
+
     this.drawButton(centerX, 260, 200, 40, "Exit Game", "exit")
     this.drawButton(centerX, 320, 200, 40, "Controls", "controls")
     this.drawButton(this.canvas.width - 80, 40, 100, 30, "BACK", "toggle-menu")
@@ -134,6 +135,45 @@ class UIManager {
     this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu")
 
     ctx.restore()
+  }
+
+  returnToMainMenu() {
+    const bgm = document.getElementById('background-music');
+    const introMusic = document.getElementById('intro-music');
+
+    if (bgm) {
+      bgm.pause();
+      bgm.currentTime = 0;
+    }
+
+    if (introMusic) {
+      introMusic.currentTime = 32;
+      introMusic.volume = 0.02;
+      introMusic.play();
+    }
+
+    clearInterval(this.world.lyricSetupInterval);
+    clearInterval(this.world.lyricInterval);
+    this.world.lyricInterval = null;
+    this.world.lyricSetupInterval = null;
+    this.world.showLyrics = false;
+
+    this.world.showIntro = true;
+    this.world.introY = -100;
+    this.world.introStep = 0;
+    this.world.showStartButton = false;
+    this.world.showOptionsMenu = false;
+
+    this.world.character = new Character();
+    this.world.character.world = this.world;
+    this.world.statusBar = new StatusBar();
+    this.world.camera_x = 0;
+    this.world.level = level1;
+
+    this.world.endbossDefeatedAt = null;
+    this.world.showReturnTimer = false;
+
+    this.world.setWorld();
   }
 
 }

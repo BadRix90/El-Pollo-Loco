@@ -236,7 +236,7 @@ class World {
       this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60);
 
       if (secondsLeft <= 0) {
-        this.returnToMainMenu();
+        this.ui.returnToMainMenu();
       }
     }
 
@@ -403,43 +403,7 @@ class World {
     }, 16);
   }
 
-  returnToMainMenu() {
-    const bgm = document.getElementById('background-music');
-    const introMusic = document.getElementById('intro-music');
 
-    if (bgm) {
-      bgm.pause();
-      bgm.currentTime = 0;
-    }
-
-    if (introMusic) {
-      introMusic.currentTime = 32;
-      introMusic.volume = 0.02;
-      introMusic.play();
-    }
-    clearInterval(this.lyricSetupInterval);
-    clearInterval(this.lyricInterval);
-    this.lyricInterval = null;
-    this.lyricSetupInterval = null;
-    this.showLyrics = false;
-
-    this.showIntro = true;
-    this.introY = -100;
-    this.introStep = 0;
-    this.showStartButton = false;
-    this.showOptionsMenu = false;
-
-    this.character = new Character();
-    this.character.world = this;
-    this.statusBar = new StatusBar();
-    this.camera_x = 0;
-    this.level = level1;
-
-    this.endbossDefeatedAt = null;
-    this.showReturnTimer = false;
-
-    this.setWorld();
-  }
 
 
 }
