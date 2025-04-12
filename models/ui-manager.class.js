@@ -147,15 +147,12 @@ class UIManager {
     ctx.fillText("GAME OVER", centerX, this.world.gameOverY);
   
     if (this.world.showGameOverButtons) {
-      this.world.menuButtons = [];
-      this.drawButton(centerX, this.world.gameOverY + 80, 200, 40, "RESTART", "restart");
-      this.drawButton(centerX, this.world.gameOverY + 140, 200, 40, "EXIT GAME", "exit");
+      this.world.menuButtons = []; // wichtig: damit Clicks registriert werden
+      this.drawButton(centerX, this.world.gameOverY + 80, 200, 40, "Restart Game", "restart");
+      this.drawButton(centerX, this.world.gameOverY + 140, 200, 40, "Exit Game", "exit");
     }
   }
   
-
-
-
 
 
 
