@@ -6,6 +6,7 @@ class Endboss extends MovableObject {
   energy = 300;
   deathPlayed = false;
 
+
   IMAGES_WALKING = [
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_1.png",
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Walk/Walk_frame_2.png",
@@ -51,6 +52,12 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.animate();
+
+    this.laserSound = new Audio('audio/laser-45816.mp3');
+    this.laserSound.volume = 0.03;
+  
+    this.sinusBombSound = new Audio('audio/sinusBombEndBoss.mp3');
+    this.sinusBombSound.volume = 0.03;
   }
 
   startAI() {
@@ -77,23 +84,27 @@ class Endboss extends MovableObject {
 
   startAttack() {
     if (this.isDead() || this.isAttacking) return;
-  
+
     this.isAttacking = true;
     this.mode = "attack";
     this.currentImage = 0;
-  
+
     let i = 0;
     let interval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_ATTACK[i]];
       i++;
-  
+
       if (i === this.IMAGES_ATTACK.length - 1) {
         const direction = this.world.character.x < this.x ? -1 : 1;
         const bulletX = this.x + (direction === 1 ? this.width - 40 : 30);
         const bulletY = this.y + this.height - 100;
         this.world.bullets.spawnBullet(bulletX, bulletY, direction, this, 1);
+
+        this.laserSound.currentTime = 0;
+        this.laserSound.play();
+
       }
-  
+
       if (i >= this.IMAGES_ATTACK.length) {
         clearInterval(interval);
         this.isAttacking = false;
@@ -101,15 +112,14 @@ class Endboss extends MovableObject {
       }
     }, 100);
   }
-  
-a
+
   startSpecialAttack() {
     if (this.isDead() || this.isAttacking) return;
-  
+
     this.isAttacking = true;
     this.mode = "special";
     this.currentImage = 0;
-  
+
     let i = 0;
     let specialInterval = setInterval(() => {
       this.img = this.imageCache[this.IMAGES_ATTACK_SPECIAL[i]];
@@ -120,12 +130,15 @@ a
       }
     }, 100);
   }
-  
+
   spawnBomb() {
-    const bomb = new Bomb(this.world.character.x, -200, this.world, this, 25); 
+    const bomb = new Bomb(this.world.character.x, -200, this.world, this, 25);
     this.world.activeBombs.push(bomb);
+
+    this.sinusBombSound.currentTime = 0;
+    this.sinusBombSound.play();
   }
-  
+
 
   hit(damage = 20) {
     if (this.isDead() || this.deathPlayed) return;
@@ -164,9 +177,9 @@ a
       } else if (!this.isAttacking) {
         this.playAnimation(this.IMAGES_WALKING);
       }
-  
+
       this.otherDirection = true;
     }, 200);
   }
-  
+
 }

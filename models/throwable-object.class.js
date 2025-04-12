@@ -25,8 +25,8 @@ class Bullet extends MovableObject {
     this.loadImages(this.IMAGES_SHOOT_EFFECT);
     this.x = x;
     this.y = y;
-    this.width = 20;
-    this.height = 10;
+    this.width = 10;
+    this.height = 5;
     this.speed = 10;
     this.direction = direction;
     this.maxDistance = 500;

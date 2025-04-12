@@ -82,8 +82,8 @@ class Character extends MovableObject {
     this.deadPlayed = false;
     this.introRunning = true;
     this.x = -100;
-    this.laserSound = new Audio('audio/laser-45816.mp3');
-    this.laserSound.volume = 0.3;
+    this.laserSound = new Audio('audio/laserBlasterCharacter.mp3');
+    this.laserSound.volume = 0.03;
   }
 
   startIntroRun() {

@@ -14,6 +14,9 @@ class Bomb extends MovableObject {
     this.speedY = -20;
     this.gravity = 2;
     this.state = "fly";
+    this.explodeSound = new Audio('audio/explosionEndboss.mp3');
+    this.explodeSound.volume = 0.06;
+
     this.animate();
   }
 
@@ -54,6 +57,9 @@ class Bomb extends MovableObject {
           this.y = this.defaultYPosition;
           this.state = "idle";
           i = 0;
+          this.explodeSound.currentTime = 0;
+          this.explodeSound.play();
+
         }
       } else if (this.state === "idle") {
         this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB);
