@@ -9,6 +9,30 @@ function init() {
     backgroundMusic.volume = 0.015;
 }
 
+function stopGame() {
+    const bgm = document.getElementById('background-music');
+    if (bgm) {
+      bgm.pause();
+      bgm.currentTime = 0;
+    }
+  
+    const introMusic = document.getElementById('intro-music');
+    if (introMusic) {
+      introMusic.volume = 0.02;
+      introMusic.currentTime = 32;
+      introMusic.play();
+    }
+
+    if (world) {
+        clearInterval(world.lyricInterval);
+        clearInterval(world.lyricSetupInterval);
+        cancelAnimationFrame(world.drawLoopId); // <- das war wichtig!
+      }
+  
+    world = new World(canvas, keyboard);
+  }
+  
+
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" && world) {
         world.showOptionsMenu = !world.showOptionsMenu;

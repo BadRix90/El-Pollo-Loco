@@ -274,46 +274,7 @@ class World {
       this.restartGame();
 
     } else if (action === "exit") {
-      clearInterval(this.lyricSetupInterval);
-      clearInterval(this.lyricInterval);
-      this.lyricInterval = null;
-      this.lyricSetupInterval = null;
-
-      if (bgm) {
-        bgm.pause();
-        bgm.currentTime = 0;
-      }
-
-      if (introMusic) {
-        introMusic.pause();
-        introMusic.currentTime = 32;
-        introMusic.volume = 0.02;
-        setTimeout(() => {
-          introMusic.play();
-        }, 100);
-      }
-
-
-      this.level = level1;
-      this.character = new Character();
-      this.character.world = this;
-      this.statusBar = new StatusBar();
-      this.throwableObjects = [];
-      this.enemyBullets = [];
-      this.activeBombs = [];
-      this.playerBullets = [];
-      this.healItems = [];
-      this.camera_x = 0;
-
-      this.introY = 180;
-      this.introStep = 2;
-      this.showLyrics = false;
-      this.showIntro = true;
-      this.showStartButton = true;
-      this.showOptionsMenu = false;
-
-      this.setWorld();
-
+      stopGame();
     } else if (action === "controls") {
       if (this.showIntro) {
         this.fromIntroToControls = true;
