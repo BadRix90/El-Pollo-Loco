@@ -1,3 +1,7 @@
+:root {
+  --vh: 100vh; 
+}
+
 @font-face {
   font-family: 'CyberpunkCraftpixPixel';
   src: url('assets/fonts/CyberpunkCraftpixPixel.otf') format('truetype');
@@ -22,28 +26,20 @@ canvas {
   border: 3px solid black;
   display: block;
   cursor: url("img/GUI/8 Cursors/2.png"), auto;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
   touch-action: none;
+  image-rendering: pixelated;
 }
 
-@media only screen and (max-width: 760px) {
-  canvas {
-    width: 100%;
-  }
-  .glitch-title{
-    display: none;
-  }
-  
+body.mobile canvas {
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
 }
-
-@media only screen and (max-height: 480px) {
-  canvas {
-    height: 100vh;
-  }
-  .glitch-title{
-    display: none;
-  }
-}
-
 
 
 #game-logo {
@@ -239,18 +235,6 @@ button {
     background: black;
   }
   
-  canvas {
-    width: 100vw;
-    height: 100vh;
-    display: block;
-    margin: 0;
-    padding: 0;
-    border: none;
-    touch-action: none;
-    image-rendering: pixelated;
-    background: black;
-  }
-  
   #game-logo,
   #title,
   #status-bar,
@@ -291,3 +275,33 @@ button {
     display: flex;
   }
 }
+
+#game-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  z-index: 20;
+  opacity: 0.7;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+
+
