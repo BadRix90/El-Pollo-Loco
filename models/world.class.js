@@ -24,9 +24,7 @@ class World {
   showControlsOverlay = false;
   policeCar = null;
   touchOverlay = null;
-  gameOver = false;
-  gameOverY = -100;
-  showGameOverButtons = false;
+
 
 
   constructor(canvas, keyboard) {
@@ -233,10 +231,6 @@ class World {
       self.draw();
     });
 
-    if (this.gameOver) {
-      this.ui.drawGameOverScreen();
-    }
-
 
   }
 
@@ -395,65 +389,6 @@ class World {
     }, 16);
   }
 
-  restartGame() {
-    cancelAnimationFrame(this.drawLoopId);
-
-    this.gameOver = false;
-    this.gameOverY = -100;
-    this.showGameOverButtons = false;
-    clearInterval(this.lyricSetupInterval);
-    clearInterval(this.lyricInterval);
-    this.lyricInterval = null;
-    this.lyricSetupInterval = null;
-
-    this.level = level1;
-    this.character = new Character();
-    this.character.world = this;
-    this.statusBar = new StatusBar();
-    this.throwableObjects = [];
-    this.enemyBullets = [];
-    this.activeBombs = [];
-    this.playerBullets = [];
-    this.healItems = [];
-    this.camera_x = 0;
-    this.policeCar = new PoliceCar(this);
-    this.showIntro = false;
-    this.showMainMenu = false;
-    this.showOptionsMenu = false;
-    this.showStartButton = false;
-    this.showLyrics = false;
-    this.introStep = 1;
-    this.introY = -100;
-
-    const bgm = document.getElementById('background-music');
-    if (bgm) {
-      bgm.pause();
-      bgm.currentTime = 0;
-      bgm.play();
-    }
-    this.camera_x = 0;
-    this.character.x = -100;
-    this.character.introRunning = true;
-    this.character.startIntroRun();
-
-    this.setWorld();
-    this.draw();
-
-  }
-
-  triggerGameOver() {
-    this.gameOver = true;
-    this.gameOverY = -100;
-    this.showGameOverButtons = false;
-
-    const scrollInterval = setInterval(() => {
-      this.gameOverY += 4;
-      if (this.gameOverY >= 200) {
-        clearInterval(scrollInterval);
-        this.showGameOverButtons = true;
-      }
-    }, 1000 / 60);
-  }
 
 
 }

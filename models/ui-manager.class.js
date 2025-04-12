@@ -102,9 +102,8 @@ class UIManager {
     ctx.fillText("MENU", centerX, 120)
 
     this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle")
-    this.drawButton(centerX, 260, 200, 40, "Restart Game", "restart")
-    this.drawButton(centerX, 320, 200, 40, "Exit Game", "exit")
-    this.drawButton(centerX, 380, 200, 40, "Controls", "controls")
+    this.drawButton(centerX, 260, 200, 40, "Exit Game", "exit")
+    this.drawButton(centerX, 320, 200, 40, "Controls", "controls")
     this.drawButton(this.canvas.width - 80, 40, 100, 30, "BACK", "toggle-menu")
 
     ctx.restore()
@@ -136,26 +135,5 @@ class UIManager {
 
     ctx.restore()
   }
-
-  drawGameOverScreen() {
-    const ctx = this.ctx;
-    const centerX = this.canvas.width / 2;
-  
-    ctx.font = "60px CyberpunkCraftpixPixel";
-    ctx.fillStyle = "red";
-    ctx.textAlign = "center";
-    ctx.fillText("GAME OVER", centerX, this.world.gameOverY);
-  
-    if (this.world.showGameOverButtons) {
-      this.world.menuButtons = []; // wichtig: damit Clicks registriert werden
-      this.drawButton(centerX, this.world.gameOverY + 80, 200, 40, "Restart Game", "restart");
-      this.drawButton(centerX, this.world.gameOverY + 140, 200, 40, "Exit Game", "exit");
-    }
-  }
-  
-
-
-
-
 
 }
