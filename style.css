@@ -289,19 +289,24 @@ button {
 }
 
 
-#fullscreen-btn {
+#game-header {
   position: absolute;
   top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
+  right: 10px;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
   z-index: 20;
-  opacity: 0.7;
-  cursor: pointer;
-  pointer-events: auto;
-  touch-action: manipulation;
+
 }
 
+#game-header img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.8;
+  cursor: pointer;
+  touch-action: manipulation;
+}
 
 

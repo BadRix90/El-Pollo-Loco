@@ -7,19 +7,26 @@ function init() {
     canvas = document.getElementById('canvas');
     backgroundMusic = document.getElementById('background-music');
     backgroundMusic.volume = 0.015;
-    
+
     world = new World(canvas, keyboard);
 }
 
 
 function toggleMusic() {
-    console.log("TOGGLE MUSIC");
     if (!backgroundMusic) return;
+
+    const btn = document.getElementById('sound-toggle-btn');
+
     if (backgroundMusic.paused) {
         backgroundMusic.play();
-    } else {
+        btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
         backgroundMusic.pause();
+        btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
     }
+}
+
+function toggleMenu() {
+    world.handleMenuAction("toggle-menu");
 }
 
 

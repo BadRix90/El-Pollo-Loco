@@ -101,11 +101,9 @@ class UIManager {
     ctx.textAlign = "center"
     ctx.fillText("MENU", centerX, 120)
 
-    this.drawButton(centerX, 200, 200, 40, "Sound", "sound-toggle")
-
-    this.drawButton(centerX, 260, 200, 40, "Exit Game", "exit")
-    this.drawButton(centerX, 320, 200, 40, "Controls", "controls")
-    this.drawButton(this.canvas.width - 80, 40, 100, 30, "BACK", "toggle-menu")
+    this.drawButton(centerX, 200, 200, 40, "Exit Game", "exit")
+    this.drawButton(centerX, 260, 200, 40, "Controls", "controls")
+    this.drawButton(centerX, 320, 200, 40, "BACK", "toggle-menu")
 
     ctx.restore()
   }

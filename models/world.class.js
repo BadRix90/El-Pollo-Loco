@@ -204,24 +204,6 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
 
-    this.ctx.font = "16px CyberpunkCraftpixPixel";
-    this.ctx.fillStyle = "white";
-    this.ctx.textAlign = "right";
-
-    const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
-    const menuText = isMobile || window.innerWidth < 768 ? "Click for Menu" : "ESC for Menu";
-
-    this.ctx.fillText(menuText, this.canvas.width - 20, 30);
-
-    if (menuText === "Click for Menu") {
-      this.menuButtons.push({
-        x: this.canvas.width - 140,
-        y: 15,
-        w: 120,
-        h: 20,
-        action: "toggle-menu"
-      });
-    }
 
     this.weather.drawRain();
     this.touchOverlay.draw(this.ctx);
@@ -300,6 +282,8 @@ class World {
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
+    document.getElementById('game-header').style.display = "flex";
+
   }
 
   drawHP() {
