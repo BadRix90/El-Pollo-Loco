@@ -24,7 +24,10 @@ class World {
   showControlsOverlay = false;
   policeCar = null;
   touchOverlay = null;
-
+  gameOver = false;
+  gameOverY = -100;
+  showGameOverButtons = false;
+  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -229,6 +232,20 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
+
+    if (this.gameOver) {
+      this.ctx.font = "60px CyberpunkCraftpixPixel";
+      this.ctx.fillStyle = "red";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
+    
+      if (this.showGameOverButtons) {
+        this.menuButtons = [];
+        this.drawButton(this.canvas.width / 2, this.gameOverY + 80, 200, 40, "RESTART", "restart");
+        this.drawButton(this.canvas.width / 2, this.gameOverY + 140, 200, 40, "EXIT GAME", "exit");
+      }
+    }
+    
   }
 
   handleMenuAction(action) {
@@ -420,5 +437,20 @@ class World {
 
     this.setWorld();
   }
+
+  triggerGameOver() {
+    this.gameOver = true;
+    this.gameOverY = -100;
+    this.showGameOverButtons = false;
+  
+    const scrollInterval = setInterval(() => {
+      this.gameOverY += 4;
+      if (this.gameOverY >= 200) {
+        clearInterval(scrollInterval);
+        this.showGameOverButtons = true;
+      }
+    }, 1000 / 60);
+  }
+  
 
 }

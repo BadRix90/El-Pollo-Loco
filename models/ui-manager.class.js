@@ -136,4 +136,29 @@ class UIManager {
 
     ctx.restore()
   }
+
+  drawGameOverScreen() {
+    const ctx = this.ctx;
+    const centerX = this.canvas.width / 2;
+  
+    ctx.font = "60px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "red";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER", centerX, this.world.gameOverY);
+  
+    if (this.world.showGameOverButtons) {
+      this.world.menuButtons = [];
+      this.drawButton(centerX, this.world.gameOverY + 80, 200, 40, "RESTART", "restart");
+      this.drawButton(centerX, this.world.gameOverY + 140, 200, 40, "EXIT GAME", "exit");
+    }
+  }
+  
+
+
+
+
+
+
+
+
 }
