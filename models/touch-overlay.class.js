@@ -1,16 +1,10 @@
 class TouchOverlay {
-    constructor(canvas, keyboard) {
-        const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
-    
+    constructor(canvas, keyboard) { 
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.buttons = []; 
-    
-        if (!isMobile && window.innerWidth >= 768) {
-            this.disabled = true;
-            return;
-        }
-    
+        this.disabled = false;
+
         this.buttons = this.createButtons();
         this.registerTouchEvents();
     }
@@ -21,7 +15,7 @@ class TouchOverlay {
             {
                 id: 'left',
                 relX: 40,
-                relY: -70,
+                relY: -50,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -30,7 +24,7 @@ class TouchOverlay {
             {
                 id: 'right',
                 relX: 100,
-                relY: -70,
+                relY: -50,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -39,7 +33,7 @@ class TouchOverlay {
             {
                 id: 'jump',
                 relX: -100,
-                relY: -70,
+                relY: -50,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -48,7 +42,7 @@ class TouchOverlay {
             {
                 id: 'shoot',
                 relX: -160,
-                relY: -70,
+                relY: -50,
                 width: 40,
                 height: 40,
                 img: new Image(),
@@ -60,7 +54,11 @@ class TouchOverlay {
     registerTouchEvents() {
         this.canvas.addEventListener('touchstart', (e) => this.handleTouch(e, true));
         this.canvas.addEventListener('touchend', (e) => this.resetButtons());
+    
+        this.canvas.addEventListener('mousedown', (e) => this.handleMouse(e, true));
+        this.canvas.addEventListener('mouseup', () => this.resetButtons());
     }
+    
 
     handleTouch(e, isStart) {
         e.preventDefault();
@@ -88,6 +86,30 @@ class TouchOverlay {
         }
     }
 
+    handleMouse(e, isStart) {
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / this.canvas.clientWidth;
+        const scaleY = this.canvas.height / this.canvas.clientHeight;
+    
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+    
+        this.buttons.forEach(btn => {
+            const btnX = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
+            const btnY = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
+    
+            if (
+                x >= btnX &&
+                x <= btnX + btn.width &&
+                y >= btnY &&
+                y <= btnY + btn.height
+            ) {
+                this.keyboard[btn.key] = isStart;
+            }
+        });
+    }
+    
+
     resetButtons() {
         this.buttons.forEach(btn => {
             this.keyboard[btn.key] = false;
@@ -95,8 +117,7 @@ class TouchOverlay {
     }
 
     draw(ctx) {
-        this.disabled = window.innerWidth >= 768;
-        if (this.disabled) return;
+        if (!this.buttons) return;
 
         this.buttons.forEach(btn => {
             if (!btn.img.src) {
