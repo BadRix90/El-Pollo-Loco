@@ -216,6 +216,7 @@ class World {
 
     this.weather.drawRain();
     this.touchOverlay.draw(this.ctx);
+    this.ui.drawGameHeader();
 
     if (this.showReturnTimer) {
       const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000);
@@ -304,8 +305,6 @@ class World {
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
-    document.getElementById('game-header').style.display = "flex";
-
   }
 
   drawHP() {

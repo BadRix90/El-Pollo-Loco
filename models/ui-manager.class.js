@@ -3,6 +3,16 @@ class UIManager {
     this.world = world
     this.ctx = world.ctx
     this.canvas = world.canvas
+  
+    this.headerIcons = {
+      music: new Image(),
+      fullscreen: new Image(),
+      menu: new Image(),
+    };
+  
+    this.headerIcons.music.src = 'img/GUI/3 Icons/Icons/Icon_03.png';
+    this.headerIcons.fullscreen.src = 'img/GUI/3 Icons/Icons/Icon_05.png';
+    this.headerIcons.menu.src = 'img/GUI/3 Icons/Icons/Icon_26.png';
   }
 
   drawButton(x, y, w, h, text, action) {
@@ -85,6 +95,27 @@ class UIManager {
 
     ctx.restore()
   }
+
+  drawGameHeader() {
+    const ctx = this.ctx;
+    const iconY = 10;
+    const iconSize = 28;
+  
+    const buttons = [
+      { img: this.headerIcons.music, x: this.canvas.width - 120, action: 'toggle-music' },
+      { img: this.headerIcons.fullscreen, x: this.canvas.width - 80, action: 'fullscreen' },
+      { img: this.headerIcons.menu, x: this.canvas.width - 40, action: 'toggle-menu' },
+    ];
+  
+    buttons.forEach(({ img, x, action }) => {
+      if (img.complete) {
+        ctx.drawImage(img, x, iconY, iconSize, iconSize);
+      }
+  
+      this.world.menuButtons.push({ x, y: iconY, w: iconSize, h: iconSize, action });
+    });
+  }
+  
 
   drawOptionsMenu() {
     const ctx = this.ctx
