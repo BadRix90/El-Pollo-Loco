@@ -30,10 +30,20 @@
   <script src="models/bomb.class.js"></script>
   <script src="models/endboss.class.js"></script>
   <script src="levels/level1.js"></script>
+  <script src="js/responsive-canvas.js"></script>
   <script src="js/game.js"></script>
 </head>
 
 <body onload="init()">
+
+  <div id="fullscreen-choice">
+    <div class="choice-box">
+      <p>Start in Fullscreen Mode?</p>
+      <button onclick="startInFullscreen()">Yes</button>
+      <button onclick="startWithoutFullscreen()">No</button>
+    </div>
+  </div>
+  
 
   <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop></audio>
 

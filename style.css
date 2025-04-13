@@ -26,8 +26,8 @@ canvas {
   border: 3px solid black;
   display: block;
   cursor: url("img/GUI/8 Cursors/2.png"), auto;
-  width: 100vw;
-  height: calc(var(--vh, 1vh) * 100);
+  width: 720px;
+  height: 480px;
   display: block;
   margin: 0;
   padding: 0;
@@ -277,17 +277,21 @@ button {
 }
 
 #game-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: black;
 }
 
+:fullscreen canvas,
+:-webkit-full-screen canvas,
+:-moz-full-screen canvas {
+  transform-origin: top left;
+  transform: scale(var(--scale));
+}
 
 #game-header {
   position: absolute;
@@ -309,4 +313,30 @@ button {
   touch-action: manipulation;
 }
 
+#fullscreen-choice {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.choice-box {
+  text-align: center;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+}
+
+.choice-box button {
+  font-size: 18px;
+  margin: 10px;
+  padding: 10px 20px;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+  cursor: pointer;
+}
 

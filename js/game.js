@@ -11,19 +11,74 @@ function init() {
     world = new World(canvas, keyboard);
 }
 
-function toggleMusic() {
-    if (!backgroundMusic) return;
+function startInFullscreen() {
+    const canvas = document.getElementById("canvas")
+    const fs = canvas.requestFullscreen?.() || canvas.webkitRequestFullscreen?.() || canvas.msRequestFullscreen?.()
+    Promise.resolve(fs).finally(() => {
+      setupResponsiveCanvas()
+      document.getElementById("fullscreen-choice").style.display = "none"
+  
+      // Make sure the game header is visible in fullscreen mode
+      document.getElementById("game-header").style.display = "flex"
+  
+      // Add click event listener to handle menu clicks in fullscreen
+      canvas.addEventListener("click", (e) => {
+        if (!world || !world.menuButtons) return
+  
+        // Get the correct click coordinates relative to the canvas
+        const rect = canvas.getBoundingClientRect()
+        const scaleX = canvas.width / rect.width
+        const scaleY = canvas.height / rect.height
+  
+        const clickX = (e.clientX - rect.left) * scaleX
+        const clickY = (e.clientY - rect.top) * scaleY
+  
+        // Check if any menu button was clicked
+        for (const btn of world.menuButtons) {
+          if (clickX >= btn.x && clickX <= btn.x + btn.w && clickY >= btn.y && clickY <= btn.y + btn.h) {
+            world.handleMenuAction(btn.action)
+            break
+          }
+        }
+      })
+  
+      init()
+    })
+  }
 
-    const btn = document.getElementById('sound-toggle-btn');
-
-    if (backgroundMusic.paused) {
-        backgroundMusic.play();
-        btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
-    } else {
-        backgroundMusic.pause();
-        btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
-    }
+function startWithoutFullscreen() {
+    document.getElementById('fullscreen-choice').style.display = 'none';
+    setupResponsiveCanvas();
+    init();
 }
+
+
+function toggleMusic() {
+    if (!backgroundMusic) return
+  
+    const btn = document.getElementById("sound-toggle-btn")
+  
+    // Use a flag to prevent simultaneous play/pause calls
+    if (!toggleMusic.isToggling) {
+        toggleMusic.isToggling = true;
+      
+        if (backgroundMusic.paused) {
+          backgroundMusic.play().then(() => {
+            btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
+          }).catch((err) => {
+            console.log("Play prevented:", err);
+          }).finally(() => {
+            toggleMusic.isToggling = false;
+          });
+        } else {
+          btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
+          backgroundMusic.pause();
+          toggleMusic.isToggling = false;
+        }
+      }
+      
+  }
+  toggleMusic.isToggling = false
 
 function toggleMenu() {
     world.handleMenuAction("toggle-menu");
