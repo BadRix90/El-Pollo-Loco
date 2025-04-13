@@ -287,8 +287,11 @@ class World {
       } else {
         this.fromIntroToControls = false;
       }
-
       this.showControlsOverlay = true;
+
+    } else if (action === "fullscreen") {
+      toggleFullscreen();
+
 
     } else if (action === "back-to-menu") {
       if (this.showControlsOverlay) {

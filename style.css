@@ -276,5 +276,30 @@ button {
   touch-action: manipulation;
 }
 
+#fullscreen-choice {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
 
+.choice-box {
+  text-align: center;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+}
+
+.choice-box button {
+  font-size: 18px;
+  margin: 10px;
+  padding: 10px 20px;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+  cursor: pointer;
+}
 
