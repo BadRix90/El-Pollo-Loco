@@ -1,10 +1,26 @@
 class UIManager {
+
+
+  /**
+ * Creates a new UIManager instance.
+ * @param {World} world - The current game world instance.
+ */
   constructor(world) {
     this.world = world
     this.ctx = world.ctx
     this.canvas = world.canvas
   }
 
+
+  /**
+ * Draws a styled button on the canvas and registers it for interaction.
+ * @param {number} x - Center x-position of the button.
+ * @param {number} y - Center y-position of the button.
+ * @param {number} w - Button width.
+ * @param {number} h - Button height.
+ * @param {string} text - Label text shown on the button.
+ * @param {string} action - The action identifier triggered on click.
+ */
   drawButton(x, y, w, h, text, action) {
     const ctx = this.ctx
     const isHovered =
@@ -28,6 +44,11 @@ class UIManager {
     this.world.menuButtons.push({ x: x - w / 2, y: y - h / 2, w, h, action })
   }
 
+
+  /**
+ * Renders the animated intro screen including title, lyrics,
+ * and start/control buttons based on intro progress.
+ */
   drawIntroScreen() {
     const ctx = this.ctx
     ctx.save()
@@ -85,6 +106,10 @@ class UIManager {
     ctx.restore()
   }
 
+
+  /**
+ * Renders the in-game options menu with buttons for exit, controls, and going back.
+ */
   drawOptionsMenu() {
     const ctx = this.ctx
     const centerX = this.canvas.width / 2
@@ -107,6 +132,10 @@ class UIManager {
     ctx.restore()
   }
 
+
+  /**
+ * Displays a control legend with keybindings on a black overlay.
+ */
   drawControlsOverlay() {
     const ctx = this.ctx
     const centerX = this.canvas.width / 2
@@ -134,6 +163,11 @@ class UIManager {
     ctx.restore()
   }
 
+
+  /**
+ * Resets the game state to the intro screen.
+ * Stops music, clears intervals, resets game variables and reinitializes key objects.
+ */
   returnToMainMenu() {
     const bgm = document.getElementById('background-music');
     const introMusic = document.getElementById('intro-music');

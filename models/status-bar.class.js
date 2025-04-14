@@ -16,6 +16,11 @@ class StatusBar extends DrawableObject {
 
   percentage = 100;
 
+
+  /**
+ * Initializes the status bar with image assets and positioning.
+ * Loads all full and empty health bar segment images.
+ */
   constructor() {
     super();
     this.loadImages(this.IMAGES_FULL);
@@ -24,10 +29,17 @@ class StatusBar extends DrawableObject {
     this.y = 20;
     this.width = 120;
     this.height = 20;
-   
-    
+     
   }
 
+
+  /**
+ * Renders the health bar to the given canvas context.
+ * Displays empty segments first, then overlays filled segments
+ * based on the current health percentage.
+ * Adds a pulsing effect if health is below 50%.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ */
   draw(ctx) {
     const partWidth = this.width / 4;
 
@@ -69,6 +81,11 @@ class StatusBar extends DrawableObject {
     ctx.restore();
   }
 
+
+  /**
+ * Updates the current health percentage displayed by the status bar.
+ * @param {number} percentage - The new health value (0–100).
+ */
   setPercentage(percentage) {
     this.percentage = percentage;
   }

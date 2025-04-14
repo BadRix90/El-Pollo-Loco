@@ -27,6 +27,12 @@ class CopterEnemy extends MovableObject {
     "img/cyberpunk-characters-pixel-art/4 Enemies/5 Copter/frames/Death/Death_frame_6.png",
   ];
 
+
+  /**
+ * Creates a new CopterEnemy instance.
+ * Loads images for flying, hurt, and death animations.
+ * Sets initial position and speed.
+ */
   constructor() {
     super().loadImage(this.IMAGES_FLYING[0]);
     this.loadImages(this.IMAGES_FLYING);
@@ -37,6 +43,12 @@ class CopterEnemy extends MovableObject {
     this.world = null;
   }
 
+  
+  /**
+ * Starts two intervals:
+ * - One for horizontal movement and direction switching within patrol bounds
+ * - One for playing the flying animation frames continuously
+ */
   animate() {
     setInterval(() => {
       if (this.isDead()) return;

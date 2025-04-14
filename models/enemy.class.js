@@ -33,6 +33,11 @@ class Enemy extends MovableObject {
     "img/cyberpunk-characters-pixel-art/4 Enemies/2 Specialist/frames/Hurt/Hurt_frame_2.png",
   ];
 
+
+  /**
+ * Creates a new Enemy instance.
+ * Loads image assets for animations and sets initial position and state.
+ */
   constructor() {
     super().loadImage(this.IMAGES_IDLE[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -44,6 +49,12 @@ class Enemy extends MovableObject {
     this.world = null;
   }
 
+
+  /**
+ * Starts two animation loops:
+ * - Movement: changes direction at patrol boundaries
+ * - Visuals: plays walking animation while in idle mode
+ */
   animate() {
     setInterval(() => {
       if (this.isDead()) return;
@@ -66,6 +77,9 @@ class Enemy extends MovableObject {
     }, 120);
   }
 
+  /**
+ * Resets the enemy's x-position to the right edge if it moves off the left side of the screen.
+ */
   resetPosition() {
     if (this.x < -this.width) {
       this.x = 720;

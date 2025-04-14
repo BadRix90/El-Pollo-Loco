@@ -28,6 +28,12 @@ class World {
   showReturnTimer = false;
   
 
+  /**
+ * Initializes the game world with canvas, keyboard input,
+ * character, level, UI, weather, events, and touch overlay.
+ * @param {HTMLCanvasElement} canvas - The canvas element.
+ * @param {Object} keyboard - The keyboard input object.
+ */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
@@ -83,6 +89,11 @@ class World {
     this.showLyrics = true;
   }
 
+
+  /**
+ * Sets up all entities in the world including enemies, the endboss,
+ * and initial heal items. Starts enemy AI where applicable.
+ */
   setWorld() {
     this.character.world = this;
     this.level.enemies.forEach((enemy) => {
@@ -103,6 +114,11 @@ class World {
     this.healItems.push(healItem1, healItem2, healItem3);
   }
 
+
+  /**
+ * Starts the main game logic loop (60fps) including:
+ * collision checks, bullet handling, and endboss attack check.
+ */
   run() {
     setInterval(() => {
       this.checkCollisions();
@@ -113,6 +129,11 @@ class World {
     }, 1000 / 60);
   }
 
+
+  /**
+ * Checks collisions between the player and enemies or heal items.
+ * Applies damage and collects heal items if overlapping.
+ */
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.isDead() && this.character.isColliding(enemy)) {
@@ -126,6 +147,11 @@ class World {
     });
   }
 
+
+  /**
+ * If the character is close enough to the endboss,
+ * triggers its attack and applies damage if hit.
+ */
   checkEndbossAttack() {
     if (!this.level.endboss || this.level.endboss.isDead()) return;
 
@@ -141,6 +167,12 @@ class World {
     }
   }
 
+
+  /**
+ * Main rendering loop for the entire world.
+ * Draws backgrounds, character, enemies, projectiles, overlays, and menus.
+ * Also handles intro, controls screen, and return-to-menu logic.
+ */
   draw() {
     this.menuButtons = [];
 
@@ -248,6 +280,12 @@ class World {
 
   }
 
+
+  /**
+ * Executes actions based on the selected menu button:
+ * start, restart, exit, toggle menu, or show controls.
+ * @param {string} action - The action to perform.
+ */
   handleMenuAction(action) {
     const bgm = document.getElementById('background-music');
     const introMusic = document.getElementById('intro-music');
@@ -304,12 +342,20 @@ class World {
 
   }
 
+
+  /**
+ * Debug method to draw the character's current HP on screen.
+ */
   drawHP() {
     this.ctx.font = "20px Arial";
     this.ctx.fillStyle = "white";
     this.ctx.fillText("HP: " + this.character.energy, 20 - this.camera_x, 30);
   }
 
+
+  /**
+ * Draws all background objects with a parallax scroll effect.
+ */
   drawBackgroundObjects() {
     this.level.backgroundObjects.forEach((bgObj) => {
       const scrollX = this.camera_x * bgObj.speedModifier;
@@ -320,11 +366,21 @@ class World {
     });
   }
 
+
+  /**
+ * Draws an array of game objects to the canvas.
+ * @param {Object[]} objects - Array of drawable game objects.
+ */
   addObjectsToMap(objects) {
     if (!Array.isArray(objects)) return;
     objects.forEach((obj) => this.addToMap(obj));
   }
 
+
+  /**
+ * Draws a single game object to the canvas with optional horizontal flip.
+ * @param {Object} mo - The game object to draw.
+ */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
@@ -338,6 +394,11 @@ class World {
     }
   }
 
+
+  /**
+ * Horizontally flips the object before drawing it (e.g., when facing left).
+ * @param {Object} mo - The object to flip.
+ */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -345,11 +406,22 @@ class World {
     mo.x = mo.x * -1;
   }
 
+
+  /**
+ * Reverses the horizontal flip after drawing.
+ * @param {Object} mo - The object to unflip.
+ */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
 
+
+  /**
+ * Applies a temporary shaking effect to the camera for visual impact.
+ * @param {number} duration - Duration of the shake in ms.
+ * @param {number} intensity - Strength of the shake movement.
+ */
   shakeCamera(duration = 500, intensity = 10) {
     let startTime = Date.now();
     let originalX = this.camera_x;

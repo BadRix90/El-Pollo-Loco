@@ -4,10 +4,18 @@ let tileSize = 32;
 let sectionWidth = 719;
 
 
+/**
+ * Array of street tiles forming the ground layer of the level.
+ * Each tile is 32px wide and stretches from a negative offset to the maxOffset.
+ */
 for (let x = -tileSize * 10; x <= maxOffset; x += tileSize) {
   streetTiles.push(new Street(x));
 }
 
+
+/**
+ * Predefined x-positions and patrol ranges for basic ground enemies.
+ */
 const enemyPositions = [
   { x: 900, range: 50 },
   { x: 1800, range: 60 },
@@ -16,6 +24,10 @@ const enemyPositions = [
   { x: 5100, range: 70 },
 ];
 
+
+/**
+ * Array of ground-based enemies initialized with patrol ranges based on enemyPositions.
+ */
 const patrolEnemies = enemyPositions.map((pos) => {
   const enemy = new Enemy();
   enemy.x = pos.x;
@@ -25,6 +37,9 @@ const patrolEnemies = enemyPositions.map((pos) => {
 });
 
 
+/**
+ * Array of robot enemies with randomized spawn positions and fixed patrol range.
+ */
 const robotEnemies = [];
 for (let i = 0; i < 3; i++) {
 
@@ -38,6 +53,9 @@ for (let i = 0; i < 3; i++) {
 }
 
 
+/**
+ * Array of copter enemies with randomized spawn positions and fixed patrol range.
+ */
 const copterEnemies = [];
 for (let i = 0; i < 3; i++) {
   let spawnX = Math.random() * (10000 - 719) + 719;
@@ -48,6 +66,10 @@ for (let i = 0; i < 3; i++) {
   copterEnemies.push(copter);
 }
 
+
+/**
+ * Combined list of all enemies in the level, including patrol, robot, copter enemies, and the endboss.
+ */
 const initialEnemies = [
   ...patrolEnemies,
   ...copterEnemies,
@@ -55,6 +77,11 @@ const initialEnemies = [
   new Endboss()
 ];
 
+
+/**
+ * Background objects for all parallax layers in the level.
+ * Generated per section with increasing x-offset and varied theme numbers.
+ */
 const backgroundObjects = [];
 const parallaxFactors = [0.05, 0.1, 0.6, 0.2, 0.25];
 
@@ -78,6 +105,11 @@ sections.forEach(section => {
   }
 });
 
+
+/**
+ * The Level instance representing the full level configuration:
+ * enemies, street tiles, background objects, and the endboss trigger distance.
+ */
 level1 = new Level(
   initialEnemies,
   streetTiles,

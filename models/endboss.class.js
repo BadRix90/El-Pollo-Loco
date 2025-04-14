@@ -44,6 +44,10 @@ class Endboss extends MovableObject {
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Death/Death_frame_6.png",
   ];
 
+  /**
+ * Initializes the endboss with image sets, sound effects,
+ * and starts idle animation.
+ */
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -60,6 +64,11 @@ class Endboss extends MovableObject {
     this.sinusBombSound.volume = 0.03;
   }
 
+
+  /**
+ * Starts the endboss AI behavior using a timed interval.
+ * If the player is within attack range, randomly triggers a regular or special attack.
+ */
   startAI() {
     setInterval(() => {
       if (!this.world || this.isDead() || this.isAttacking) return;
@@ -82,6 +91,10 @@ class Endboss extends MovableObject {
     }, 500);
   }
 
+
+  /**
+ * Performs the regular attack animation and fires a projectile toward the player.
+ */
   startAttack() {
     if (this.isDead() || this.isAttacking) return;
 
@@ -113,6 +126,10 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
+
+  /**
+ * Performs the special attack animation and spawns a bomb after the sequence.
+ */
   startSpecialAttack() {
     if (this.isDead() || this.isAttacking) return;
 
@@ -131,6 +148,11 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
+
+  /**
+ * Spawns a bomb object above the player and adds it to the world's active bombs.
+ * Also plays the bomb sound effect.
+ */
   spawnBomb() {
     const bomb = new Bomb(this.world.character.x, -200, this.world, this, 25);
     this.world.activeBombs.push(bomb);
@@ -139,6 +161,13 @@ class Endboss extends MovableObject {
     this.sinusBombSound.play();
   }
 
+
+  /**
+ * Reduces the endboss's energy by the given amount.
+ * Triggers hurt animation or death animation if energy reaches zero.
+ * Starts endboss defeat timer and return-to-menu logic if defeated.
+ * @param {number} [damage=20] - Amount of damage to apply.
+ */
   hit(damage = 20) {
     if (this.isDead() || this.deathPlayed) return;
   
@@ -161,7 +190,10 @@ class Endboss extends MovableObject {
     }
   }
  
-
+  
+/**
+ * Plays the death animation sequence once, then stops movement.
+ */
   playDeathAnimation() {
     let i = 0;
     let interval = setInterval(() => {
@@ -175,6 +207,11 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
+
+  /**
+ * Plays the walking animation if not attacking or dead.
+ * Also forces the endboss to face left by default.
+ */
   animate() {
     setInterval(() => {
       if (this.isDead() || this.deathPlayed) return;

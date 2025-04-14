@@ -1,4 +1,11 @@
 class TouchOverlay {
+
+
+    /**
+ * Creates a new TouchOverlay instance.
+ * @param {HTMLCanvasElement} canvas - The canvas element used for rendering and interaction.
+ * @param {Object} keyboard - The shared keyboard state object to modify based on touch input.
+ */
     constructor(canvas, keyboard) {
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -10,6 +17,11 @@ class TouchOverlay {
     }
 
 
+    /**
+ * Defines and returns an array of virtual button configurations
+ * with position, size, image, and associated keyboard key.
+ * @returns {Object[]} Array of button definitions.
+ */
     createButtons() {
         return [
             {
@@ -51,9 +63,14 @@ class TouchOverlay {
         ];
     }
 
+
+    /**
+ * Registers touch and mouse events on the canvas.
+ * Handles start, move, end, and cancel events to simulate key presses.
+ */
     registerTouchEvents() {
         this.canvas.addEventListener('touchstart', (e) => this.updateTouches(e), { passive: false });
-        this.canvas.addEventListener('touchmove', (e) => this.updateTouches(e), { passive: false });        
+        this.canvas.addEventListener('touchmove', (e) => this.updateTouches(e), { passive: false });
         this.canvas.addEventListener('touchend', (e) => this.updateTouches(e));
         this.canvas.addEventListener('touchcancel', (e) => this.updateTouches(e));
 
@@ -62,6 +79,11 @@ class TouchOverlay {
     }
 
 
+    /**
+ * Handles remaining touches when one is removed.
+ * Resets all keys and rechecks remaining touches to update active buttons.
+ * @param {TouchEvent} e - The touch event.
+ */
     handleTouchEnd(e) {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / this.canvas.clientWidth;
@@ -93,6 +115,12 @@ class TouchOverlay {
         }
     }
 
+
+    /**
+ * Handles touchstart and touchmove events.
+ * Converts touch coordinates to canvas space and activates matching virtual buttons.
+ * @param {TouchEvent} e - The touch event.
+ */
     updateTouches(e) {
         e.preventDefault();
         const rect = this.canvas.getBoundingClientRect();
@@ -124,6 +152,12 @@ class TouchOverlay {
     }
 
 
+    /**
+ * Handles mouse interaction (e.g., for testing on desktop).
+ * Converts click coordinates to canvas space and sets keyboard key state.
+ * @param {MouseEvent} e - The mouse event.
+ * @param {boolean} isStart - Whether the mouse button is pressed or released.
+ */
     handleMouse(e, isStart) {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / this.canvas.clientWidth;
@@ -148,11 +182,21 @@ class TouchOverlay {
     }
 
 
+    /**
+ * Resets all virtual button states in the keyboard object to false.
+ */
     resetButtons() {
         this.buttons.forEach(btn => {
             this.keyboard[btn.key] = false;
         });
     }
+
+
+    /**
+ * Draws the virtual buttons on the canvas with semi-transparency.
+ * Dynamically assigns the correct image if not already set.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ */
 
     draw(ctx) {
         if (!this.buttons) return;

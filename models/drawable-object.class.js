@@ -7,11 +7,22 @@ class DrawableObject {
   height = 150;
   width = 100;
 
+
+  /**
+ * Loads a single image and sets it as the current image.
+ * @param {string} path - The file path to the image.
+ */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+
+  /**
+ * Draws the current image to the given canvas context.
+ * If the object is a Character, it optionally draws attached weapon and hand images.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ */
   draw(ctx) {
     if (this.visible === false) return;
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -40,6 +51,11 @@ class DrawableObject {
     }
   }
 
+
+  /**
+ * Loads multiple images and stores them in the image cache for animation purposes.
+ * @param {string[]} arr - An array of image file paths to load.
+ */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
@@ -48,15 +64,4 @@ class DrawableObject {
     });
   }
 
-  // drawFrame(ctx) {
-  //   if (this instanceof MovableObject) {
-  //     const hitbox = this.getHitbox();
-  //     ctx.beginPath();
-  //     ctx.lineWidth = "2";
-  //     ctx.strokeStyle = "red";
-  //     ctx.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-  //     ctx.stroke();
-  //   }
-  // }
-  
 }

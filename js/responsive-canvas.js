@@ -1,4 +1,8 @@
-
+/**
+ * Resizes the canvas element to maintain a fixed aspect ratio (720x480)
+ * based on the size of its container. Ensures the canvas fits the screen
+ * without distortion by adjusting width or height accordingly.
+ */
 function resizeCanvas() {
   const canvas = document.getElementById("canvas")
   const container = document.getElementById("canvas-container")
@@ -27,8 +31,20 @@ function resizeCanvas() {
   canvas.height = originalHeight
 }
 
+/**
+ * Resizes the canvas when the window loads to ensure initial proper sizing.
+ */
 window.addEventListener("load", resizeCanvas)
+
+/**
+ * Resizes the canvas dynamically when the window is resized.
+ */
 window.addEventListener("resize", resizeCanvas)
+
+/**
+ * Resizes the canvas after a slight delay when the device orientation changes,
+ * allowing layout to settle before recalculating size.
+ */
 window.addEventListener("orientationchange", () => {
   setTimeout(resizeCanvas, 100)
 })

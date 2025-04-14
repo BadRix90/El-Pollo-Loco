@@ -1,4 +1,10 @@
 class EventManager {
+
+  /**
+ * Creates a new EventManager instance.
+ * Registers click and touch event listeners for the canvas.
+ * @param {World} world - The game world instance.
+ */
   constructor(world) {
     this.world = world;
     this.canvas = world.canvas;
@@ -7,6 +13,11 @@ class EventManager {
     this.registerTouchEvents();
   }
 
+
+  /**
+ * Registers a mouse click event listener on the canvas.
+ * Detects if a menu button was clicked and triggers the corresponding action.
+ */
   registerClickEvents() {
     this.canvas.addEventListener("click", (e) => {
       const rect = this.canvas.getBoundingClientRect();
@@ -29,6 +40,12 @@ class EventManager {
     });
   }
 
+
+  /**
+ * Registers a touchstart event listener on the canvas.
+ * Translates touch coordinates to canvas space and checks for menu button hits.
+ * Uses non-passive event handling to allow interaction control.
+ */
   registerTouchEvents() {
     this.canvas.addEventListener("touchstart", (e) => {
       const rect = this.canvas.getBoundingClientRect();

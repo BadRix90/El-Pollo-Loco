@@ -1,4 +1,13 @@
 class Bomb extends MovableObject {
+
+
+  /**
+ * Creates a new Bomb instance.
+ * @param {number} x - The x-position of the bomb.
+ * @param {number} y - The initial y-position of the bomb.
+ * @param {World} world - The game world instance this bomb belongs to.
+ * @param {Endboss} endboss - The endboss that launched the bomb.
+ */
   constructor(x, y, world, endboss) {
     super().loadImage(
       "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png"
@@ -20,6 +29,14 @@ class Bomb extends MovableObject {
     this.animate();
   }
 
+
+  /**
+ * Animation frames for each bomb state:
+ * - fly: while moving down
+ * - idle: waiting before explosion
+ * - boom: explosion effect
+ * - dust: dust animation after explosion
+ */
   IMAGES_ATTACK_SPECIAL_BOMB_FLY = [
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png",
   ];
@@ -46,6 +63,14 @@ class Bomb extends MovableObject {
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Dust/Dust_frame_3.png",
   ];
 
+
+  /**
+ * Handles the bomb's full animation cycle:
+ * - Moves the bomb down until it reaches the ground
+ * - Plays explosion and dust effects
+ * - Applies damage to the player based on proximity
+ * - Removes the bomb from the world after explosion
+ */
   animate() {
     let i = 0;
 

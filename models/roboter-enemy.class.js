@@ -26,6 +26,11 @@ class RobotEnemy extends MovableObject {
     "img/cyberpunk-characters-pixel-art/4 Enemies/4 Alarmobot/frames/Death/Death_frame_6.png",
   ];
 
+
+  /**
+ * Creates a new RobotEnemy instance.
+ * Loads image assets for animations and sets a random horizontal starting position.
+ */
   constructor() {
     super().loadImage(this.IMAGES_RUNNING[0]);
     this.loadImages(this.IMAGES_RUNNING);
@@ -36,6 +41,12 @@ class RobotEnemy extends MovableObject {
     this.world = null;
   }
 
+
+  /**
+ * Starts two intervals:
+ * - Movement: moves the robot back and forth between patrol boundaries.
+ * - Animation: cycles through running frames.
+ */
   animate() {
     setInterval(() => {
       if (this.isDead()) return;

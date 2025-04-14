@@ -66,6 +66,12 @@ class Character extends MovableObject {
 
   world;
 
+
+  /**
+ * Initializes the character with images, physics, sound, and default values.
+ * Sets up the idle image, preloads animation frames, and starts gravity and animations.
+ */
+
   constructor() {
     super()
     this.loadImage("img/cyberpunk-characters-pixel-art/3 Cyborg/frames/Cyborg_idle/Cyborg_idle_frame_1.png");
@@ -86,6 +92,11 @@ class Character extends MovableObject {
     this.laserSound.volume = 0.03;
   }
 
+
+  /**
+ * Plays the intro run animation of the character, making it visible
+ * and moving it from off-screen into position.
+ */
   startIntroRun() {
     this.visible = true;
     const targetX = 100;
@@ -107,6 +118,14 @@ class Character extends MovableObject {
     }, 1000 / 120);
   }
 
+
+  /**
+ * Handles character animation and movement logic in intervals:
+ * - Movement via keyboard input
+ * - Jumping with double jump support
+ * - Shooting with cooldown
+ * - Switching animations based on state (idle, run, jump, hurt, dead)
+ */
   animate() {
     setInterval(() => {
       if (this.world.showIntro) return;
@@ -195,6 +214,11 @@ class Character extends MovableObject {
 
   }
 
+
+  /**
+ * Triggers the shooting animation and spawns a bullet at the correct position.
+ * Prevents overlapping shots using internal flags.
+ */
   handleShooting() {
     if (this.isShooting || this.isDead()) return;
 

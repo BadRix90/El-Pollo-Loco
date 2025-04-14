@@ -9,6 +9,12 @@ class PoliceCar extends MovableObject {
         'img/cyberpunk-characters-pixel-art/policecar/policecar6.png', // red light
     ];
 
+
+    /**
+ * Creates a new PoliceCar instance with default position, size, speed,
+ * and animation setup. Starts movement and flashing light animation.
+ * @param {World} world - The game world instance.
+ */
     constructor(world) {
         super().loadImage(this.IMAGES_POLICECAR[0]);
         this.loadImages(this.IMAGES_POLICECAR);
@@ -23,6 +29,13 @@ class PoliceCar extends MovableObject {
         this.animate();
     }
 
+
+    /**
+ * Starts two intervals:
+ * - One for moving the police car across the screen.
+ * - One for cycling through police car animation frames.
+ * Once offscreen, the police car becomes invisible and triggers the intro run.
+ */
     animate() {
         let frame = 0;
         const moveInterval = setInterval(() => {
@@ -41,6 +54,11 @@ class PoliceCar extends MovableObject {
     }
 
 
+    /**
+ * Draws the police car with a blur and semi-transparent effect,
+ * along with its flashing lights and reflection effects.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ */
     draw(ctx) {
         if (!this.visible) return;
 
@@ -54,6 +72,12 @@ class PoliceCar extends MovableObject {
         this.drawPoliceReflection(ctx);
     }
 
+
+    /**
+ * Draws a glowing reflection of the police light beneath the car,
+ * matching the current light color.
+ * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+ */
     drawPoliceLight(ctx) {
         const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
         const isRed = [0, 1, 2, 3, 6].includes(currentFrame);

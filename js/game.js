@@ -3,6 +3,11 @@ let world;
 let keyboard = new Keyboard();
 let backgroundMusic;
 
+
+/**
+ * Initializes the game by setting up the canvas, background music,
+ * and creating a new instance of the game world.
+ */
 function init() {
     canvas = document.getElementById('canvas');
     backgroundMusic = document.getElementById('background-music');
@@ -11,6 +16,10 @@ function init() {
     world = new World(canvas, keyboard);
 }
 
+
+/**
+ * Toggles the background music on or off and updates the UI icon accordingly.
+ */
 function toggleMusic() {
     if (!backgroundMusic) return;
 
@@ -25,11 +34,19 @@ function toggleMusic() {
     }
 }
 
+
+/**
+ * Toggles the in-game options menu visibility by delegating to the world handler.
+ */
 function toggleMenu() {
     world.handleMenuAction("toggle-menu");
 }
 
 
+/**
+ * Stops the current game session, resets background and intro music,
+ * clears intervals and animation frames, and reinitializes the world.
+ */
 function stopGame() {
     const bgm = document.getElementById('background-music');
     if (bgm) {
@@ -54,6 +71,10 @@ function stopGame() {
 }
 
 
+/**
+ * Handles keydown events and updates the keyboard state.
+ * Also toggles the options menu with Escape and prevents default behavior for Space.
+ */
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" && world) {
         world.showOptionsMenu = !world.showOptionsMenu;
@@ -79,6 +100,10 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
+
+/**
+ * Handles keyup events and resets the corresponding key states in the keyboard object.
+ */
 window.addEventListener('keyup', (e) => {
     if (e.key === " ") {
         keyboard.SPACE = false;

@@ -12,6 +12,10 @@ class MovableObject extends DrawableObject {
   IMAGES_HURT = [];
   IMAGES_DEAD = [];
 
+
+  /**
+ * Simulates gravity by adjusting the object's vertical speed and position over time.
+ */
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -26,6 +30,11 @@ class MovableObject extends DrawableObject {
     }, 1000 / 25);
   }
 
+
+  /**
+ * Checks if the object is currently above the ground level.
+ * @returns {boolean} True if above ground, false otherwise.
+ */
   isAboveGround() {
     if (this instanceof Bullet) {
       return this.y < 480;
@@ -34,6 +43,12 @@ class MovableObject extends DrawableObject {
     }
   }
 
+
+  /**
+ * Checks for a bounding box collision with another movable object.
+ * @param {MovableObject} mo - The other object to check collision with.
+ * @returns {boolean} True if colliding, false otherwise.
+ */
   isColliding(mo) {
     const a = this.getHitbox();
     const b = mo.getHitbox();
@@ -47,15 +62,30 @@ class MovableObject extends DrawableObject {
   }
   
 
+  /**
+ * Determines if the object was recently hit.
+ * @returns {boolean} True if the object is currently hurt.
+ */
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
     return timepassed < 1;
   }
 
+
+  /**
+ * Checks if the object's energy has reached zero.
+ * @returns {boolean} True if dead, false otherwise.
+ */
   isDead() {
     return this.energy == 0;
   }
+
+
+  /**
+ * Moves the object horizontally and sets direction.
+ * Skips movement if the object is dead.
+ */
 
   moveRight() {
     if (this.isDead && this.isDead()) return;
@@ -63,12 +93,22 @@ class MovableObject extends DrawableObject {
     this.otherDirection = false;
   }
 
+
+  /**
+ * Moves the object horizontally and sets direction.
+ * Skips movement if the object is dead.
+ */
   moveLeft() {
     if (this.isDead && this.isDead()) return;
     this.x -= this.speed;
     this.otherDirection = true;
   }
 
+
+  /**
+ * Plays a looping animation using the provided image array.
+ * @param {string[]} images - Array of image paths.
+ */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -76,11 +116,20 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+
+  /**
+ * Initiates a jump by setting the vertical speed.
+ * Skips jump if object is dead.
+ */
   jump() {
     if (this.isDead && this.isDead()) return;
     this.speedY = 45;
   }
 
+
+  /**
+ * Plays the hurt animation and resets the mode to idle afterward.
+ */
   playHurtAnimation() {
     let i = 0;
     let interval = setInterval(() => {
@@ -93,6 +142,11 @@ class MovableObject extends DrawableObject {
     }, 100);
   }
 
+
+  /**
+ * Applies damage to the object and triggers hurt or death behavior.
+ * @param {number} [damage=5] - The amount of damage to apply.
+ */
   hit(damage = 5) {
     let currentTime = Date.now();
     if (currentTime - this.lastHit < this.hitCooldown) {
@@ -116,6 +170,11 @@ class MovableObject extends DrawableObject {
     }
   }
 
+
+  /**
+ * Returns the current hitbox of the object with applied offsets.
+ * @returns {Object} A hitbox object with x, y, width, and height.
+ */
   getHitbox() {
     const offsetX = 30;
     const offsetYTop = 40; 
@@ -129,6 +188,10 @@ class MovableObject extends DrawableObject {
     };
   }
   
+
+  /**
+ * Plays the death animation sequence, then starts the blinking removal effect.
+ */
   playDeathAnimation() {
     let i = 0;
     let interval = setInterval(() => {
@@ -141,6 +204,10 @@ class MovableObject extends DrawableObject {
     }, 100);
   }
 
+
+  /**
+ * Triggers a blinking effect and removes the object from the world's enemy list after completion.
+ */
   startBlinkAndRemove() {
     let blinkCount = 0;
     const maxBlinks = 5;
