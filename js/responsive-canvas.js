@@ -1,39 +1,34 @@
-// Add this code to your main game initialization file
-function setupResponsiveCanvas() {
-    const canvas = document.getElementById("canvas")
-    if (!canvas) return
-  
-    function resizeCanvas() {
-      const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0
-  
 
-      if (isMobile || window.innerWidth < 1024) {
+function resizeCanvas() {
+  const canvas = document.getElementById("canvas")
+  const container = document.getElementById("canvas-container")
 
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-  
+  const containerWidth = container.clientWidth
+  const containerHeight = container.clientHeight
 
-        canvas.style.width = "100%"
-        canvas.style.height = "100%"
-        document.body.style.overflow = "hidden"
-      } else {
+  const originalWidth = 720
+  const originalHeight = 480
 
-        canvas.width = 720
-        canvas.height = 480
-        canvas.style.width = "720px"
-        canvas.style.height = "480px"
-      }
-    }
-  
+  const aspectRatio = originalWidth / originalHeight
 
-    resizeCanvas()
+  let newWidth, newHeight
 
-    window.addEventListener("resize", resizeCanvas)
-    window.addEventListener("orientationchange", resizeCanvas)
+  if (containerWidth / containerHeight > aspectRatio) {
+    newHeight = containerHeight
+    newWidth = newHeight * aspectRatio
+  } else {
+    newWidth = containerWidth
+    newHeight = newWidth / aspectRatio
   }
-  
-  document.addEventListener("DOMContentLoaded", setupResponsiveCanvas)
-  
+
+  canvas.style.width = `${newWidth}px`
+  canvas.style.height = `${newHeight}px`
+  canvas.width = originalWidth
+  canvas.height = originalHeight
+}
+
+window.addEventListener("load", resizeCanvas)
+window.addEventListener("resize", resizeCanvas)
+window.addEventListener("orientationchange", () => {
+  setTimeout(resizeCanvas, 100)
+})
