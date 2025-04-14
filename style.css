@@ -19,30 +19,60 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+
 }
 
 canvas {
-  border: 3px solid black;
+  border: none;
   display: block;
   cursor: url("img/GUI/8 Cursors/2.png"), auto;
-  width: 720px;
-  height: 480px;
-  display: block;
-  position: absolute !important;
-  z-index: 1;
-  margin: 0;
-  padding: 0;
-  border: none;
   touch-action: none;
   image-rendering: pixelated;
+  position: relative;
+  z-index: 1;
 }
+
 
 body.mobile canvas {
   width: 100vw;
   height: calc(var(--vh, 1vh) * 100);
+}
+
+
+#game-logo {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+#title {
+  position: absolute;
+  left: 51%;
+  width: 375px;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: white;
+  font-size: clamp(15px, 7vw, 27px);
+  text-align: center;
+  pointer-events: none;
+  font-family: 'CyberpunkCraftpixPixel', monospace;
+  text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-top: 26px;
+}
+
+
+.glitch-letter {
+  display: inline-block;
+  transition: color 0.1s ease, opacity 0.1s ease;
+}
+
+.glitch-letter.glitch-off {
+  color: black;
+  opacity: 0.2;
 }
 
 .parallax-background {
@@ -158,11 +188,10 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
   z-index: 10;
   pointer-events: none;
 }
+
 
 #left-panel,
 #right-panel {
@@ -244,29 +273,29 @@ button {
 }
 
 #game-wrapper {
-  position: relative;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+
 #game-header {
   position: absolute;
   top: 10px;
-  left: 50%;
-  transform: translateX(360px);
-  width: 720px;
-  display: flex;
-  justify-content: flex-end;
+  right: 10px;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
   gap: 8px;
-  z-index: 100;
-  pointer-events: auto;
-}
+  z-index: 20;
 
+}
 
 #game-header img {
   width: 32px;
@@ -276,30 +305,4 @@ button {
   touch-action: manipulation;
 }
 
-#fullscreen-choice {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-}
-
-.choice-box {
-  text-align: center;
-  font-family: 'CyberpunkCraftpixPixel', monospace;
-}
-
-.choice-box button {
-  font-size: 18px;
-  margin: 10px;
-  padding: 10px 20px;
-  font-family: 'CyberpunkCraftpixPixel', monospace;
-  cursor: pointer;
-}
 

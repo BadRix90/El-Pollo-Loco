@@ -30,26 +30,23 @@
   <script src="models/bomb.class.js"></script>
   <script src="models/endboss.class.js"></script>
   <script src="levels/level1.js"></script>
+  <script src="js/responsive-canvas.js"></script>
   <script src="js/game.js"></script>
 </head>
 
 <body onload="init()">
- 
-  <div id="fullscreen-choice">
-    <div class="choice-box">
-      <p>Start in Fullscreen?</p>
-      <button onclick="startInFullscreen()">Yes</button>
-      <button onclick="startWithoutFullscreen()">No</button>
-    </div>
-  </div>
-  
 
   <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop></audio>
 
   <div id="game-wrapper">
     <canvas id="canvas" width="720" height="480"></canvas>
+    <div id="game-header"  style="display: none;">
+      <img src="img/GUI/3 Icons/Icons/Icon_03.png" id="sound-toggle-btn" onclick="toggleMusic()" />
+      <img src="img/GUI/3 Icons/Icons/Icon_05.png" id="fullscreen-btn" onclick="toggleFullscreen()" />
+      <img src="img/GUI/3 Icons/Icons/Icon_26.png" id="menu-btn" onclick="toggleMenu()" />
+    </div>
   </div>
-  
+
 
   <div id="rotate-warning">
     <p>Please rotate your device to landscape mode to play.</p>
@@ -114,10 +111,50 @@
   setRealViewportHeight(); // initial
 
 
+
+  function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    }
+  }
+
+  function exitFullscreen() {
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.msFullscreenElement
+    ) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+  }
+
+  function toggleFullscreen() {
+    const wrapper = document.getElementById('game-wrapper');
+    const isFullscreen =
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.msFullscreenElement;
+
+    if (!isFullscreen) {
+      enterFullscreen(wrapper);
+    } else {
+      exitFullscreen();
+    }
+  }
+
   function showControls() {
     alert("Controls:\n- Move Left: A  \n- Move Right: D \n- Jump: Space\n- Shoot: Q");
   }
-
 </script>
 
 </html>

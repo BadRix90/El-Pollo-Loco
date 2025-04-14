@@ -26,7 +26,7 @@ class World {
   touchOverlay = null;
   endbossDefeatedAt = null;
   showReturnTimer = false;
-
+  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -51,7 +51,7 @@ class World {
     this.showGameOver = false;
     this.gameOverY = -50;
     this.gameOverHandled = false;
-
+    
 
     this.lyricSetupInterval = setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
@@ -145,21 +145,17 @@ class World {
     this.menuButtons = [];
 
     const introMusic = document.getElementById('intro-music');
-
     if (this.showIntro || (this.showControlsOverlay && this.fromIntroToControls)) {
-      if (introMusic && introMusic.paused && !introMusic._isPlaying) {
+
+      if (introMusic && introMusic.paused) {
         introMusic.volume = 0.01;
         introMusic.currentTime = 32;
-        introMusic._isPlaying = true;
-        introMusic.play().catch(() => { }).finally(() => {
-          introMusic._isPlaying = false;
-        });
+        introMusic.play();
       }
     } else {
       if (introMusic && !introMusic.paused) {
         introMusic.pause();
         introMusic.currentTime = 0;
-        introMusic._isPlaying = false; // Optional, für Sicherheit
       }
     }
 
@@ -216,7 +212,6 @@ class World {
 
     this.weather.drawRain();
     this.touchOverlay.draw(this.ctx);
-    this.ui.drawGameHeader();
 
     if (this.showReturnTimer) {
       const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000);
@@ -241,7 +236,7 @@ class World {
       if (this.gameOverY < this.canvas.height / 2) {
         this.gameOverY += 5;
       }
-
+    
       this.ctx.save();
       this.ctx.font = "48px CyberpunkCraftpixPixel";
       this.ctx.fillStyle = "#ff0066";
@@ -249,7 +244,7 @@ class World {
       this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
       this.ctx.restore();
     }
-
+    
 
   }
 
@@ -287,11 +282,8 @@ class World {
       } else {
         this.fromIntroToControls = false;
       }
+
       this.showControlsOverlay = true;
-
-    } else if (action === "fullscreen") {
-      toggleFullscreen();
-
 
     } else if (action === "back-to-menu") {
       if (this.showControlsOverlay) {
@@ -308,6 +300,8 @@ class World {
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
+    document.getElementById('game-header').style.display = "flex";
+
   }
 
   drawHP() {

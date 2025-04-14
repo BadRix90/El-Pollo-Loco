@@ -12,30 +12,18 @@ function init() {
 }
 
 function toggleMusic() {
-    if (!backgroundMusic) return
+    if (!backgroundMusic) return;
 
-    const btn = document.getElementById("sound-toggle-btn")
+    const btn = document.getElementById('sound-toggle-btn');
 
-    if (!toggleMusic.isToggling) {
-        toggleMusic.isToggling = true;
-
-        if (backgroundMusic.paused) {
-            backgroundMusic.play().then(() => {
-                btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
-            }).catch((err) => {
-                console.log("Play prevented:", err);
-            }).finally(() => {
-                toggleMusic.isToggling = false;
-            });
-        } else {
-            btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
-            backgroundMusic.pause();
-            toggleMusic.isToggling = false;
-        }
+    if (backgroundMusic.paused) {
+        backgroundMusic.play();
+        btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
+    } else {
+        backgroundMusic.pause();
+        btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
     }
-
 }
-toggleMusic.isToggling = false
 
 function toggleMenu() {
     world.handleMenuAction("toggle-menu");
@@ -111,114 +99,4 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
-function startInFullscreen() {
-    const canvas = document.getElementById("canvas");
-    const fs = canvas.requestFullscreen?.() || canvas.webkitRequestFullscreen?.() || canvas.msRequestFullscreen?.();
-
-    Promise.resolve(fs).finally(() => {
-        document.getElementById("fullscreen-choice").style.display = "none";
-
-        canvas.addEventListener("click", (e) => {
-            if (!world || !world.menuButtons) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-
-            const clickX = (e.clientX - rect.left) * scaleX;
-            const clickY = (e.clientY - rect.top) * scaleY;
-
-            for (const btn of world.menuButtons) {
-                if (
-                    clickX >= btn.x &&
-                    clickX <= btn.x + btn.w &&
-                    clickY >= btn.y &&
-                    clickY <= btn.y + btn.h
-                ) {
-                    world.handleMenuAction(btn.action);
-                    break;
-                }
-            }
-        });
-
-        init(); // Jetzt erst das Spiel starten
-    });
-}
-
-function startWithoutFullscreen() {
-    document.getElementById("fullscreen-choice").style.display = "none";
-
-    const canvas = document.getElementById("canvas");
-    canvas.addEventListener("click", (e) => {
-        if (!world || !world.menuButtons) return;
-
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-
-        const clickX = (e.clientX - rect.left) * scaleX;
-        const clickY = (e.clientY - rect.top) * scaleY;
-
-        for (const btn of world.menuButtons) {
-            if (
-                clickX >= btn.x &&
-                clickX <= btn.x + btn.w &&
-                clickY >= btn.y &&
-                clickY <= btn.y + btn.h
-            ) {
-                world.handleMenuAction(btn.action);
-                break;
-            }
-        }
-    });
-
-    init(); // Spiel ohne Fullscreen starten
-}
-
-
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-    }
-}
-
-function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    }
-}
-
-function toggleFullscreen() {
-    const canvas = document.getElementById("canvas");
-
-    if (
-        !document.fullscreenElement &&
-        !document.webkitFullscreenElement &&
-        !document.msFullscreenElement
-    ) {
-        const result = canvas.requestFullscreen?.() ||
-            canvas.webkitRequestFullscreen?.() ||
-            canvas.msRequestFullscreen?.();
-
-        if (result && result.catch) {
-            result.catch(() => { });
-        }
-    } else {
-        const result = document.exitFullscreen?.() ||
-            document.webkitExitFullscreen?.() ||
-            document.msExitFullscreen?.();
-
-        if (result && result.catch) {
-            result.catch(() => { });
-        }
-    }
-}
 

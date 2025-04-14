@@ -52,8 +52,8 @@ class TouchOverlay {
     }
 
     registerTouchEvents() {
-        this.canvas.addEventListener('touchstart', (e) => this.updateTouches(e));
-        this.canvas.addEventListener('touchmove', (e) => this.updateTouches(e));
+        this.canvas.addEventListener('touchstart', (e) => this.updateTouches(e), { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => this.updateTouches(e), { passive: false });        
         this.canvas.addEventListener('touchend', (e) => this.updateTouches(e));
         this.canvas.addEventListener('touchcancel', (e) => this.updateTouches(e));
 
