@@ -42,7 +42,7 @@ class UIManager {
     ctx.textAlign = "center"
     ctx.fillText("Power of the Beast", this.canvas.width / 2, this.world.introY)
 
-    if (this.world.introY < 180 && !this.world.showStartButton) {
+    if (this.world.introY < 100 && !this.world.showStartButton) {
       this.world.introY += 2
       ctx.restore()
       return
@@ -72,15 +72,14 @@ class UIManager {
     if (this.world.introStep === 2) {
       ctx.font = "20px CyberpunkCraftpixPixel"
       ctx.fillStyle = "#ffffff"
-      ctx.fillText("Created by Kay Dietrich", this.canvas.width / 2, this.world.introY + 60)
+      ctx.fillText("Created by Kay Dietrich", this.canvas.width / 2, this.world.introY + 40)
 
       ctx.font = "14px CyberpunkCraftpixPixel"
-      ctx.fillText("Music: 'Power of the Beast' by Beast in Black", this.canvas.width / 2, this.world.introY + 90)
-      ctx.fillText("For private and educational use only", this.canvas.width / 2, this.world.introY + 110)
-
-      this.drawButton(this.canvas.width / 2, this.world.introY + 150, 160, 40, "START", "start")
-
-      this.drawButton(this.canvas.width / 2, this.world.introY + 200, 160, 40, "CONTROLS", "controls")
+      ctx.fillText("Music: 'Power of the Beast' by Beast in Black", this.canvas.width / 2, this.world.introY + 70)
+      ctx.fillText("For private and educational use only", this.canvas.width / 2, this.world.introY + 90)
+      this.drawButton(this.canvas.width / 2 - 90, this.world.introY + 140, 160, 40, "START", "start")
+      this.drawButton(this.canvas.width / 2 + 90, this.world.introY + 140, 160, 40, "CONTROLS", "controls")
+      
     }
 
     ctx.restore()
