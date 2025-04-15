@@ -109,7 +109,9 @@ window.addEventListener('keydown', (e) => {
         } else if (e.key === "ArrowDown") {
             world.ui.navigateMenu("down");
         } else if (e.key === "Enter") {
-            world.handleMenuAction(world.ui.activeMenuButton);
+            if (world.ui.activeMenuButton) {
+                world.handleMenuAction(world.ui.activeMenuButton);
+            }
         }
     }
 
@@ -119,10 +121,11 @@ window.addEventListener('keydown', (e) => {
         } else if (e.key === "ArrowRight") {
             world.ui.navigateMenu("right");
         } else if (e.key === "Enter") {
-            world.handleMenuAction(world.ui.activeMenuButton.toLowerCase());
+            if (world.ui.activeMenuButton) {
+                world.handleMenuAction(world.ui.activeMenuButton.toLowerCase());
+            }
         }
     }
-
 });
 
 
