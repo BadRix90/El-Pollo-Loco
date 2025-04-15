@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="icon" href="img/cyberpunk-characters-pixel-art/icons/glitch effect/without background/8.png">
 
   <link rel="stylesheet" href="style.css">
@@ -39,7 +40,14 @@
   <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop></audio>
 
   <div id="game-wrapper">
-      <canvas id="canvas" width="720" height="480"></canvas>
+    <canvas id="canvas" width="720" height="480"></canvas>
+    <div id="mobile-header">
+      <img src="img/GUI/3 Icons/Icons/Icon_05.png" id="btn-fs" onclick="toggleFullscreen()" />
+      <img src="img/GUI/3 Icons/Icons/Icon_03.png" id="btn-music" onclick="toggleMusic()" />
+      <img src="img/GUI/3 Icons/Icons/Icon_26.png" id="btn-menu" onclick="world.handleMenuAction('toggle-menu')" />
+    </div>
+    
+
   </div>
 
 
@@ -103,7 +111,7 @@
   window.addEventListener('resize', setRealViewportHeight);
   window.addEventListener('orientationchange', setRealViewportHeight);
   window.addEventListener('DOMContentLoaded', setRealViewportHeight);
-  setRealViewportHeight(); 
+  setRealViewportHeight();
 
 
 

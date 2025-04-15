@@ -207,7 +207,7 @@ class TouchOverlay {
                     case 'left': btn.img.src = 'img/GUI/3 Icons/Icons/Icon_14.png'; break;
                     case 'right': btn.img.src = 'img/GUI/3 Icons/Icons/Icon_12.png'; break;
                     case 'jump': btn.img.src = 'img/GUI/3 Icons/Icons/Icon_13.png'; break;
-                    case 'shoot': btn.img.src = 'img/GUI/3 Icons/Icons/Icon_19.png'; break;
+                    case 'shoot': btn.img.src = 'img/GUI/9 Other/3 Skill icons/Skillicon7_06.png'; break;
                 }
             }
 

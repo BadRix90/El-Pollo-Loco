@@ -279,3 +279,28 @@ button {
   align-items: center;
 }
 
+#mobile-header {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 99;
+}
+
+#mobile-header img {
+  width: 40px;
+  height: 40px;
+  opacity: 0.8;
+  cursor: pointer;
+  touch-action: manipulation;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+body.mobile #mobile-header {
+  display: flex;
+}
+

@@ -13,6 +13,12 @@ function init() {
     backgroundMusic = document.getElementById('background-music');
     backgroundMusic.volume = 0.015;
 
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+        document.body.classList.add("mobile");
+    }
+
+
     world = new World(canvas, keyboard);
 }
 
