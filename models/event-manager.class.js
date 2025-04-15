@@ -52,7 +52,11 @@ class EventManager {
               clickY >= button.y &&
               clickY <= button.y + button.h
             ) {
-              this.world.handleMenuAction(button.action);
+              if (this.world.ui.activeMenuButton === button.action) {
+                this.world.handleMenuAction(button.action);
+              } else {
+                this.world.ui.activeMenuButton = button.action;
+              }
               return;
             }
           }
