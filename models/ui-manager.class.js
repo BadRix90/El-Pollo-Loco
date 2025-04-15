@@ -149,6 +149,8 @@ class UIManager {
     this.drawButton(centerX, 320, 200, 40, "BACK", "toggle-menu")
 
     ctx.restore()
+    this.pulseFrame++;
+
   }
 
 
