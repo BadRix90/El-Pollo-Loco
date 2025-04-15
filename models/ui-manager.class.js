@@ -163,6 +163,9 @@ class UIManager {
 
     this.world.menuButtons = []
 
+    this.menuOptions = ["back-to-menu"];
+    this.activeMenuButton = "back-to-menu";
+
     ctx.save()
     ctx.fillStyle = "rgba(0,0,0,1)"
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -182,6 +185,8 @@ class UIManager {
     this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu")
 
     ctx.restore()
+    this.pulseFrame++;
+
   }
 
 
