@@ -92,7 +92,7 @@ class UIManager {
 
     this.menuGrid = [
       ["start", "controls"],
-      ["impressum"]
+      ["impressum", "Impressum"]
     ];
 
     if (
