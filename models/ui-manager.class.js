@@ -9,12 +9,7 @@ class UIManager {
     this.world = world
     this.ctx = world.ctx
     this.canvas = world.canvas
-    this.activeMenuButton = "start";
     this.pulseFrame = 0;
-    this.menuOptions = ["start", "controls"];
-    this.activeMenuButton = "exit";
-    this.menuOptions = ["exit", "controls", "toggle-menu"];
-    
   }
 
 
@@ -95,6 +90,12 @@ class UIManager {
       }, 3000)
     }
 
+    this.menuOptions = ["start", "controls"];
+    if (!this.activeMenuButton || !this.menuOptions.includes(this.activeMenuButton)) {
+      this.activeMenuButton = "start";
+    }
+
+
     if (this.world.showLyrics && this.world.introLyrics[this.world.lyricIndex]) {
       ctx.font = "20px CyberpunkCraftpixPixel"
       ctx.fillStyle = "#ffffff"
@@ -127,8 +128,12 @@ class UIManager {
     const ctx = this.ctx
     const centerX = this.canvas.width / 2
 
-    this.activeMenuButton = "exit";
-    this.world.menuButtons = []
+    this.world.menuButtons = [];
+
+    this.menuOptions = ["exit", "controls", "toggle-menu"];
+    if (!this.activeMenuButton || !this.menuOptions.includes(this.activeMenuButton)) {
+      this.activeMenuButton = "exit";
+    }
 
     ctx.save()
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
@@ -225,14 +230,14 @@ class UIManager {
 
 
   navigateMenu(direction) {
-  const index = this.menuOptions.indexOf(this.activeMenuButton);
+    const index = this.menuOptions.indexOf(this.activeMenuButton);
 
-  if (direction === "left" || direction === "up") {
-    this.activeMenuButton = this.menuOptions[(index - 1 + this.menuOptions.length) % this.menuOptions.length];
-  } else if (direction === "right" || direction === "down") {
-    this.activeMenuButton = this.menuOptions[(index + 1) % this.menuOptions.length];
+    if (direction === "left" || direction === "up") {
+      this.activeMenuButton = this.menuOptions[(index - 1 + this.menuOptions.length) % this.menuOptions.length];
+    } else if (direction === "right" || direction === "down") {
+      this.activeMenuButton = this.menuOptions[(index + 1) % this.menuOptions.length];
+    }
   }
-}
 
-  
+
 }
