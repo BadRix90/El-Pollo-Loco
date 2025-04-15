@@ -9,6 +9,10 @@ class UIManager {
     this.world = world
     this.ctx = world.ctx
     this.canvas = world.canvas
+    this.activeMenuButton = "start";
+    this.pulseFrame = 0;
+    this.menuOptions = ["start", "controls"];
+
   }
 
 
@@ -29,7 +33,12 @@ class UIManager {
       this.world.hoverY >= y - h / 2 &&
       this.world.hoverY <= y + h / 2
 
-    ctx.fillStyle = "thistle"
+    const isActive = this.activeMenuButton === action;
+
+    ctx.fillStyle = isActive
+      ? `rgba(216,191,216,${0.6 + 0.4 * Math.abs(Math.sin(this.pulseFrame / 10))})`
+      : "thistle";
+
     ctx.fillRect(x - w / 2, y - h / 2, w, h)
 
     ctx.strokeStyle = "#000"
@@ -100,10 +109,12 @@ class UIManager {
       ctx.fillText("For private and educational use only", this.canvas.width / 2, this.world.introY + 90)
       this.drawButton(this.canvas.width / 2 - 90, this.world.introY + 140, 160, 40, "START", "start")
       this.drawButton(this.canvas.width / 2 + 90, this.world.introY + 140, 160, 40, "CONTROLS", "controls")
-      
+
     }
 
     ctx.restore()
+    this.pulseFrame++;
+
   }
 
 
@@ -209,4 +220,14 @@ class UIManager {
     this.world.setWorld();
   }
 
+
+  navigateMenu(direction) {
+    const index = this.menuOptions.indexOf(this.activeMenuButton);
+    if (direction === "left") {
+      this.activeMenuButton = this.menuOptions[(index - 1 + this.menuOptions.length) % this.menuOptions.length];
+    } else if (direction === "right") {
+      this.activeMenuButton = this.menuOptions[(index + 1) % this.menuOptions.length];
+    }
+  }
+  
 }

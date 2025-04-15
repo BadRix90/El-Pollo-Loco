@@ -98,6 +98,17 @@ window.addEventListener('keydown', (e) => {
     } else if (e.key === "Shift") {
         keyboard.SHIFT = true;
     }
+
+    if (world && world.showIntro) {
+        if (e.key === "ArrowLeft") {
+            world.ui.navigateMenu("left");
+        } else if (e.key === "ArrowRight") {
+            world.ui.navigateMenu("right");
+        } else if (e.key === "Enter") {
+            world.handleMenuAction(world.ui.activeMenuButton.toLowerCase());
+        }
+    }
+
 });
 
 

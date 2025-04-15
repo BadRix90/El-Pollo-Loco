@@ -19,25 +19,13 @@ class EventManager {
  * Detects if a menu button was clicked and triggers the corresponding action.
  */
   registerClickEvents() {
+    // Disabled mouse click during intro
     this.canvas.addEventListener("click", (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-
-      if (this.world.menuButtons) {
-        for (const button of this.world.menuButtons) {
-          if (
-            clickX >= button.x &&
-            clickX <= button.x + button.w &&
-            clickY >= button.y &&
-            clickY <= button.y + button.h
-          ) {
-            this.world.handleMenuAction(button.action);
-            return;
-          }
-        }
+      if (!this.world.showIntro) {
+        this.handleCanvasClick(e);
       }
     });
+
   }
 
 
@@ -73,5 +61,25 @@ class EventManager {
     }, { passive: false });
   }
 
+
+  handleCanvasClick(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    if (this.world.menuButtons) {
+      for (const button of this.world.menuButtons) {
+        if (
+          clickX >= button.x &&
+          clickX <= button.x + button.w &&
+          clickY >= button.y &&
+          clickY <= button.y + button.h
+        ) {
+          this.world.handleMenuAction(button.action);
+          return;
+        }
+      }
+    }
+  }
 
 }
