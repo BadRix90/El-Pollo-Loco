@@ -99,6 +99,10 @@ window.addEventListener('keydown', (e) => {
         keyboard.SHIFT = true;
     }
 
+    if (world && world.showControlsOverlay && e.key === "Enter") {
+        world.handleMenuAction("back-to-menu");
+    }
+
     if (world && world.showIntro) {
         if (e.key === "ArrowLeft") {
             world.ui.navigateMenu("left");
