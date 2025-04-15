@@ -175,22 +175,30 @@ class UIManager {
     ctx.textAlign = "center"
     ctx.fillText("CONTROLS", centerX, 100)
 
-    const lines = [
+    ctx.textAlign = "left";
+    ctx.font = "18px CyberpunkCraftpixPixel";
+
+    const linesLeft = [
       "A - Left",
       "D - Right",
       "SPACE - Jump",
-      "Q - Shoot",
-      "ESC - Menu",
+      "Q - Shoot"
+    ];
+
+    const linesRight = [
       "M - Menu",
       "F - Fullscreen",
       "S - Toggle Music"
     ];
 
+    linesLeft.forEach((line, i) => {
+      ctx.fillText(line, centerX - 120, 160 + i * 30);
+    });
 
-    ctx.font = "18px CyberpunkCraftpixPixel"
-    lines.forEach((line, i) => {
-      ctx.fillText(line, centerX, 160 + i * 30)
-    })
+    linesRight.forEach((line, i) => {
+      ctx.fillText(line, centerX + 20, 160 + i * 30);
+    });
+
 
     this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu")
 
