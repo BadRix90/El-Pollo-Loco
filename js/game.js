@@ -77,8 +77,9 @@ window.addEventListener('keydown', (e) => {
     } else if (e.key.toLowerCase() === "m") {
         world.showOptionsMenu = !world.showOptionsMenu;
     }
-
-
+    if (world && world.showImpressumOverlay && e.key === "Enter") {
+        world.handleMenuAction("back-to-intro");
+    }
     if (e.key === " ") {
         e.preventDefault();
         keyboard.SPACE = true;

@@ -90,7 +90,7 @@ class UIManager {
       }, 3000)
     }
 
-    this.menuOptions = ["start", "controls"];
+    this.menuOptions = ["start", "controls", "impressum"];
     if (!this.activeMenuButton || !this.menuOptions.includes(this.activeMenuButton)) {
       this.activeMenuButton = "start";
     }
@@ -112,6 +112,7 @@ class UIManager {
       ctx.fillText("For private and educational use only", this.canvas.width / 2, this.world.introY + 90)
       this.drawButton(this.canvas.width / 2 - 90, this.world.introY + 140, 160, 40, "START", "start")
       this.drawButton(this.canvas.width / 2 + 90, this.world.introY + 140, 160, 40, "CONTROLS", "controls")
+      this.drawButton(this.canvas.width / 2, this.world.introY + 200, 160, 40, "IMPRINT", "impressum");
 
     }
 
@@ -188,7 +189,7 @@ class UIManager {
     const linesRight = [
       "M - Menu",
       "F - Fullscreen",
-      "S - Toggle Music"
+      "T - Toggle Music"
     ];
 
     linesLeft.forEach((line, i) => {
@@ -264,5 +265,33 @@ class UIManager {
     }
   }
 
+  drawImpressumOverlay() {
+    const ctx = this.ctx;
+    const centerX = this.canvas.width / 2;
+  
+    this.menuOptions = ["back-to-intro"];
+    this.activeMenuButton = "back-to-intro";
+    this.world.menuButtons = [];
+  
+    ctx.save();
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.font = "24px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.fillText("IMPRINT", centerX, 80);
+  
+    ctx.font = "16px CyberpunkCraftpixPixel";
+    ctx.fillText("This game is a private educational project.", centerX, 130);
+    ctx.fillText("Created by Kay Dietrich – Developer Academy 2025", centerX, 160);
+    ctx.fillText("No commercial use intended.", centerX, 190);
+  
+    this.drawButton(centerX, 300, 160, 40, "BACK", "back-to-intro");
+  
+    ctx.restore();
+    this.pulseFrame++;
+  }
+  
 
 }

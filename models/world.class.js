@@ -26,7 +26,7 @@ class World {
   touchOverlay = null;
   endbossDefeatedAt = null;
   showReturnTimer = false;
-  
+
 
   /**
  * Initializes the game world with canvas, keyboard input,
@@ -57,7 +57,7 @@ class World {
     this.showGameOver = false;
     this.gameOverY = -50;
     this.gameOverHandled = false;
-    
+
 
     this.lyricSetupInterval = setInterval(() => {
       if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
@@ -177,7 +177,7 @@ class World {
     this.menuButtons = [];
 
     const introMusic = document.getElementById('intro-music');
-    if (this.showIntro || (this.showControlsOverlay && this.fromIntroToControls)) {
+    if (this.showIntro || this.showImpressumOverlay || (this.showControlsOverlay && this.fromIntroToControls)) {
 
       if (introMusic && introMusic.paused) {
         introMusic.volume = 0.01;
@@ -189,6 +189,12 @@ class World {
         introMusic.pause();
         introMusic.currentTime = 0;
       }
+    }
+
+    if (this.showImpressumOverlay) {
+      this.ui.drawImpressumOverlay();
+      requestAnimationFrame(() => this.draw());
+      return;
     }
 
     if (this.showIntro) {
@@ -268,7 +274,7 @@ class World {
       if (this.gameOverY < this.canvas.height / 2) {
         this.gameOverY += 5;
       }
-    
+
       this.ctx.save();
       this.ctx.font = "48px CyberpunkCraftpixPixel";
       this.ctx.fillStyle = "#ff0066";
@@ -276,7 +282,6 @@ class World {
       this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
       this.ctx.restore();
     }
-    
 
   }
 
@@ -337,7 +342,17 @@ class World {
 
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
+    } else if (action === "impressum") {
+      this.showIntro = false;
+      this.showImpressumOverlay = true;
     }
+    else if (action === "back-to-intro") {
+      this.showImpressumOverlay = false;
+      this.showIntro = true;
+      this.introStep = 2;
+      this.showStartButton = true;
+    }
+
 
   }
 
