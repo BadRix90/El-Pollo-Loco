@@ -338,7 +338,6 @@ class World {
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu;
     }
-    document.getElementById('game-header').style.display = "flex";
 
   }
 

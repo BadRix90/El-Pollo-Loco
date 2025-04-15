@@ -192,7 +192,7 @@ class UIManager {
     ];
 
     linesLeft.forEach((line, i) => {
-      ctx.fillText(line, centerX - 120, 160 + i * 30);
+      ctx.fillText(line, centerX - 150, 160 + i * 30);
     });
 
     linesRight.forEach((line, i) => {

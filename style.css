@@ -303,22 +303,3 @@ button {
     max-width: 100vw;
   }
 }
-
-#game-header {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: none;
-  flex-direction: row;
-  justify-content: center;
-  gap: 8px;
-  z-index: 20;
-}
-
-#game-header img {
-  width: 32px;
-  height: 32px;
-  opacity: 0.8;
-  cursor: pointer;
-  touch-action: manipulation;
-}

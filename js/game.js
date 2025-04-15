@@ -23,14 +23,10 @@ function init() {
 function toggleMusic() {
     if (!backgroundMusic) return;
 
-    const btn = document.getElementById('sound-toggle-btn');
-
     if (backgroundMusic.paused) {
         backgroundMusic.play();
-        btn.src = "img/GUI/3 Icons/Icons/Icon_03.png";
     } else {
         backgroundMusic.pause();
-        btn.src = "img/GUI/3 Icons/Icons/Icon_34.png";
     }
 }
 
@@ -78,7 +74,10 @@ function stopGame() {
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" && world) {
         world.showOptionsMenu = !world.showOptionsMenu;
+    } else if (e.key.toLowerCase() === "m") {
+        world.showOptionsMenu = !world.showOptionsMenu;
     }
+
 
     if (e.key === " ") {
         e.preventDefault();
@@ -97,7 +96,13 @@ window.addEventListener('keydown', (e) => {
         keyboard.CTRL = true;
     } else if (e.key === "Shift") {
         keyboard.SHIFT = true;
+    } else if (e.key.toLowerCase() === "t") {
+        toggleMusic();
+    } else if (e.key.toLowerCase() === "f") {
+        toggleFullscreen();
     }
+
+
 
     if (world && world.showControlsOverlay && e.key === "Enter") {
         world.handleMenuAction("back-to-menu");
