@@ -52,6 +52,10 @@ class EventManager {
               clickY >= button.y &&
               clickY <= button.y + button.h
             ) {
+              if (this.world.menuButtons.length === 1) {
+                this.world.handleMenuAction(button.action);
+                return;
+              }
               if (this.world.ui.activeMenuButton === button.action) {
                 this.world.handleMenuAction(button.action);
               } else {
