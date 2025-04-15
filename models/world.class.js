@@ -58,34 +58,16 @@ class World {
     this.gameOverY = -50;
     this.gameOverHandled = false;
 
-
-    this.lyricSetupInterval = setInterval(() => {
-      if (this.introStep === 0 && !this.lyricInterval && this.introY >= 180) {
-        this.showLyrics = true;
-        this.lyricIndex = 0;
-        this.lyricInterval = setInterval(() => {
-          this.lyricIndex++;
-          if (this.lyricIndex >= this.introLyrics.length) {
-            clearInterval(this.lyricInterval);
-            this.lyricInterval = null;
-            this.showLyrics = false;
-            this.introStep = 1;
-            this.showStartButton = true;
-          }
-        }, this.lyricSpeed);
-      }
-    }, 100);
-
-
     this.introLyrics = [
-      "Neon fire cuts through night",
-      "Broken code begins to fight",
-      "Steel and soul now intertwined",
-      "No more chains, I draw the line",
-      "The beast awakens — I am power"
+      "Forget the mouse.",
+      "This is pure keyboard.",
+      "Arrow keys.",
+      "Enter.",
     ];
-    this.lyricIndex = 0;
-    this.lyricY = this.canvas.height - 80;
+    this.introStep = 1;
+    this.lyricDirection = 1; 
+    this.lyricY = 120;
+
     this.showLyrics = true;
   }
 

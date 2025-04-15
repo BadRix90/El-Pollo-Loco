@@ -102,12 +102,34 @@ class UIManager {
       this.activeMenuButton = "start";
     }
 
+    if (this.world.introStep === 1 && this.world.showLyrics) {
+      ctx.font = "20px CyberpunkCraftpixPixel";
+      ctx.fillStyle = "#ffffff";
+    
+      const baseY = this.world.lyricY;
+    
+      this.world.introLyrics.forEach((line, i) => {
+        ctx.fillText(line, this.canvas.width / 2, baseY + i * 30);
+      });
+    
+      if (!this.world.lyricHold) {
+        this.world.lyricY += this.world.lyricDirection;
+    
+        const stopY = (this.canvas.height / 2) - ((this.world.introLyrics.length * 30) / 2);
 
-    if (this.world.showLyrics && this.world.introLyrics[this.world.lyricIndex]) {
-      ctx.font = "20px CyberpunkCraftpixPixel"
-      ctx.fillStyle = "#ffffff"
-      ctx.fillText(this.world.introLyrics[this.world.lyricIndex], this.canvas.width / 2, this.world.introY + 60)
+        if (this.world.lyricY >= stopY) {
+          this.world.lyricDirection = 0;
+          this.world.lyricHold = true;
+    
+          setTimeout(() => {
+            this.world.showLyrics = false;
+            this.world.introStep = 2;
+            this.world.showStartButton = true;
+          }, 2000);
+        }
+      }
     }
+    
 
     if (this.world.introStep === 2) {
       ctx.font = "20px CyberpunkCraftpixPixel"
