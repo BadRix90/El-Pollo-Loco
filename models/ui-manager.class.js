@@ -125,7 +125,7 @@ class UIManager {
             this.world.showLyrics = false;
             this.world.introStep = 2;
             this.world.showStartButton = true;
-          }, 2000);
+          }, 1500);
         }
       }
     }
