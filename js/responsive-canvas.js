@@ -5,10 +5,9 @@
  */
 function resizeCanvas() {
   const canvas = document.getElementById("canvas")
-  const container = document.getElementById("canvas-container")
+  const containerWidth = window.innerWidth;
+  const containerHeight = window.innerHeight;
 
-  const containerWidth = container.clientWidth
-  const containerHeight = container.clientHeight
 
   const originalWidth = 720
   const originalHeight = 480
@@ -24,6 +23,9 @@ function resizeCanvas() {
     newWidth = containerWidth
     newHeight = newWidth / aspectRatio
   }
+
+  newWidth = Math.min(newWidth, 720);
+  newHeight = Math.min(newHeight, 480);
 
   canvas.style.width = `${newWidth}px`
   canvas.style.height = `${newHeight}px`
