@@ -103,6 +103,16 @@ window.addEventListener('keydown', (e) => {
         world.handleMenuAction("back-to-menu");
     }
 
+    if (world && world.showOptionsMenu) {
+        if (e.key === "ArrowUp") {
+            world.ui.navigateMenu("up");
+        } else if (e.key === "ArrowDown") {
+            world.ui.navigateMenu("down");
+        } else if (e.key === "Enter") {
+            world.handleMenuAction(world.ui.activeMenuButton);
+        }
+    }
+
     if (world && world.showIntro) {
         if (e.key === "ArrowLeft") {
             world.ui.navigateMenu("left");

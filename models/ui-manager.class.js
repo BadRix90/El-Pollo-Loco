@@ -12,7 +12,9 @@ class UIManager {
     this.activeMenuButton = "start";
     this.pulseFrame = 0;
     this.menuOptions = ["start", "controls"];
-
+    this.activeMenuButton = "exit";
+    this.menuOptions = ["exit", "controls", "toggle-menu"];
+    
   }
 
 
@@ -125,6 +127,7 @@ class UIManager {
     const ctx = this.ctx
     const centerX = this.canvas.width / 2
 
+    this.activeMenuButton = "exit";
     this.world.menuButtons = []
 
     ctx.save()
@@ -222,12 +225,14 @@ class UIManager {
 
 
   navigateMenu(direction) {
-    const index = this.menuOptions.indexOf(this.activeMenuButton);
-    if (direction === "left") {
-      this.activeMenuButton = this.menuOptions[(index - 1 + this.menuOptions.length) % this.menuOptions.length];
-    } else if (direction === "right") {
-      this.activeMenuButton = this.menuOptions[(index + 1) % this.menuOptions.length];
-    }
+  const index = this.menuOptions.indexOf(this.activeMenuButton);
+
+  if (direction === "left" || direction === "up") {
+    this.activeMenuButton = this.menuOptions[(index - 1 + this.menuOptions.length) % this.menuOptions.length];
+  } else if (direction === "right" || direction === "down") {
+    this.activeMenuButton = this.menuOptions[(index + 1) % this.menuOptions.length];
   }
+}
+
   
 }
