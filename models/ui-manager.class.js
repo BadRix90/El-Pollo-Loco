@@ -90,8 +90,15 @@ class UIManager {
       }, 3000)
     }
 
-    this.menuOptions = ["start", "controls", "impressum"];
-    if (!this.activeMenuButton || !this.menuOptions.includes(this.activeMenuButton)) {
+    this.menuGrid = [
+      ["start", "controls"],
+      ["impressum"]
+    ];
+
+    if (
+      !this.activeMenuButton ||
+      !this.menuGrid.flat().includes(this.activeMenuButton)
+    ) {
       this.activeMenuButton = "start";
     }
 
@@ -254,6 +261,36 @@ class UIManager {
     this.world.setWorld();
   }
 
+  navigateMenuSmart(direction) {
+    if (!this.menuGrid || !this.activeMenuButton) return;
+
+    let row = 0, col = 0;
+
+    for (let r = 0; r < this.menuGrid.length; r++) {
+      const c = this.menuGrid[r].indexOf(this.activeMenuButton);
+      if (c !== -1) {
+        row = r;
+        col = c;
+        break;
+      }
+    }
+
+    let newRow = row;
+    let newCol = col;
+
+    if (direction === "up") newRow--;
+    if (direction === "down") newRow++;
+    if (direction === "left") newCol--;
+    if (direction === "right") newCol++;
+
+    if (
+      this.menuGrid[newRow] &&
+      this.menuGrid[newRow][newCol]
+    ) {
+      this.activeMenuButton = this.menuGrid[newRow][newCol];
+    }
+  }
+
 
   navigateMenu(direction) {
     const index = this.menuOptions.indexOf(this.activeMenuButton);
@@ -268,30 +305,30 @@ class UIManager {
   drawImpressumOverlay() {
     const ctx = this.ctx;
     const centerX = this.canvas.width / 2;
-  
+
     this.menuOptions = ["back-to-intro"];
     this.activeMenuButton = "back-to-intro";
     this.world.menuButtons = [];
-  
+
     ctx.save();
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  
+
     ctx.font = "24px CyberpunkCraftpixPixel";
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.fillText("IMPRINT", centerX, 80);
-  
+
     ctx.font = "16px CyberpunkCraftpixPixel";
     ctx.fillText("This game is a private educational project.", centerX, 130);
     ctx.fillText("Created by Kay Dietrich – Developer Academy 2025", centerX, 160);
     ctx.fillText("No commercial use intended.", centerX, 190);
-  
+
     this.drawButton(centerX, 300, 160, 40, "BACK", "back-to-intro");
-  
+
     ctx.restore();
     this.pulseFrame++;
   }
-  
+
 
 }

@@ -122,10 +122,9 @@ window.addEventListener('keydown', (e) => {
     }
 
     if (world && world.showIntro) {
-        if (e.key === "ArrowLeft") {
-            world.ui.navigateMenu("left");
-        } else if (e.key === "ArrowRight") {
-            world.ui.navigateMenu("right");
+        if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+            const dir = e.key.replace("Arrow", "").toLowerCase();
+            world.ui.navigateMenuSmart(dir);
         } else if (e.key === "Enter") {
             if (world.ui.activeMenuButton) {
                 world.handleMenuAction(world.ui.activeMenuButton.toLowerCase());
