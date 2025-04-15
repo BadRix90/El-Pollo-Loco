@@ -175,7 +175,17 @@ class UIManager {
     ctx.textAlign = "center"
     ctx.fillText("CONTROLS", centerX, 100)
 
-    const lines = ["A - Left", "D - Right", "SPACE - Jump", "Q - Shoot", "ESC - Menu"]
+    const lines = [
+      "A - Left",
+      "D - Right",
+      "SPACE - Jump",
+      "Q - Shoot",
+      "ESC - Menu",
+      "M - Menu",
+      "F - Fullscreen",
+      "S - Toggle Music"
+    ];
+
 
     ctx.font = "18px CyberpunkCraftpixPixel"
     lines.forEach((line, i) => {
