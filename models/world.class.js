@@ -303,132 +303,181 @@ drawStartIntroScreen() {
   }
 
 
-  startGame(introMusic) {
-    if (introMusic) {
-      introMusic.pause()
-      introMusic.currentTime = 0
-    }
-
-    this.showIntro = false
-    this.showMainMenu = false
-    toggleMusic()
-    this.policeCar = new PoliceCar(this)
+  /**
+ * Starts the game from the intro screen.
+ * Stops the intro music, hides intro/menu, starts background music and police car.
+ * @param {HTMLAudioElement} introMusic - The intro music element.
+ */
+startGame(introMusic) {
+  if (introMusic) {
+    introMusic.pause();
+    introMusic.currentTime = 0;
   }
 
+  this.showIntro = false;
+  this.showMainMenu = false;
+  toggleMusic();
+  this.policeCar = new PoliceCar(this);
+}
 
-  restartGameHandler(introMusic) {
-    if (introMusic) {
-      introMusic.pause()
-      introMusic.currentTime = 0
-    }
-    this.restartGame()
+
+/**
+ * Restarts the game from any state.
+ * Stops intro music and calls internal restartGame().
+ * @param {HTMLAudioElement} introMusic - The intro music element.
+ */
+restartGameHandler(introMusic) {
+  if (introMusic) {
+    introMusic.pause();
+    introMusic.currentTime = 0;
+  }
+  this.restartGame();
+}
+
+
+/**
+ * Exits the game and returns to main menu.
+ */
+exitGame() {
+  stopGame({ goToMenu: true });
+}
+
+
+/**
+ * Opens the controls overlay.
+ * Handles both intro and in-game cases.
+ */
+openControls() {
+  if (this.showIntro) {
+    this.fromIntroToControls = true;
+    this.showIntro = false;
+  } else {
+    this.fromIntroToControls = false;
   }
 
-
-  exitGame() {
-    stopGame({ goToMenu: true })
-  }
+  this.showControlsOverlay = true;
+}
 
 
-  openControls() {
-    if (this.showIntro) {
-      this.fromIntroToControls = true
-      this.showIntro = false
+/**
+ * Handles going back to the menu from controls, endscreen or gameplay.
+ */
+backToMenu() {
+  if (this.showControlsOverlay) {
+    this.showControlsOverlay = false;
+
+    if (this.fromIntroToControls) {
+      this.showIntro = true;
+      this.showStartButton = true;
+      this.introStep = 2;
     } else {
-      this.fromIntroToControls = false
+      this.showOptionsMenu = true;
     }
 
-    this.showControlsOverlay = true
+  } else if (this.showEndscreen) {
+    stopGame({ goToMenu: true });
+
+  } else {
+    this.showOptionsMenu = !this.showOptionsMenu;
+  }
+}
+
+
+/**
+ * Toggles the in-game options menu visibility.
+ */
+toggleOptionsMenu() {
+  this.showOptionsMenu = !this.showOptionsMenu;
+}
+
+
+/**
+ * Shows the legal imprint overlay from intro screen.
+ */
+showImpressum() {
+  this.showIntro = false;
+  this.showImpressumOverlay = true;
+}
+
+
+/**
+ * Returns from the impressum screen back to the intro screen.
+ */
+backToIntro() {
+  this.showImpressumOverlay = false;
+  this.showIntro = true;
+  this.introStep = 2;
+  this.showStartButton = true;
+}
+
+
+/**
+ * Restarts the game from the endscreen with no menu redirection.
+ */
+restartFromEndscreen() {
+  this.showEndscreen = false;
+  stopGame({ goToMenu: false });
+}
+
+
+/**
+ * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.
+ * @returns {boolean} True if an overlay was drawn, false otherwise.
+ */
+handleOverlayScreens() {
+  if (this.showImpressumOverlay) {
+    this.ui.drawImpressumOverlay();
+    requestAnimationFrame(() => this.draw());
+    return true;
   }
 
+  if (this.showIntro) {
+    this.ui.drawIntroScreen();
+    requestAnimationFrame(() => this.draw());
+    return true;
+  }
 
-  backToMenu() {
-    if (this.showControlsOverlay) {
-      this.showControlsOverlay = false
-      if (this.fromIntroToControls) {
-        this.showIntro = true
-        this.showStartButton = true
-        this.introStep = 2
-      } else {
-        this.showOptionsMenu = true
-      }
-    } else if (this.showEndscreen) {
-      stopGame({ goToMenu: true })
-    } else {
-      this.showOptionsMenu = !this.showOptionsMenu
+  if (this.showControlsOverlay) {
+    this.ui.drawControlsOverlay();
+    requestAnimationFrame(() => this.draw());
+    return true;
+  }
+
+  if (this.showOptionsMenu) {
+    this.ui.drawOptionsMenu();
+    requestAnimationFrame(() => this.draw());
+    return true;
+  }
+
+  return false;
+}
+
+
+/**
+ * Manages intro music playback and fade-in logic.
+ * Ensures correct music state for different screens.
+ */
+handleIntroMusic() {
+  const introMusic = document.getElementById("intro-music");
+
+  const shouldPlay =
+    this.showIntro ||
+    this.showImpressumOverlay ||
+    (this.showControlsOverlay && this.fromIntroToControls);
+
+  if (shouldPlay) {
+    if (introMusic && introMusic.paused) {
+      introMusic.volume = 0.01;
+      introMusic.currentTime = 32;
+    }
+  } else {
+    if (introMusic && !introMusic.paused) {
+      introMusic.pause();
+      introMusic.currentTime = 0;
     }
   }
+}
 
-
-  toggleOptionsMenu() {
-    this.showOptionsMenu = !this.showOptionsMenu
-  }
-
-
-  showImpressum() {
-    this.showIntro = false
-    this.showImpressumOverlay = true
-  }
-
-
-  backToIntro() {
-    this.showImpressumOverlay = false
-    this.showIntro = true
-    this.introStep = 2
-    this.showStartButton = true
-  }
-
-
-  restartFromEndscreen() {
-    this.showEndscreen = false
-    stopGame({ goToMenu: false })
-  }
-
-
-
-  handleOverlayScreens() {
-    if (this.showImpressumOverlay) {
-      this.ui.drawImpressumOverlay()
-      requestAnimationFrame(() => this.draw())
-      return true
-    }
-
-    if (this.showIntro) {
-      this.ui.drawIntroScreen()
-      requestAnimationFrame(() => this.draw())
-      return true
-    }
-
-    if (this.showControlsOverlay) {
-      this.ui.drawControlsOverlay()
-      requestAnimationFrame(() => this.draw())
-      return true
-    }
-
-    if (this.showOptionsMenu) {
-      this.ui.drawOptionsMenu()
-      requestAnimationFrame(() => this.draw())
-      return true
-    }
-
-    return false
-  }
-
-
-  handleIntroMusic() {
-    const introMusic = document.getElementById("intro-music")
-    if (this.showIntro || this.showImpressumOverlay || (this.showControlsOverlay && this.fromIntroToControls)) {
-      if (introMusic && introMusic.paused) {
-        introMusic.volume = 0.01
-        introMusic.currentTime = 32
-      }
-    } else {
-      if (introMusic && !introMusic.paused) {
-        introMusic.pause()
-        introMusic.currentTime = 0
-      }
-    }
-  }
 
 
   /**
