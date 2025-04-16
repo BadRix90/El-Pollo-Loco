@@ -59,6 +59,8 @@ class World {
     this.showIntro = false
     this.introStep = 1
     this.introStep = 2
+    this.handleIntroMusic()
+
   }
 
   /**
@@ -156,19 +158,6 @@ class World {
       this.ui.drawStartIntro()
       requestAnimationFrame(() => this.draw())
       return
-    }
-
-    const introMusic = document.getElementById("intro-music")
-    if (this.showIntro || this.showImpressumOverlay || (this.showControlsOverlay && this.fromIntroToControls)) {
-      if (introMusic && introMusic.paused) {
-        introMusic.volume = 0.01
-        introMusic.currentTime = 32
-      }
-    } else {
-      if (introMusic && !introMusic.paused) {
-        introMusic.pause()
-        introMusic.currentTime = 0
-      }
     }
 
     if (this.showImpressumOverlay) {
@@ -331,6 +320,23 @@ class World {
   }
   }
 
+
+  handleIntroMusic() {
+    const introMusic = document.getElementById("intro-music")
+    if (this.showIntro || this.showImpressumOverlay || (this.showControlsOverlay && this.fromIntroToControls)) {
+      if (introMusic && introMusic.paused) {
+        introMusic.volume = 0.01
+        introMusic.currentTime = 32
+      }
+    } else {
+      if (introMusic && !introMusic.paused) {
+        introMusic.pause()
+        introMusic.currentTime = 0
+      }
+    }
+  }
+
+  
   /**
    * Debug method to draw the character's current HP on screen.
    */
