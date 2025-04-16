@@ -57,6 +57,8 @@ class World {
     this.showGameOver = false;
     this.gameOverY = -50;
     this.gameOverHandled = false;
+    this.showStartIntro = true;
+    this.showIntro = false;
 
     this.introLyrics = [
       "Forget the mouse.",
@@ -65,7 +67,7 @@ class World {
       "Enter.",
     ];
     this.introStep = 1;
-    this.lyricDirection = 1; 
+    this.lyricDirection = 1;
     this.lyricY = 120;
 
     this.showLyrics = true;
@@ -157,6 +159,12 @@ class World {
  */
   draw() {
     this.menuButtons = [];
+
+    if (this.showStartIntro) {
+      this.ui.drawStartIntro();
+      requestAnimationFrame(() => this.draw());
+      return;
+    }
 
     const introMusic = document.getElementById('intro-music');
     if (this.showIntro || this.showImpressumOverlay || (this.showControlsOverlay && this.fromIntroToControls)) {
