@@ -147,7 +147,7 @@ class MovableObject extends DrawableObject {
  * Applies damage to the object and triggers hurt or death behavior.
  * @param {number} [damage=5] - The amount of damage to apply.
  */
-  hit(damage = 5) {
+  hit(damage = 15) {
     let currentTime = Date.now();
     if (currentTime - this.lastHit < this.hitCooldown) {
       return;
