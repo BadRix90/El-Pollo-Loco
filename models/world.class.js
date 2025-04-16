@@ -290,7 +290,7 @@ class World {
       }
       this.restartGame()
     } else if (action === "exit") {
-      stopGame()
+      stopGame({ goToMenu: true })
     } else if (action === "controls") {
       if (this.showIntro) {
         this.fromIntroToControls = true
@@ -302,20 +302,18 @@ class World {
       this.showControlsOverlay = true
     } else if (action === "back-to-menu") {
       if (this.showControlsOverlay) {
-        this.showControlsOverlay = false;
+        this.showControlsOverlay = false
         if (this.fromIntroToControls) {
-          this.showIntro = true;
-          this.showStartButton = true;
-          this.introStep = 2;
+          this.showIntro = true
+          this.showStartButton = true
+          this.introStep = 2
         } else {
-          this.showOptionsMenu = true;
+          this.showOptionsMenu = true
         }
       } else if (this.showEndscreen) {
-        this.showEndscreen = false;
-        this.showIntro = true;
-        this.showStartIntro = false;
-        this.introStep = 2;
-        this.showStartButton = true;
+        stopGame({ goToMenu: true })
+      } else {
+        this.showOptionsMenu = !this.showOptionsMenu
       }
     } else if (action === "toggle-menu") {
       this.showOptionsMenu = !this.showOptionsMenu
@@ -328,8 +326,9 @@ class World {
       this.introStep = 2
       this.showStartButton = true
     } else if (action === "restart-game") {
-      stopGame()
-    }
+      this.showEndscreen = false;
+      stopGame({ goToMenu: false });
+  }
   }
 
   /**

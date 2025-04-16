@@ -63,28 +63,52 @@ function toggleMenu() {
  * Stops the current game session, resets background and intro music,
  * clears intervals and animation frames, and reinitializes the world.
  */
-function stopGame() {
-    const bgm = document.getElementById('background-music');
+function stopGame({ goToMenu = false } = {}) {
+    const bgm = document.getElementById("background-music");
     if (bgm) {
         bgm.pause();
         bgm.currentTime = 0;
     }
 
-    const introMusic = document.getElementById('intro-music');
+    const introMusic = document.getElementById("intro-music");
     if (introMusic) {
         introMusic.volume = 0.01;
         introMusic.currentTime = 32;
     }
 
     if (world) {
-        clearInterval(world.lyricInterval);
-        clearInterval(world.lyricSetupInterval);
-        cancelAnimationFrame(world.drawLoopId); // <- das war wichtig!
+        cancelAnimationFrame(world.drawLoopId);
     }
 
     world = new World(canvas, keyboard);
-}
 
+    if (goToMenu) {
+        world.showStartIntro = false;
+        world.showIntro = true;
+        world.introStep = 2;   
+        world.introY = -100; 
+    
+        world.showMainMenu = true;
+        world.showEndscreen = false;
+    
+        if (!muteMusic && introMusic) {
+          introMusic.play();
+        }
+    } else {
+        world.showStartIntro = false;
+        world.showIntro = false;
+        world.showMainMenu = false;
+        world.showEndscreen = false;
+
+        world.setWorld();
+        world.character.startIntroRun();
+        world.policeCar = new PoliceCar(world);
+
+        if (!muteMusic && bgm) {
+            bgm.play();
+        }
+    }
+}
 
 /**
  * Handles keydown events and updates the keyboard state.

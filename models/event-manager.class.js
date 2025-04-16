@@ -35,52 +35,69 @@ class EventManager {
  * Uses non-passive event handling to allow interaction control.
  */
   registerTouchEvents() {
-    this.canvas.addEventListener("touchstart", (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const scaleX = this.canvas.width / this.canvas.clientWidth;
-      const scaleY = this.canvas.height / this.canvas.clientHeight;
+    this.canvas.addEventListener(
+      "touchstart",
+      (e) => {
+        const rect = this.canvas.getBoundingClientRect()
+        const scaleX = this.canvas.width / this.canvas.clientWidth
+        const scaleY = this.canvas.height / this.canvas.clientHeight
 
-      for (const touch of e.changedTouches) {
-        const clickX = (touch.clientX - rect.left) * scaleX;
-        const clickY = (touch.clientY - rect.top) * scaleY;
+        for (const touch of e.changedTouches) {
+          const clickX = (touch.clientX - rect.left) * scaleX
+          const clickY = (touch.clientY - rect.top) * scaleY
 
-        if (this.world.menuButtons) {
-          for (const button of this.world.menuButtons) {
-            if (
-              clickX >= button.x &&
-              clickX <= button.x + button.w &&
-              clickY >= button.y &&
-              clickY <= button.y + button.h
-            ) {
-              if (this.world.menuButtons.length === 1) {
-                this.world.handleMenuAction(button.action);
-                return;
-              }
-              if (this.world.ui.activeMenuButton === button.action) {
-                if (button.action === "start-intro") {
-                  const introMusic = document.getElementById('intro-music');
-                  if (!muteMusic && introMusic) {
-                    introMusic.currentTime = 32;
-                    introMusic.volume = 0.01;
+          if (this.world.menuButtons) {
+            for (const button of this.world.menuButtons) {
+              if (
+                clickX >= button.x &&
+                clickX <= button.x + button.w &&
+                clickY >= button.y &&
+                clickY <= button.y + button.h
+              ) {
+                if (this.world.showEndscreen) {
+                  if (button.action === "restart-game") {
+                    stopGame()
+                    return
+                  } else if (button.action === "back-to-menu") {
+                    this.world.showEndscreen = false
+                    this.world.showIntro = true
+                    this.world.showStartIntro = false
+                    this.world.introStep = 2
+                    this.world.showStartButton = true
+                    return
                   }
-                  this.world.showStartIntro = false;
-                  this.world.showIntro = true;
-                } else if (button.action === "restart-game") {
-                  stopGame();
-                } else if (button.action === "back-to-menu") {
-                  this.world.handleMenuAction("back-to-menu");
-                } else {
-                  this.world.handleMenuAction(button.action);
                 }
+
+                if (this.world.menuButtons.length === 1) {
+                  this.world.handleMenuAction(button.action)
+                  return
+                }
+                if (this.world.ui.activeMenuButton === button.action) {
+                  if (button.action === "start-intro") {
+                    const introMusic = document.getElementById("intro-music")
+                    if (!muteMusic && introMusic) {
+                      introMusic.currentTime = 32
+                      introMusic.volume = 0.01
+                    }
+                    this.world.showStartIntro = false
+                    this.world.showIntro = true
+                  } else if (button.action === "restart-game") {
+                    stopGame()
+                  } else if (button.action === "back-to-menu") {
+                    this.world.handleMenuAction("back-to-menu")
+                  } else {
+                    this.world.handleMenuAction(button.action)
+                  }
+                }
+                return
               }
-              return;
             }
           }
         }
-      }
-    }, { passive: false });
+      },
+      { passive: false },
+    )
   }
-
 
   handleCanvasClick(e) {
     const rect = this.canvas.getBoundingClientRect();
