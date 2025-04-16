@@ -140,105 +140,121 @@ class World {
     }
   }
 
+  
   /**
-   * Main rendering loop for the entire world.
-   * Draws backgrounds, character, enemies, projectiles, overlays, and menus.
-   * Also handles intro, controls screen, and return-to-menu logic.
-   */
-  draw() {
-    this.menuButtons = []
+ * Main rendering loop for the entire world.
+ * Draws backgrounds, character, enemies, projectiles, overlays, and menus.
+ * Also handles intro, controls screen, and return-to-menu logic.
+ */
+draw() {
+  this.menuButtons = [];
 
-    if (this.showEndscreen) {
-      this.ui.drawEndscreen()
-      requestAnimationFrame(() => this.draw())
-      return
+  if (this.showEndscreen) {
+    this.ui.drawEndscreen();
+    requestAnimationFrame(() => this.draw());
+    return;
+  }
+
+  if (this.handleOverlayScreens()) return;
+  if (this.drawStartIntroScreen()) return;
+
+  this.drawWorldScene();
+  this.drawOverlaysAndEffects();
+
+  this.drawLoopId = requestAnimationFrame(() => this.draw());
+  this.drawGameOverText();
+}
+
+
+/**
+ * Draws the game scene, including all moving objects and background.
+ * Applies camera translation and renders status bar, enemies, bullets, etc.
+ */
+drawWorldScene() {
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+  this.ctx.translate(this.camera_x, 0);
+  this.drawBackgroundObjects();
+
+  this.ctx.translate(-this.camera_x, 0);
+  this.addToMap(this.statusBar);
+
+  this.ctx.translate(this.camera_x, 0);
+  this.addObjectsToMap(this.level.street);
+  if (this.policeCar) this.addToMap(this.policeCar);
+  this.addToMap(this.character);
+  this.addObjectsToMap(this.level.enemies);
+  this.addObjectsToMap(this.playerBullets);
+  this.addObjectsToMap(this.enemyBullets);
+  this.addObjectsToMap(this.activeBombs);
+  this.addObjectsToMap(this.healItems);
+
+  this.ctx.save();
+  this.ctx.font = "32px CyberpunkCraftpixPixel";
+  this.ctx.fillStyle = "#ff00ff";
+  this.ctx.textAlign = "center";
+  this.ctx.fillText("COMING SOON", 7100, 300);
+  this.ctx.fillText("--->", 7100, 250);
+  this.ctx.restore();
+
+  this.ctx.translate(-this.camera_x, 0);
+}
+
+
+/**
+ * Draws rain, touch controls, and handles the countdown after endboss defeat.
+ */
+drawOverlaysAndEffects() {
+  this.weather.drawRain();
+  this.touchOverlay.draw(this.ctx);
+
+  if (this.showReturnTimer && !this.showEndscreen && !this.character.isDead()) {
+    const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000);
+    const secondsLeft = Math.max(0, 10 - secondsPassed);
+
+    this.ctx.font = "28px CyberpunkCraftpixPixel";
+    this.ctx.fillStyle = "white";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60);
+
+    if (secondsLeft <= 0) {
+      this.ui.returnToMainMenu();
+    }
+  }
+}
+
+
+/**
+ * Handles the downward animation of the "GAME OVER" text after death.
+ */
+drawGameOverText() {
+  if (this.showGameOver) {
+    if (this.gameOverY < this.canvas.height / 2) {
+      this.gameOverY += 5;
     }
 
-    if (this.handleOverlayScreens()) return
-    if (this.drawStartIntroScreen()) return
-
-    this.drawWorldScene()
-    this.drawOverlaysAndEffects()
-
-    this.drawLoopId = requestAnimationFrame(() => this.draw())
-    this.drawGameOverText()
+    this.ctx.save();
+    this.ctx.font = "48px CyberpunkCraftpixPixel";
+    this.ctx.fillStyle = "#ff0066";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
+    this.ctx.restore();
   }
+}
 
 
-  drawGameOverText() {
-    if (this.showGameOver) {
-      if (this.gameOverY < this.canvas.height / 2) {
-        this.gameOverY += 5
-      }
-
-      this.ctx.save()
-      this.ctx.font = "48px CyberpunkCraftpixPixel"
-      this.ctx.fillStyle = "#ff0066"
-      this.ctx.textAlign = "center"
-      this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY)
-      this.ctx.restore()
-    }
+/**
+ * Draws the initial intro screen with the “START” button animation.
+ * @returns {boolean} Whether the intro screen was drawn and loop continues.
+ */
+drawStartIntroScreen() {
+  if (this.showStartIntro) {
+    this.ui.drawStartIntro();
+    requestAnimationFrame(() => this.draw());
+    return true;
   }
-
-  drawOverlaysAndEffects() {
-    this.weather.drawRain()
-    this.touchOverlay.draw(this.ctx)
-
-    if (this.showReturnTimer && !this.showEndscreen && !this.character.isDead()) {
-      const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000)
-      const secondsLeft = Math.max(0, 10 - secondsPassed)
-
-      this.ctx.font = "28px CyberpunkCraftpixPixel"
-      this.ctx.fillStyle = "white"
-      this.ctx.textAlign = "center"
-      this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60)
-
-      if (secondsLeft <= 0) {
-        this.ui.returnToMainMenu()
-      }
-    }
-  }
-
-
-  drawWorldScene() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
-    this.ctx.translate(this.camera_x, 0)
-    this.drawBackgroundObjects()
-
-    this.ctx.translate(-this.camera_x, 0)
-    this.addToMap(this.statusBar)
-
-    this.ctx.translate(this.camera_x, 0)
-    this.addObjectsToMap(this.level.street)
-    if (this.policeCar) this.addToMap(this.policeCar)
-    this.addToMap(this.character)
-    this.addObjectsToMap(this.level.enemies)
-    this.addObjectsToMap(this.playerBullets)
-    this.addObjectsToMap(this.enemyBullets)
-    this.addObjectsToMap(this.activeBombs)
-    this.addObjectsToMap(this.healItems)
-
-    this.ctx.save()
-    this.ctx.font = "32px CyberpunkCraftpixPixel"
-    this.ctx.fillStyle = "#ff00ff"
-    this.ctx.textAlign = "center"
-    this.ctx.fillText("COMING SOON", 7100, 300)
-    this.ctx.fillText("--->", 7100, 250)
-    this.ctx.restore()
-
-    this.ctx.translate(-this.camera_x, 0)
-  }
-
-
-  drawStartIntroScreen() {
-    if (this.showStartIntro) {
-      this.ui.drawStartIntro()
-      requestAnimationFrame(() => this.draw())
-      return true
-    }
-    return false
-  }
+  return false;
+}
 
 
 
