@@ -153,7 +153,7 @@ class World {
       requestAnimationFrame(() => this.draw())
       return
     }
-    
+  
     if (this.handleOverlayScreens()) return
 
     if (this.showStartIntro) {
