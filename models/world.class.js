@@ -160,7 +160,6 @@ class World {
       if (introMusic && introMusic.paused) {
         introMusic.volume = 0.01;
         introMusic.currentTime = 32;
-        introMusic.play();
       }
     } else {
       if (introMusic && !introMusic.paused) {

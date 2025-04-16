@@ -5,7 +5,6 @@ let backgroundMusic;
 let muteMusic = false;
 let muteSounds = false;
 
-
 /**
  * Initializes the game by setting up the canvas, background music,
  * and creating a new instance of the game world.
@@ -73,9 +72,8 @@ function stopGame() {
 
     const introMusic = document.getElementById('intro-music');
     if (introMusic) {
-        introMusic.volume = 0.02;
+        introMusic.volume = 0.01;
         introMusic.currentTime = 32;
-        introMusic.play();
     }
 
     if (world) {
@@ -102,9 +100,16 @@ window.addEventListener('keydown', (e) => {
         world.handleMenuAction("back-to-intro");
     }
     if (world && world.showStartIntro && e.key === "Enter") {
+        const introMusic = document.getElementById('intro-music');
+        if (!muteMusic && introMusic) {
+          introMusic.currentTime = 32;
+          introMusic.volume = 0.01;
+          introMusic.play();
+        }
         world.showStartIntro = false;
         world.showIntro = true;
-    }
+      }
+      
     if (e.key === " ") {
         e.preventDefault();
         keyboard.SPACE = true;

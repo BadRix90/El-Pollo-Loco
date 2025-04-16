@@ -172,7 +172,8 @@ class UIManager {
     const linesRight = [
       "M - Menu",
       "F - Fullscreen",
-      "T - Toggle Music"
+      "T - Toggle Music",
+      "Y - Toggle Sound"
     ];
 
     linesLeft.forEach((line, i) => {
