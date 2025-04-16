@@ -153,6 +153,8 @@ class World {
       requestAnimationFrame(() => this.draw())
       return
     }
+    
+    if (this.handleOverlayScreens()) return
 
     if (this.showStartIntro) {
       this.ui.drawStartIntro()
@@ -160,29 +162,6 @@ class World {
       return
     }
 
-    if (this.showImpressumOverlay) {
-      this.ui.drawImpressumOverlay()
-      requestAnimationFrame(() => this.draw())
-      return
-    }
-
-    if (this.showIntro) {
-      this.ui.drawIntroScreen()
-      requestAnimationFrame(() => this.draw())
-      return
-    }
-
-    if (this.showControlsOverlay) {
-      this.ui.drawControlsOverlay()
-      requestAnimationFrame(() => this.draw())
-      return
-    }
-
-    if (this.showOptionsMenu) {
-      this.ui.drawOptionsMenu()
-      requestAnimationFrame(() => this.draw())
-      return
-    }
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
@@ -320,6 +299,35 @@ class World {
   }
   }
 
+
+  handleOverlayScreens() {
+    if (this.showImpressumOverlay) {
+      this.ui.drawImpressumOverlay()
+      requestAnimationFrame(() => this.draw())
+      return true
+    }
+  
+    if (this.showIntro) {
+      this.ui.drawIntroScreen()
+      requestAnimationFrame(() => this.draw())
+      return true
+    }
+  
+    if (this.showControlsOverlay) {
+      this.ui.drawControlsOverlay()
+      requestAnimationFrame(() => this.draw())
+      return true
+    }
+  
+    if (this.showOptionsMenu) {
+      this.ui.drawOptionsMenu()
+      requestAnimationFrame(() => this.draw())
+      return true
+    }
+  
+    return false
+  }
+  
 
   handleIntroMusic() {
     const introMusic = document.getElementById("intro-music")
