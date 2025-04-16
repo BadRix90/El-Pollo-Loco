@@ -78,7 +78,7 @@ class EventManager {
                       introMusic.volume = 0.01;
                     }
                   } else {
-                    this.world.handleMenuAction(button.action);
+                    this.world.uiHandler.handleMenuAction(button.action);
                   }
                   return;
                 }
@@ -94,9 +94,9 @@ class EventManager {
                   } else if (button.action === "restart-game") {
                     stopGame()
                   } else if (button.action === "back-to-menu") {
-                    this.world.handleMenuAction("back-to-menu")
+                    this.world.uiHandler.handleMenuAction("back-to-menu")
                   } else {
-                    this.world.handleMenuAction(button.action)
+                    this.world.uiHandler.handleMenuAction(button.action)
                   }
                 } else {
                   this.world.ui.activeMenuButton = button.action
@@ -125,7 +125,7 @@ class EventManager {
           clickY >= button.y &&
           clickY <= button.y + button.h
         ) {
-          this.world.handleMenuAction(button.action);
+          this.world.uiHandler.handleMenuAction(button.action);
           return;
         }
       }

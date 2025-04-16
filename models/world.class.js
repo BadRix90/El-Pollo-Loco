@@ -12,14 +12,10 @@ class World {
   activeBombs = []
   playerBullets = []
   healItems = []
-  showMainMenu = true
   introY = -100
   showIntro = true
   showStartButton = false
   introStep = 0
-  selectedCharacter = null
-  confirmCharacter = false
-  showCharacterSelect = false
   showOptionsMenu = false
   showControlsOverlay = false
   policeCar = null
@@ -53,14 +49,12 @@ class World {
     this.gameOverHandled = false
     this.showGameOver = false
     this.gameOverY = -50
-    this.gameOverHandled = false
     this.showEndscreen = false
     this.showStartIntro = true
     this.showIntro = false
-    this.introStep = 1
     this.introStep = 2
     this.handleIntroMusic()
-
+    this.uiHandler = new WorldUI(this);
   }
 
   /**
@@ -140,7 +134,7 @@ class World {
     }
   }
 
-  
+
   /**
  * Main rendering loop for the entire world.
  * Draws backgrounds, character, enemies, projectiles, overlays, and menus.
@@ -160,11 +154,9 @@ draw() {
 
   this.drawWorldScene();
   this.drawOverlaysAndEffects();
-
   this.drawLoopId = requestAnimationFrame(() => this.draw());
   this.drawGameOverText();
 }
-
 
 /**
  * Draws the game scene, including all moving objects and background.
@@ -172,13 +164,10 @@ draw() {
  */
 drawWorldScene() {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
   this.ctx.translate(this.camera_x, 0);
   this.drawBackgroundObjects();
-
   this.ctx.translate(-this.camera_x, 0);
   this.addToMap(this.statusBar);
-
   this.ctx.translate(this.camera_x, 0);
   this.addObjectsToMap(this.level.street);
   if (this.policeCar) this.addToMap(this.policeCar);
@@ -188,7 +177,6 @@ drawWorldScene() {
   this.addObjectsToMap(this.enemyBullets);
   this.addObjectsToMap(this.activeBombs);
   this.addObjectsToMap(this.healItems);
-
   this.ctx.save();
   this.ctx.font = "32px CyberpunkCraftpixPixel";
   this.ctx.fillStyle = "#ff00ff";
@@ -199,7 +187,6 @@ drawWorldScene() {
 
   this.ctx.translate(-this.camera_x, 0);
 }
-
 
 /**
  * Draws rain, touch controls, and handles the countdown after endboss defeat.
@@ -223,7 +210,6 @@ drawOverlaysAndEffects() {
   }
 }
 
-
 /**
  * Handles the downward animation of the "GAME OVER" text after death.
  */
@@ -242,7 +228,6 @@ drawGameOverText() {
   }
 }
 
-
 /**
  * Draws the initial intro screen with the “START” button animation.
  * @returns {boolean} Whether the intro screen was drawn and loop continues.
@@ -255,170 +240,6 @@ drawStartIntroScreen() {
   }
   return false;
 }
-
-
-
-  /**
-   * Executes actions based on the selected menu button:
-   * start, restart, exit, toggle menu, or show controls.
-   * @param {string} action - The action to perform.
-   */
-  handleMenuAction(action) {
-    const bgm = document.getElementById("background-music")
-    const introMusic = document.getElementById("intro-music")
-
-    switch (action) {
-      case "start":
-        this.startGame(introMusic)
-        break
-      case "music":
-      case "sound-toggle":
-        toggleMusic()
-        break
-      case "restart":
-        this.restartGameHandler(introMusic)
-        break
-      case "exit":
-        this.exitGame()
-        break
-      case "controls":
-        this.openControls()
-        break
-      case "back-to-menu":
-        this.backToMenu()
-        break
-      case "toggle-menu":
-        this.toggleOptionsMenu()
-        break
-      case "impressum":
-        this.showImpressum()
-        break
-      case "back-to-intro":
-        this.backToIntro()
-        break
-      case "restart-game":
-        this.restartFromEndscreen()
-        break
-    }
-  }
-
-
-  /**
- * Starts the game from the intro screen.
- * Stops the intro music, hides intro/menu, starts background music and police car.
- * @param {HTMLAudioElement} introMusic - The intro music element.
- */
-startGame(introMusic) {
-  if (introMusic) {
-    introMusic.pause();
-    introMusic.currentTime = 0;
-  }
-
-  this.showIntro = false;
-  this.showMainMenu = false;
-  toggleMusic();
-  this.policeCar = new PoliceCar(this);
-}
-
-
-/**
- * Restarts the game from any state.
- * Stops intro music and calls internal restartGame().
- * @param {HTMLAudioElement} introMusic - The intro music element.
- */
-restartGameHandler(introMusic) {
-  if (introMusic) {
-    introMusic.pause();
-    introMusic.currentTime = 0;
-  }
-  this.restartGame();
-}
-
-
-/**
- * Exits the game and returns to main menu.
- */
-exitGame() {
-  stopGame({ goToMenu: true });
-}
-
-
-/**
- * Opens the controls overlay.
- * Handles both intro and in-game cases.
- */
-openControls() {
-  if (this.showIntro) {
-    this.fromIntroToControls = true;
-    this.showIntro = false;
-  } else {
-    this.fromIntroToControls = false;
-  }
-
-  this.showControlsOverlay = true;
-}
-
-
-/**
- * Handles going back to the menu from controls, endscreen or gameplay.
- */
-backToMenu() {
-  if (this.showControlsOverlay) {
-    this.showControlsOverlay = false;
-
-    if (this.fromIntroToControls) {
-      this.showIntro = true;
-      this.showStartButton = true;
-      this.introStep = 2;
-    } else {
-      this.showOptionsMenu = true;
-    }
-
-  } else if (this.showEndscreen) {
-    stopGame({ goToMenu: true });
-
-  } else {
-    this.showOptionsMenu = !this.showOptionsMenu;
-  }
-}
-
-
-/**
- * Toggles the in-game options menu visibility.
- */
-toggleOptionsMenu() {
-  this.showOptionsMenu = !this.showOptionsMenu;
-}
-
-
-/**
- * Shows the legal imprint overlay from intro screen.
- */
-showImpressum() {
-  this.showIntro = false;
-  this.showImpressumOverlay = true;
-}
-
-
-/**
- * Returns from the impressum screen back to the intro screen.
- */
-backToIntro() {
-  this.showImpressumOverlay = false;
-  this.showIntro = true;
-  this.introStep = 2;
-  this.showStartButton = true;
-}
-
-
-/**
- * Restarts the game from the endscreen with no menu redirection.
- */
-restartFromEndscreen() {
-  this.showEndscreen = false;
-  stopGame({ goToMenu: false });
-}
-
 
 /**
  * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.
@@ -452,7 +273,6 @@ handleOverlayScreens() {
   return false;
 }
 
-
 /**
  * Manages intro music playback and fade-in logic.
  * Ensures correct music state for different screens.
@@ -477,8 +297,6 @@ handleIntroMusic() {
     }
   }
 }
-
-
 
   /**
    * Debug method to draw the character's current HP on screen.
@@ -569,6 +387,13 @@ handleIntroMusic() {
     }, 16)
   }
 
+  /**
+   * Ends the game by updating the game state and UI elements.
+   * - Sets the end screen to be displayed.
+   * - Hides the return timer.
+   * - Activates the "restart-game" menu button.
+   * - Updates the menu options to include "restart-game" and "back-to-menu".
+   */
   endGame() {
     this.showEndscreen = true
     this.showReturnTimer = false

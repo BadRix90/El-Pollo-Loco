@@ -64,7 +64,7 @@ function toggleSounds() {
  * Toggles the in-game options menu visibility by delegating to the world handler.
  */
 function toggleMenu() {
-    world.handleMenuAction("toggle-menu");
+    world.uiHandler.handleMenuAction("toggle-menu");
 }
 
 
@@ -131,7 +131,7 @@ window.addEventListener('keydown', (e) => {
         world.showOptionsMenu = !world.showOptionsMenu;
     }
     if (world && world.showImpressumOverlay && e.key === "Enter") {
-        world.handleMenuAction("back-to-intro");
+        world.uiHandler.handleMenuAction("back-to-intro");
     }
     if (world && world.showStartIntro && e.key === "Enter") {
         const introMusic = document.getElementById('intro-music');
@@ -177,14 +177,14 @@ window.addEventListener('keydown', (e) => {
             world.ui.navigateMenu("down");
         } else if (e.key === "Enter") {
             if (world.ui.activeMenuButton) {
-                world.handleMenuAction(world.ui.activeMenuButton);
+                world.uiHandler.handleMenuAction(world.ui.activeMenuButton);
             }
         }
     }
 
 
     if (world && world.showControlsOverlay && e.key === "Enter") {
-        world.handleMenuAction("back-to-menu");
+        world.uiHandler.handleMenuAction("back-to-menu");
     }
 
     if (world && world.showOptionsMenu) {
@@ -194,7 +194,7 @@ window.addEventListener('keydown', (e) => {
             world.ui.navigateMenu("down");
         } else if (e.key === "Enter") {
             if (world.ui.activeMenuButton) {
-                world.handleMenuAction(world.ui.activeMenuButton);
+                world.uiHandler.handleMenuAction(world.ui.activeMenuButton);
             }
         }
     }
@@ -205,7 +205,7 @@ window.addEventListener('keydown', (e) => {
             world.ui.navigateMenuSmart(dir);
         } else if (e.key === "Enter") {
             if (world.ui.activeMenuButton) {
-                world.handleMenuAction(world.ui.activeMenuButton.toLowerCase());
+                world.uiHandler.handleMenuAction(world.ui.activeMenuButton.toLowerCase());
             }
         }
     }
