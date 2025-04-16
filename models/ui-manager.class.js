@@ -352,5 +352,33 @@ class UIManager {
     this.pulseFrame++;
   }
 
+  drawStartIntro() {
+    const ctx = this.ctx;
+    const centerX = this.canvas.width / 2;
+  
+    ctx.save();
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  
+    ctx.font = "20px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.fillText("No mouse. Just arrows, Enter, or touch.", centerX, 180);
+    ctx.fillText("Old-school controls only.", centerX, 220);
+  
+    this.activeMenuButton = "start-intro";
+    this.menuOptions = ["start-intro"];
+    this.world.menuButtons = [];
+  
+    const pulse = 0.6 + 0.4 * Math.abs(Math.sin(this.pulseFrame / 10));
+    ctx.fillStyle = `rgba(216,191,216,${pulse})`;
+    this.drawButton(centerX, 300, 160, 40, "START", "start-intro");
+  
+    ctx.restore();
+    this.pulseFrame++;
+  }
+  
 
 }
