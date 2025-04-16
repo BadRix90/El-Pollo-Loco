@@ -155,8 +155,6 @@ class MovableObject extends DrawableObject {
     this.lastHit = currentTime;
     this.energy -= damage;
 
-    console.log(`Character HP: ${this.energy}`);
-
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;

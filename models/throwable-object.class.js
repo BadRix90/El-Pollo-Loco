@@ -97,7 +97,7 @@ class BulletManager {
   constructor(world) {
     this.world = world;
   }
-
+  
 
   /**
  * Spawns a bullet in the game world for either the player or an enemy.

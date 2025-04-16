@@ -238,7 +238,9 @@ class Character extends MovableObject {
 
         this.world.bullets.spawnBullet(bulletX, bulletY, direction, this, 0);
         this.laserSound.currentTime = 0;
-        this.laserSound.play();
+        if (!muteSounds) {
+          this.laserSound.play();
+        }        
 
         clearInterval(shootInterval);
         this.isShooting = false;

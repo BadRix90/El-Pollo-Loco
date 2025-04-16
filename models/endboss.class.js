@@ -114,8 +114,10 @@ class Endboss extends MovableObject {
         this.world.bullets.spawnBullet(bulletX, bulletY, direction, this, 1);
 
         this.laserSound.currentTime = 0;
-        this.laserSound.play();
-
+        if (!muteSounds) {
+          this.laserSound.play();
+        }
+    
       }
 
       if (i >= this.IMAGES_ATTACK.length) {
@@ -158,7 +160,9 @@ class Endboss extends MovableObject {
     this.world.activeBombs.push(bomb);
 
     this.sinusBombSound.currentTime = 0;
-    this.sinusBombSound.play();
+    if (!muteSounds) {
+      this.sinusBombSound.play();
+    }    
   }
 
 

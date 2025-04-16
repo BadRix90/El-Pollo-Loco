@@ -2,6 +2,8 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let backgroundMusic;
+let muteMusic = false;
+let muteSounds = false;
 
 
 /**
@@ -12,6 +14,8 @@ function init() {
     canvas = document.getElementById('canvas');
     backgroundMusic = document.getElementById('background-music');
     backgroundMusic.volume = 0.015;
+    muteMusic = localStorage.getItem("muteMusic") === "true";
+    muteSounds = localStorage.getItem("muteSounds") === "true";
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile) {
@@ -27,13 +31,24 @@ function init() {
  * Toggles the background music on or off and updates the UI icon accordingly.
  */
 function toggleMusic() {
-    if (!backgroundMusic) return;
+    muteMusic = !muteMusic;
+    localStorage.setItem("muteMusic", muteMusic);
 
-    if (backgroundMusic.paused) {
-        backgroundMusic.play();
-    } else {
+    const introMusic = document.getElementById('intro-music');
+
+    if (muteMusic) {
         backgroundMusic.pause();
+        if (introMusic) introMusic.pause();
+    } else {
+        backgroundMusic.play();
+        if (introMusic) introMusic.play();
     }
+}
+
+
+function toggleSounds() {
+    muteSounds = !muteSounds;
+    localStorage.setItem("muteSounds", muteSounds);
 }
 
 
@@ -109,6 +124,8 @@ window.addEventListener('keydown', (e) => {
         keyboard.SHIFT = true;
     } else if (e.key.toLowerCase() === "t") {
         toggleMusic();
+    } else if (e.key.toLowerCase() === "y") {
+        toggleSounds();
     } else if (e.key.toLowerCase() === "f") {
         toggleFullscreen();
     }

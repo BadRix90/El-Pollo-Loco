@@ -83,7 +83,9 @@ class Bomb extends MovableObject {
           this.state = "idle";
           i = 0;
           this.explodeSound.currentTime = 0;
-          this.explodeSound.play();
+          if (!muteSounds) {
+            this.explodeSound.play();
+          }        
 
         }
       } else if (this.state === "idle") {
