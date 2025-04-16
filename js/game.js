@@ -34,6 +34,7 @@ function toggleMusic() {
     localStorage.setItem("muteMusic", muteMusic);
 
     const introMusic = document.getElementById('intro-music');
+    const btn = document.getElementById('btn-music');
 
     if (muteMusic) {
         backgroundMusic.pause();
@@ -41,9 +42,16 @@ function toggleMusic() {
     } else {
         backgroundMusic.play();
         if (introMusic) safePlay(introMusic);
+    }
 
+    // 🔥 Icon dynamisch aktualisieren
+    if (btn) {
+        btn.src = muteMusic
+            ? "img/GUI/3 Icons/Icons/Icon_34.png" // ▶️ Play
+            : "img/GUI/3 Icons/Icons/Icon_03.png"; // ⏸️ Pause
     }
 }
+
 
 
 function toggleSounds() {

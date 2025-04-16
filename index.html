@@ -40,13 +40,14 @@
   <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop preload="none"></audio>
 
   <div id="game-wrapper">
-    <canvas id="canvas" width="720" height="480"></canvas>
-    <div id="mobile-header">
-      <img src="img/GUI/3 Icons/Icons/Icon_05.png" id="btn-fs" onclick="toggleFullscreen()" />
-      <img src="img/GUI/3 Icons/Icons/Icon_03.png" id="btn-music" onclick="toggleMusic()" />
-      <img src="img/GUI/3 Icons/Icons/Icon_26.png" id="btn-menu" onclick="world.handleMenuAction('toggle-menu')" />
+    <div id="canvas-container">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <div id="mobile-header">
+        <img src="img/GUI/3 Icons/Icons/Icon_05.png" id="btn-fs" onclick="toggleFullscreen()" />
+        <img src="img/GUI/3 Icons/Icons/Icon_03.png" id="btn-music" onclick="toggleMusic()" />
+        <img src="img/GUI/3 Icons/Icons/Icon_26.png" id="btn-menu" onclick="world.handleMenuAction('toggle-menu')" />
+      </div>
     </div>
-    
 
   </div>
 

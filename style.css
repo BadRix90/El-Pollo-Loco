@@ -283,6 +283,10 @@ button {
   align-items: center;
 }
 
+#canvas-container {
+  position: relative;
+}
+
 #mobile-header {
   position: absolute;
   top: 10px;
@@ -292,6 +296,7 @@ button {
   gap: 10px;
   z-index: 99;
 }
+
 
 #mobile-header img {
   width: 40px;
