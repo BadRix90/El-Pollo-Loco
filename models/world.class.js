@@ -328,7 +328,7 @@ class World {
       this.introStep = 2
       this.showStartButton = true
     } else if (action === "restart-game") {
-      this.restartGame()
+      stopGame()
     }
   }
 

@@ -58,15 +58,21 @@ class EventManager {
               }
               if (this.world.ui.activeMenuButton === button.action) {
                 if (button.action === "start-intro") {
+                  const introMusic = document.getElementById('intro-music');
+                  if (!muteMusic && introMusic) {
+                    introMusic.currentTime = 32;
+                    introMusic.volume = 0.01;
+                  }
                   this.world.showStartIntro = false;
                   this.world.showIntro = true;
+                } else if (button.action === "restart-game") {
+                  stopGame();
+                } else if (button.action === "back-to-menu") {
+                  this.world.handleMenuAction("back-to-menu");
                 } else {
                   this.world.handleMenuAction(button.action);
                 }
-              } else {
-                this.world.ui.activeMenuButton = button.action;
               }
-
               return;
             }
           }

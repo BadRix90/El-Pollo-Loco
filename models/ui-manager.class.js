@@ -208,8 +208,7 @@ class UIManager {
 
     if (introMusic) {
       introMusic.currentTime = 32;
-      introMusic.volume = 0.02;
-      introMusic.play();
+      introMusic.volume = 0.01;
     }
 
     clearInterval(this.world.lyricSetupInterval);
@@ -356,6 +355,7 @@ class UIManager {
     ctx.restore();
     this.pulseFrame++;
   }
+
 
 
 }

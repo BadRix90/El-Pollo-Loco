@@ -102,14 +102,14 @@ window.addEventListener('keydown', (e) => {
     if (world && world.showStartIntro && e.key === "Enter") {
         const introMusic = document.getElementById('intro-music');
         if (!muteMusic && introMusic) {
-          introMusic.currentTime = 32;
-          introMusic.volume = 0.01;
-          introMusic.play();
+            introMusic.currentTime = 32;
+            introMusic.volume = 0.01;
+            introMusic.play();
         }
         world.showStartIntro = false;
         world.showIntro = true;
-      }
-      
+    }
+
     if (e.key === " ") {
         e.preventDefault();
         keyboard.SPACE = true;
@@ -135,6 +135,17 @@ window.addEventListener('keydown', (e) => {
         toggleFullscreen();
     }
 
+    if (world && world.showEndscreen) {
+        if (e.key === "ArrowUp") {
+            world.ui.navigateMenu("up");
+        } else if (e.key === "ArrowDown") {
+            world.ui.navigateMenu("down");
+        } else if (e.key === "Enter") {
+            if (world.ui.activeMenuButton) {
+                world.handleMenuAction(world.ui.activeMenuButton);
+            }
+        }
+    }
 
 
     if (world && world.showControlsOverlay && e.key === "Enter") {
