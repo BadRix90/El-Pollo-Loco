@@ -67,10 +67,20 @@ class EventManager {
                     return
                   }
                 }
-
                 if (this.world.menuButtons.length === 1) {
-                  this.world.handleMenuAction(button.action)
-                  return
+                  if (button.action === "start-intro") {
+                    this.world.showStartIntro = false;
+                    this.world.showIntro = true;
+
+                    const introMusic = document.getElementById("intro-music");
+                    if (!muteMusic && introMusic) {
+                      introMusic.currentTime = 32;
+                      introMusic.volume = 0.01;
+                    }
+                  } else {
+                    this.world.handleMenuAction(button.action);
+                  }
+                  return;
                 }
                 if (this.world.ui.activeMenuButton === button.action) {
                   if (button.action === "start-intro") {
@@ -88,7 +98,10 @@ class EventManager {
                   } else {
                     this.world.handleMenuAction(button.action)
                   }
+                } else {
+                  this.world.ui.activeMenuButton = button.action
                 }
+
                 return
               }
             }
