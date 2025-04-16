@@ -147,30 +147,30 @@ class World {
    */
   draw() {
     this.menuButtons = []
-  
+
     if (this.showEndscreen) {
       this.ui.drawEndscreen()
       requestAnimationFrame(() => this.draw())
       return
     }
-  
+
     if (this.handleOverlayScreens()) return
     if (this.drawStartIntroScreen()) return
-  
+
     this.drawWorldScene()
     this.drawOverlaysAndEffects()
-  
+
     this.drawLoopId = requestAnimationFrame(() => this.draw())
     this.drawGameOverText()
   }
-  
+
 
   drawGameOverText() {
     if (this.showGameOver) {
       if (this.gameOverY < this.canvas.height / 2) {
         this.gameOverY += 5
       }
-  
+
       this.ctx.save()
       this.ctx.font = "48px CyberpunkCraftpixPixel"
       this.ctx.fillStyle = "#ff0066"
@@ -183,32 +183,32 @@ class World {
   drawOverlaysAndEffects() {
     this.weather.drawRain()
     this.touchOverlay.draw(this.ctx)
-  
+
     if (this.showReturnTimer && !this.showEndscreen && !this.character.isDead()) {
       const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000)
       const secondsLeft = Math.max(0, 10 - secondsPassed)
-  
+
       this.ctx.font = "28px CyberpunkCraftpixPixel"
       this.ctx.fillStyle = "white"
       this.ctx.textAlign = "center"
       this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60)
-  
+
       if (secondsLeft <= 0) {
         this.ui.returnToMainMenu()
       }
     }
   }
-  
+
 
   drawWorldScene() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-  
+
     this.ctx.translate(this.camera_x, 0)
     this.drawBackgroundObjects()
-  
+
     this.ctx.translate(-this.camera_x, 0)
     this.addToMap(this.statusBar)
-  
+
     this.ctx.translate(this.camera_x, 0)
     this.addObjectsToMap(this.level.street)
     if (this.policeCar) this.addToMap(this.policeCar)
@@ -218,7 +218,7 @@ class World {
     this.addObjectsToMap(this.enemyBullets)
     this.addObjectsToMap(this.activeBombs)
     this.addObjectsToMap(this.healItems)
-  
+
     this.ctx.save()
     this.ctx.font = "32px CyberpunkCraftpixPixel"
     this.ctx.fillStyle = "#ff00ff"
@@ -226,10 +226,10 @@ class World {
     this.ctx.fillText("COMING SOON", 7100, 300)
     this.ctx.fillText("--->", 7100, 250)
     this.ctx.restore()
-  
+
     this.ctx.translate(-this.camera_x, 0)
   }
-  
+
 
   drawStartIntroScreen() {
     if (this.showStartIntro) {
@@ -239,8 +239,8 @@ class World {
     }
     return false
   }
-  
-  
+
+
 
   /**
    * Executes actions based on the selected menu button:
@@ -251,65 +251,123 @@ class World {
     const bgm = document.getElementById("background-music")
     const introMusic = document.getElementById("intro-music")
 
-    if (action === "start") {
-      if (introMusic) {
-        introMusic.pause()
-        introMusic.currentTime = 0
-      }
+    switch (action) {
+      case "start":
+        this.startGame(introMusic)
+        break
+      case "music":
+      case "sound-toggle":
+        toggleMusic()
+        break
+      case "restart":
+        this.restartGameHandler(introMusic)
+        break
+      case "exit":
+        this.exitGame()
+        break
+      case "controls":
+        this.openControls()
+        break
+      case "back-to-menu":
+        this.backToMenu()
+        break
+      case "toggle-menu":
+        this.toggleOptionsMenu()
+        break
+      case "impressum":
+        this.showImpressum()
+        break
+      case "back-to-intro":
+        this.backToIntro()
+        break
+      case "restart-game":
+        this.restartFromEndscreen()
+        break
+    }
+  }
 
+
+  startGame(introMusic) {
+    if (introMusic) {
+      introMusic.pause()
+      introMusic.currentTime = 0
+    }
+
+    this.showIntro = false
+    this.showMainMenu = false
+    toggleMusic()
+    this.policeCar = new PoliceCar(this)
+  }
+
+
+  restartGameHandler(introMusic) {
+    if (introMusic) {
+      introMusic.pause()
+      introMusic.currentTime = 0
+    }
+    this.restartGame()
+  }
+
+
+  exitGame() {
+    stopGame({ goToMenu: true })
+  }
+
+
+  openControls() {
+    if (this.showIntro) {
+      this.fromIntroToControls = true
       this.showIntro = false
-      this.showMainMenu = false
-      toggleMusic()
-      this.policeCar = new PoliceCar(this)
-    } else if (action === "music" || action === "sound-toggle") {
-      toggleMusic()
-    } else if (action === "restart") {
-      if (introMusic) {
-        introMusic.pause()
-        introMusic.currentTime = 0
+    } else {
+      this.fromIntroToControls = false
+    }
+
+    this.showControlsOverlay = true
+  }
+
+
+  backToMenu() {
+    if (this.showControlsOverlay) {
+      this.showControlsOverlay = false
+      if (this.fromIntroToControls) {
+        this.showIntro = true
+        this.showStartButton = true
+        this.introStep = 2
+      } else {
+        this.showOptionsMenu = true
       }
-      this.restartGame()
-    } else if (action === "exit") {
+    } else if (this.showEndscreen) {
       stopGame({ goToMenu: true })
-    } else if (action === "controls") {
-      if (this.showIntro) {
-        this.fromIntroToControls = true
-        this.showIntro = false
-      } else {
-        this.fromIntroToControls = false
-      }
-
-      this.showControlsOverlay = true
-    } else if (action === "back-to-menu") {
-      if (this.showControlsOverlay) {
-        this.showControlsOverlay = false
-        if (this.fromIntroToControls) {
-          this.showIntro = true
-          this.showStartButton = true
-          this.introStep = 2
-        } else {
-          this.showOptionsMenu = true
-        }
-      } else if (this.showEndscreen) {
-        stopGame({ goToMenu: true })
-      } else {
-        this.showOptionsMenu = !this.showOptionsMenu
-      }
-    } else if (action === "toggle-menu") {
+    } else {
       this.showOptionsMenu = !this.showOptionsMenu
-    } else if (action === "impressum") {
-      this.showIntro = false
-      this.showImpressumOverlay = true
-    } else if (action === "back-to-intro") {
-      this.showImpressumOverlay = false
-      this.showIntro = true
-      this.introStep = 2
-      this.showStartButton = true
-    } else if (action === "restart-game") {
-      this.showEndscreen = false;
-      stopGame({ goToMenu: false });
+    }
   }
+
+
+  toggleOptionsMenu() {
+    this.showOptionsMenu = !this.showOptionsMenu
   }
+
+
+  showImpressum() {
+    this.showIntro = false
+    this.showImpressumOverlay = true
+  }
+
+
+  backToIntro() {
+    this.showImpressumOverlay = false
+    this.showIntro = true
+    this.introStep = 2
+    this.showStartButton = true
+  }
+
+
+  restartFromEndscreen() {
+    this.showEndscreen = false
+    stopGame({ goToMenu: false })
+  }
+
 
 
   handleOverlayScreens() {
@@ -318,28 +376,28 @@ class World {
       requestAnimationFrame(() => this.draw())
       return true
     }
-  
+
     if (this.showIntro) {
       this.ui.drawIntroScreen()
       requestAnimationFrame(() => this.draw())
       return true
     }
-  
+
     if (this.showControlsOverlay) {
       this.ui.drawControlsOverlay()
       requestAnimationFrame(() => this.draw())
       return true
     }
-  
+
     if (this.showOptionsMenu) {
       this.ui.drawOptionsMenu()
       requestAnimationFrame(() => this.draw())
       return true
     }
-  
+
     return false
   }
-  
+
 
   handleIntroMusic() {
     const introMusic = document.getElementById("intro-music")
@@ -356,7 +414,7 @@ class World {
     }
   }
 
-  
+
   /**
    * Debug method to draw the character's current HP on screen.
    */
