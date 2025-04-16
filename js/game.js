@@ -40,7 +40,8 @@ function toggleMusic() {
         if (introMusic) introMusic.pause();
     } else {
         backgroundMusic.play();
-        if (introMusic) introMusic.play();
+        if (introMusic) safePlay(introMusic);
+
     }
 }
 
@@ -92,7 +93,8 @@ function stopGame({ goToMenu = false } = {}) {
         world.showEndscreen = false;
     
         if (!muteMusic && introMusic) {
-          introMusic.play();
+            safePlay(introMusic);
+
         }
     } else {
         world.showStartIntro = false;
@@ -128,7 +130,8 @@ window.addEventListener('keydown', (e) => {
         if (!muteMusic && introMusic) {
             introMusic.currentTime = 32;
             introMusic.volume = 0.01;
-            introMusic.play();
+            safePlay(introMusic);
+
         }
         world.showStartIntro = false;
         world.showIntro = true;
@@ -224,4 +227,13 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
-
+function safePlay(audioElement) {
+    if (audioElement && typeof audioElement.play === "function") {
+      audioElement.play().catch((e) => {
+        if (e.name !== "AbortError") {
+          console.warn("Audio play error:", e);
+        }
+      });
+    }
+  }
+  
