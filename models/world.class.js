@@ -147,7 +147,7 @@ class World {
    */
   draw() {
     this.menuButtons = []
-
+  
     if (this.showEndscreen) {
       this.ui.drawEndscreen()
       requestAnimationFrame(() => this.draw())
@@ -155,72 +155,22 @@ class World {
     }
   
     if (this.handleOverlayScreens()) return
+    if (this.drawStartIntroScreen()) return
+  
+    this.drawWorldScene()
+    this.drawOverlaysAndEffects()
+  
+    this.drawLoopId = requestAnimationFrame(() => this.draw())
+    this.drawGameOverText()
+  }
+  
 
-    if (this.showStartIntro) {
-      this.ui.drawStartIntro()
-      requestAnimationFrame(() => this.draw())
-      return
-    }
-
-
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
-    this.ctx.translate(this.camera_x, 0)
-    this.drawBackgroundObjects()
-
-    this.ctx.translate(-this.camera_x, 0)
-    this.addToMap(this.statusBar)
-
-    this.ctx.translate(this.camera_x, 0)
-    this.addObjectsToMap(this.level.street)
-    if (this.policeCar) {
-      this.addToMap(this.policeCar)
-    }
-    this.addToMap(this.character)
-
-    this.addObjectsToMap(this.level.enemies)
-
-    this.addObjectsToMap(this.playerBullets)
-    this.addObjectsToMap(this.enemyBullets)
-    this.addObjectsToMap(this.activeBombs)
-    this.addObjectsToMap(this.healItems)
-
-    this.ctx.save()
-    this.ctx.font = "32px CyberpunkCraftpixPixel"
-    this.ctx.fillStyle = "#ff00ff"
-    this.ctx.textAlign = "center"
-    this.ctx.fillText("COMING SOON", 7100, 300)
-    this.ctx.fillText("--->", 7100, 250)
-    this.ctx.restore()
-
-    this.ctx.translate(-this.camera_x, 0)
-
-    this.weather.drawRain()
-    this.touchOverlay.draw(this.ctx)
-
-    if (this.showReturnTimer && !this.showEndscreen && !this.character.isDead()) {
-      const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000)
-      const secondsLeft = Math.max(0, 10 - secondsPassed)
-
-      this.ctx.font = "28px CyberpunkCraftpixPixel"
-      this.ctx.fillStyle = "white"
-      this.ctx.textAlign = "center"
-      this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60)
-
-      if (secondsLeft <= 0) {
-        this.ui.returnToMainMenu()
-      }
-    }
-
-    this.drawLoopId = requestAnimationFrame(() => {
-      this.draw()
-    })
-
+  drawGameOverText() {
     if (this.showGameOver) {
       if (this.gameOverY < this.canvas.height / 2) {
         this.gameOverY += 5
       }
-
+  
       this.ctx.save()
       this.ctx.font = "48px CyberpunkCraftpixPixel"
       this.ctx.fillStyle = "#ff0066"
@@ -229,6 +179,68 @@ class World {
       this.ctx.restore()
     }
   }
+
+  drawOverlaysAndEffects() {
+    this.weather.drawRain()
+    this.touchOverlay.draw(this.ctx)
+  
+    if (this.showReturnTimer && !this.showEndscreen && !this.character.isDead()) {
+      const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000)
+      const secondsLeft = Math.max(0, 10 - secondsPassed)
+  
+      this.ctx.font = "28px CyberpunkCraftpixPixel"
+      this.ctx.fillStyle = "white"
+      this.ctx.textAlign = "center"
+      this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60)
+  
+      if (secondsLeft <= 0) {
+        this.ui.returnToMainMenu()
+      }
+    }
+  }
+  
+
+  drawWorldScene() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  
+    this.ctx.translate(this.camera_x, 0)
+    this.drawBackgroundObjects()
+  
+    this.ctx.translate(-this.camera_x, 0)
+    this.addToMap(this.statusBar)
+  
+    this.ctx.translate(this.camera_x, 0)
+    this.addObjectsToMap(this.level.street)
+    if (this.policeCar) this.addToMap(this.policeCar)
+    this.addToMap(this.character)
+    this.addObjectsToMap(this.level.enemies)
+    this.addObjectsToMap(this.playerBullets)
+    this.addObjectsToMap(this.enemyBullets)
+    this.addObjectsToMap(this.activeBombs)
+    this.addObjectsToMap(this.healItems)
+  
+    this.ctx.save()
+    this.ctx.font = "32px CyberpunkCraftpixPixel"
+    this.ctx.fillStyle = "#ff00ff"
+    this.ctx.textAlign = "center"
+    this.ctx.fillText("COMING SOON", 7100, 300)
+    this.ctx.fillText("--->", 7100, 250)
+    this.ctx.restore()
+  
+    this.ctx.translate(-this.camera_x, 0)
+  }
+  
+
+  drawStartIntroScreen() {
+    if (this.showStartIntro) {
+      this.ui.drawStartIntro()
+      requestAnimationFrame(() => this.draw())
+      return true
+    }
+    return false
+  }
+  
+  
 
   /**
    * Executes actions based on the selected menu button:
