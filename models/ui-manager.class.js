@@ -75,24 +75,9 @@ class UIManager {
       return
     }
 
-    if (this.world.introStep === 0) {
-      this.world.introStep = 1
-      this.world.showLyrics = true
-      this.world.lyricIndex = 0
-
-      this.world.lyricInterval = setInterval(() => {
-        this.world.lyricIndex++
-        if (this.world.lyricIndex >= this.world.introLyrics.length) {
-          clearInterval(this.world.lyricInterval)
-          this.world.showLyrics = false
-          this.world.introStep = 2
-        }
-      }, 3000)
-    }
-
     this.menuGrid = [
       ["start", "controls"],
-      ["impressum", "Impressum"]
+      ["impressum",]
     ];
 
     if (
@@ -100,36 +85,7 @@ class UIManager {
       !this.menuGrid.flat().includes(this.activeMenuButton)
     ) {
       this.activeMenuButton = "start";
-    }
-
-    if (this.world.introStep === 1 && this.world.showLyrics) {
-      ctx.font = "20px CyberpunkCraftpixPixel";
-      ctx.fillStyle = "#ffffff";
-    
-      const baseY = this.world.lyricY;
-    
-      this.world.introLyrics.forEach((line, i) => {
-        ctx.fillText(line, this.canvas.width / 2, baseY + i * 30);
-      });
-    
-      if (!this.world.lyricHold) {
-        this.world.lyricY += this.world.lyricDirection;
-    
-        const stopY = (this.canvas.height / 2) - ((this.world.introLyrics.length * 30) / 2);
-
-        if (this.world.lyricY >= stopY) {
-          this.world.lyricDirection = 0;
-          this.world.lyricHold = true;
-    
-          setTimeout(() => {
-            this.world.showLyrics = false;
-            this.world.introStep = 2;
-            this.world.showStartButton = true;
-          }, 1500);
-        }
-      }
-    }
-    
+    } 
 
     if (this.world.introStep === 2) {
       ctx.font = "20px CyberpunkCraftpixPixel"
@@ -144,10 +100,8 @@ class UIManager {
       this.drawButton(this.canvas.width / 2, this.world.introY + 200, 160, 40, "IMPRINT", "impressum");
 
     }
-
     ctx.restore()
     this.pulseFrame++;
-
   }
 
 

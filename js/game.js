@@ -86,6 +86,10 @@ window.addEventListener('keydown', (e) => {
     if (world && world.showImpressumOverlay && e.key === "Enter") {
         world.handleMenuAction("back-to-intro");
     }
+    if (world && world.showStartIntro && e.key === "Enter") {
+        world.showStartIntro = false;
+        world.showIntro = true;
+    }
     if (e.key === " ") {
         e.preventDefault();
         keyboard.SPACE = true;

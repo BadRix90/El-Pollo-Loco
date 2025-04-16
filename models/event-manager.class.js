@@ -57,10 +57,16 @@ class EventManager {
                 return;
               }
               if (this.world.ui.activeMenuButton === button.action) {
-                this.world.handleMenuAction(button.action);
+                if (button.action === "start-intro") {
+                  this.world.showStartIntro = false;
+                  this.world.showIntro = true;
+                } else {
+                  this.world.handleMenuAction(button.action);
+                }
               } else {
                 this.world.ui.activeMenuButton = button.action;
               }
+
               return;
             }
           }

@@ -50,27 +50,15 @@ class World {
     this.run();
     this.hoverX = 0;
     this.hoverY = 0;
-    this.lyricInterval = null;
     this.fromIntroToControls = false;
-    this.lyricSpeed = 1500;
     this.gameOverHandled = false;
     this.showGameOver = false;
     this.gameOverY = -50;
     this.gameOverHandled = false;
     this.showStartIntro = true;
     this.showIntro = false;
-
-    this.introLyrics = [
-      "Forget the mouse.",
-      "This is pure keyboard.",
-      "Arrow keys.",
-      "Enter.",
-    ];
     this.introStep = 1;
-    this.lyricDirection = 1;
-    this.lyricY = 120;
-
-    this.showLyrics = true;
+    this.introStep = 2;
   }
 
 
