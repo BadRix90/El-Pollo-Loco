@@ -85,7 +85,7 @@ class Character extends MovableObject {
     this.introRunning = true
     this.x = -100
     this.laserSound = new Audio("audio/laserBlasterCharacter.mp3")
-    this.laserSound.volume = 0.03
+    this.laserSound.volume = 0.01
   }
 
   /**

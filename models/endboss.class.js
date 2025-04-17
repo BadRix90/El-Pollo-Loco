@@ -58,10 +58,10 @@ class Endboss extends MovableObject {
     this.animate();
 
     this.laserSound = new Audio('audio/laser-45816.mp3');
-    this.laserSound.volume = 0.03;
+    this.laserSound.volume = 0.01;
 
     this.sinusBombSound = new Audio('audio/sinusBombEndBoss.mp3');
-    this.sinusBombSound.volume = 0.03;
+    this.sinusBombSound.volume = 0.015;
   }
 
 

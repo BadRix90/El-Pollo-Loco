@@ -3,6 +3,7 @@ let introMusic;
 let backgroundMusic;
 let muteMusic = false;
 
+
 /**
  * Initializes the audio system.
  */
@@ -32,9 +33,9 @@ function createAudioContextIfNeeded() {
  * Plays an audio element safely.
  */
 function playAudio(audioElement) {
-    if (audioElement && !muteMusic) {
+    if (audioElement && !muteMusic && !muteSounds) { 
         audioElement.play().catch(e => console.log('Audio play prevented:', e));
-    }
+      }
 }
 
 /**
@@ -63,7 +64,7 @@ function startIntroMusic() {
  */
 function startGameMusic() {
     if (backgroundMusic && !muteMusic) {
-        backgroundMusic.volume = 0.015;
+        backgroundMusic.volume = 0.01;
         playAudio(backgroundMusic);
     }
 }
@@ -76,18 +77,11 @@ function stopMusic() {
     pauseAudio(backgroundMusic);
 }
 
-/**
- * Toggles music mute on/off.
- */
-function toggleMusic() {
-    muteMusic = !muteMusic;
-    if (muteMusic) {
-        stopMusic();
-    } else {
-        if (world && !world.showIntro && !world.showStartIntro && !world.showControlsOverlay && !world.showOptionsMenu && !world.showImpressumOverlay) {
-            startGameMusic();
-        } else {
-            startIntroMusic();
-        }
-    }
+
+function stopAllSounds() {
+    const soundElements = document.querySelectorAll('audio.sound');
+    soundElements.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
 }

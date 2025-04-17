@@ -1,3 +1,4 @@
+let allGameSounds = [];
 let canvas;
 let world;
 let keyboard = new Keyboard();
@@ -45,6 +46,9 @@ function showMuteNotification(text) {
  * Toggles the background music and sound effects on or off.
  */
 function toggleMusic() {
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
     muteMusic = !muteMusic;
     muteSounds = muteMusic;
     localStorage.setItem("muteMusic", muteMusic);
@@ -58,6 +62,7 @@ function toggleMusic() {
     if (muteMusic) {
         if (introMusic) introMusic.pause();
         if (backgroundMusic) backgroundMusic.pause();
+        stopAllSounds();
     } else {
         if (inGame) {
             if (backgroundMusic) backgroundMusic.play();
@@ -80,7 +85,10 @@ function toggleMusic() {
     }
 
     showMuteNotification(muteMusic ? "MUSIC/SOUND OFF" : "MUSIC/SOUND ON");
+    updateSoundVolumes();
+
 }
+
 
 /**
  * Toggles the in-game options menu visibility.
@@ -252,8 +260,30 @@ function safePlay(audioElement) {
     if (audioElement && typeof audioElement.play === "function") {
         audioElement.play().catch((e) => {
             if (e.name !== "AbortError") {
-                console.warn("Audio play error:", e);
             }
+        });
+    }
+}
+
+
+/**
+ * Stops all sounds in the game.
+ */
+function updateSoundVolumes() {
+    if (!world) return;
+
+    if (world.level?.endboss) {
+        world.level.endboss.laserSound.volume = muteSounds ? 0 : 0.03;
+        world.level.endboss.sinusBombSound.volume = muteSounds ? 0 : 0.03;
+    }
+
+    if (world.character) {
+        world.character.laserSound.volume = muteSounds ? 0 : 0.03;
+    }
+
+    if (world.activeBombs.length > 0) {
+        world.activeBombs.forEach(bomb => {
+            bomb.explodeSound.volume = muteSounds ? 0 : 0.06;
         });
     }
 }
