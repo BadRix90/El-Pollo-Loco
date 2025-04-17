@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 let audioContext;
 let introMusic;
 let muteMusic = false;
@@ -54,6 +55,8 @@ function toggleMusic() {
   }
 }
 =======
+=======
+>>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
 /**
  * Safely plays audio elements only after user interaction
  * Handles the NotAllowedError that occurs when trying to play audio
@@ -127,5 +130,9 @@ function safePlay(audioElement) {
   // Make these functions available globally
   window.safePlay = safePlay
   window.initializeAudio = initializeAudio
+<<<<<<< HEAD
+  
+>>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
+=======
   
 >>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
