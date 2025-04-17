@@ -76,6 +76,7 @@ class EventManager {
                     if (!muteMusic && introMusic) {
                       introMusic.currentTime = 32;
                       introMusic.volume = 0.01;
+                      introMusic.play();
                     }
                   } else {
                     this.world.uiHandler.handleMenuAction(button.action);

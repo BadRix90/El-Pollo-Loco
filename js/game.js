@@ -44,33 +44,39 @@ function showMuteNotification(text) {
 function toggleMusic() {
     muteMusic = !muteMusic;
     muteSounds = muteMusic;
-
     localStorage.setItem("muteMusic", muteMusic);
     localStorage.setItem("muteSounds", muteSounds);
 
     const introMusic = document.getElementById('intro-music');
-    const btnMusic = document.getElementById('btn-music');
+    const backgroundMusic = document.getElementById('background-music');
+
+    const inGame = world && !world.showIntro && !world.showStartIntro && !world.showControlsOverlay && !world.showOptionsMenu && !world.showImpressumOverlay;
 
     if (muteMusic) {
-        backgroundMusic.pause();
         if (introMusic) introMusic.pause();
-        showMuteNotification("MUSIC/SOUND OFF");
+        if (backgroundMusic) backgroundMusic.pause();
     } else {
-        backgroundMusic.play();
-        if (introMusic) safePlay(introMusic);
-        showMuteNotification("MUSIC/SOUND ON");
+        if (inGame) {
+            if (backgroundMusic) backgroundMusic.play();
+            if (introMusic) introMusic.pause();
+        } else {
+            if (introMusic) {
+                introMusic.currentTime = 32;
+                introMusic.volume = 0.01;
+                safePlay(introMusic);
+            }
+            if (backgroundMusic) backgroundMusic.pause();
+        }
     }
 
+    const btnMusic = document.getElementById('btn-music');
     if (btnMusic) {
         btnMusic.src = muteMusic
             ? "img/GUI/3 Icons/Icons/Icon_34.png"
             : "img/GUI/3 Icons/Icons/Icon_03.png";
     }
-}
 
-function toggleSounds() {
-    muteSounds = !muteSounds;
-    localStorage.setItem("muteSounds", muteSounds);
+    showMuteNotification(muteMusic ? "MUSIC/SOUND OFF" : "MUSIC/SOUND ON");
 }
 
 
@@ -186,7 +192,9 @@ window.addEventListener('keydown', (e) => {
     } else if (e.key === "Shift") {
         keyboard.SHIFT = true;
     } else if (e.key.toLowerCase() === "t") {
-        toggleMusic();
+        if (world && !world.showIntro && !world.showStartIntro && !world.showControlsOverlay && !world.showOptionsMenu && !world.showImpressumOverlay) {
+            toggleMusic();
+        }
     } else if (e.key.toLowerCase() === "y") {
         toggleSounds();
     } else if (e.key.toLowerCase() === "f") {
