@@ -59,7 +59,7 @@ class Endboss extends MovableObject {
 
     this.laserSound = new Audio('audio/laser-45816.mp3');
     this.laserSound.volume = 0.03;
-  
+
     this.sinusBombSound = new Audio('audio/sinusBombEndBoss.mp3');
     this.sinusBombSound.volume = 0.03;
   }
@@ -117,7 +117,7 @@ class Endboss extends MovableObject {
         if (!muteSounds) {
           this.laserSound.play();
         }
-    
+
       }
 
       if (i >= this.IMAGES_ATTACK.length) {
@@ -162,7 +162,7 @@ class Endboss extends MovableObject {
     this.sinusBombSound.currentTime = 0;
     if (!muteSounds) {
       this.sinusBombSound.play();
-    }    
+    }
   }
 
 
@@ -174,30 +174,28 @@ class Endboss extends MovableObject {
  */
   hit(damage = 20) {
     if (this.isDead() || this.deathPlayed) return;
-  
+
     this.energy -= damage;
-  
+
     if (this.energy <= 0) {
       this.energy = 0;
       this.speed = 0;
       this.deathPlayed = true;
       this.playDeathAnimation();
-  
-      if (this.world && !this.world.endbossDefeatedAt) {
-        this.world.endbossDefeatedAt = Date.now();
-        this.world.showReturnTimer = true;
+
+      if (this.world) {
+        this.world.endGame();
       }
-  
     } else {
       this.mode = "hurt";
       this.playHurtAnimation();
     }
   }
- 
-  
-/**
- * Plays the death animation sequence once, then stops movement.
- */
+
+
+  /**
+   * Plays the death animation sequence once, then stops movement.
+   */
   playDeathAnimation() {
     let i = 0;
     let interval = setInterval(() => {

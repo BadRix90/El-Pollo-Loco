@@ -347,7 +347,9 @@ class UIManager {
     ctx.fillStyle = "#ff0033";
     ctx.font = "48px CyberpunkCraftpixPixel";
     ctx.textAlign = "center";
-    ctx.fillText("GAME OVER", centerX, 150);
+    const text = this.world.character.isDead() ? "GAME OVER" : "YOU WIN";
+    ctx.fillText(text, centerX, 150);
+
 
     this.drawButton(centerX, 240, 180, 40, "RESTART", "restart-game");
     this.drawButton(centerX, 300, 180, 40, "MENU", "back-to-menu");
