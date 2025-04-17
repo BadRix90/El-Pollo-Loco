@@ -186,6 +186,7 @@ class UIManager {
     if (introMusic) {
       introMusic.currentTime = 32
       introMusic.volume = 0.01
+      // Don't auto-play here, it will be triggered by user interaction
     }
 
     clearInterval(this.world.lyricSetupInterval)

@@ -38,6 +38,12 @@ class World {
     this.weather = new WeatherSystem(this.canvas)
     this.bullets = new BulletManager(this)
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard)
+
+    // Initialize audio system early
+    if (typeof initializeAudio === "function") {
+      initializeAudio()
+    }
+
     this.draw()
     this.setWorld()
     this.run()
@@ -217,19 +223,18 @@ class World {
    */
   drawStartIntroScreen() {
     if (!this.showStartIntro) {
-      return false;
+      return false
     }
 
-    const btnMusic = document.getElementById('btn-music');
+    const btnMusic = document.getElementById("btn-music")
     if (btnMusic) {
-      btnMusic.style.display = "none";
+      btnMusic.style.display = "none"
     }
 
-    this.ui.drawStartIntro();
-    requestAnimationFrame(() => this.draw());
-    return true;
+    this.ui.drawStartIntro()
+    requestAnimationFrame(() => this.draw())
+    return true
   }
-
 
   /**
    * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.

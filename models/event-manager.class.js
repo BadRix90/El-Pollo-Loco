@@ -1,39 +1,35 @@
 class EventManager {
-
   /**
- * Creates a new EventManager instance.
- * Registers click and touch event listeners for the canvas.
- * @param {World} world - The game world instance.
- */
+   * Creates a new EventManager instance.
+   * Registers click and touch event listeners for the canvas.
+   * @param {World} world - The game world instance.
+   */
   constructor(world) {
-    this.world = world;
-    this.canvas = world.canvas;
+    this.world = world
+    this.canvas = world.canvas
 
-    this.registerClickEvents();
-    this.registerTouchEvents();
+    this.registerClickEvents()
+    this.registerTouchEvents()
   }
 
-
   /**
- * Registers a mouse click event listener on the canvas.
- * Detects if a menu button was clicked and triggers the corresponding action.
- */
+   * Registers a mouse click event listener on the canvas.
+   * Detects if a menu button was clicked and triggers the corresponding action.
+   */
   registerClickEvents() {
     // Disabled mouse click during intro
     this.canvas.addEventListener("click", (e) => {
       if (!this.world.showIntro) {
-        this.handleCanvasClick(e);
+        this.handleCanvasClick(e)
       }
-    });
-
+    })
   }
 
-
   /**
- * Registers a touchstart event listener on the canvas.
- * Translates touch coordinates to canvas space and checks for menu button hits.
- * Uses non-passive event handling to allow interaction control.
- */
+   * Registers a touchstart event listener on the canvas.
+   * Translates touch coordinates to canvas space and checks for menu button hits.
+   * Uses non-passive event handling to allow interaction control.
+   */
   registerTouchEvents() {
     this.canvas.addEventListener(
       "touchstart",
@@ -69,19 +65,19 @@ class EventManager {
                 }
                 if (this.world.menuButtons.length === 1) {
                   if (button.action === "start-intro") {
-                    this.world.showStartIntro = false;
-                    this.world.showIntro = true;
+                    this.world.showStartIntro = false
+                    this.world.showIntro = true
 
-                    const introMusic = document.getElementById("intro-music");
+                    const introMusic = document.getElementById("intro-music")
                     if (!muteMusic && introMusic) {
-                      introMusic.currentTime = 32;
-                      introMusic.volume = 0.01;
-                      introMusic.play();
+                      introMusic.currentTime = 32
+                      introMusic.volume = 0.01
+                      safePlay(introMusic) // Use safePlay instead of direct play
                     }
                   } else {
-                    this.world.uiHandler.handleMenuAction(button.action);
+                    this.world.uiHandler.handleMenuAction(button.action)
                   }
-                  return;
+                  return
                 }
                 if (this.world.ui.activeMenuButton === button.action) {
                   if (button.action === "start-intro") {
@@ -89,6 +85,7 @@ class EventManager {
                     if (!muteMusic && introMusic) {
                       introMusic.currentTime = 32
                       introMusic.volume = 0.01
+                      safePlay(introMusic) // Use safePlay instead of direct play
                     }
                     this.world.showStartIntro = false
                     this.world.showIntro = true
@@ -114,9 +111,9 @@ class EventManager {
   }
 
   handleCanvasClick(e) {
-    const rect = this.canvas.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
+    const rect = this.canvas.getBoundingClientRect()
+    const clickX = e.clientX - rect.left
+    const clickY = e.clientY - rect.top
 
     if (this.world.menuButtons) {
       for (const button of this.world.menuButtons) {
@@ -126,11 +123,10 @@ class EventManager {
           clickY >= button.y &&
           clickY <= button.y + button.h
         ) {
-          this.world.uiHandler.handleMenuAction(button.action);
-          return;
+          this.world.uiHandler.handleMenuAction(button.action)
+          return
         }
       }
     }
   }
-
 }
