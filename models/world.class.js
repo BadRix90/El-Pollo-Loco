@@ -138,141 +138,144 @@ class World {
  * Draws backgrounds, character, enemies, projectiles, overlays, and menus.
  * Also handles intro, controls screen, and return-to-menu logic.
  */
-draw() {
-  this.menuButtons = [];
+  draw() {
+    this.menuButtons = [];
 
-  if (this.showEndscreen) {
-    this.ui.drawEndscreen();
-    requestAnimationFrame(() => this.draw());
-    return;
-  }
-
-  if (this.handleOverlayScreens()) return;
-  if (this.drawStartIntroScreen()) return;
-
-  this.drawWorldScene();
-  this.drawLoopId = requestAnimationFrame(() => this.draw());
-  this.drawGameOverText();
-}
-
-/**
- * Draws the game scene, including all moving objects and background.
- * Applies camera translation and renders status bar, enemies, bullets, etc.
- */
-drawWorldScene() {
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  this.ctx.translate(this.camera_x, 0);
-  this.drawBackgroundObjects();
-  this.ctx.translate(-this.camera_x, 0);
-  this.addToMap(this.statusBar);
-  this.ctx.translate(this.camera_x, 0);
-  this.addObjectsToMap(this.level.street);
-  if (this.policeCar) this.addToMap(this.policeCar);
-  this.addToMap(this.character);
-  this.addObjectsToMap(this.level.enemies);
-  this.addObjectsToMap(this.playerBullets);
-  this.addObjectsToMap(this.enemyBullets);
-  this.addObjectsToMap(this.activeBombs);
-  this.addObjectsToMap(this.healItems);
-  this.ctx.save();
-  this.ctx.font = "32px CyberpunkCraftpixPixel";
-  this.ctx.fillStyle = "#ff00ff";
-  this.ctx.textAlign = "center";
-  this.ctx.fillText("COMING SOON", 7100, 300);
-  this.ctx.fillText("--->", 7100, 250);
-  this.ctx.restore();
-
-  this.ctx.translate(-this.camera_x, 0);
-}
-
-
-/**
- * Handles the downward animation of the "GAME OVER" text after death.
- */
-drawGameOverText() {
-  if (this.showGameOver) {
-    if (this.gameOverY < this.canvas.height / 2) {
-      this.gameOverY += 5;
+    if (this.showEndscreen) {
+      this.ui.drawEndscreen();
+      requestAnimationFrame(() => this.draw());
+      return;
     }
 
+    if (this.handleOverlayScreens()) return;
+    if (this.drawStartIntroScreen()) return;
+
+    this.drawWorldScene();
+    this.drawLoopId = requestAnimationFrame(() => this.draw());
+    this.drawGameOverText();
+  }
+
+  /**
+   * Draws the game scene, including all moving objects and background.
+   * Applies camera translation and renders status bar, enemies, bullets, etc.
+   */
+  drawWorldScene() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.drawBackgroundObjects();
+    this.ctx.translate(-this.camera_x, 0);
+    this.addToMap(this.statusBar);
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.level.street);
+    if (this.policeCar) this.addToMap(this.policeCar);
+    this.addToMap(this.character);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.playerBullets);
+    this.addObjectsToMap(this.enemyBullets);
+    this.addObjectsToMap(this.activeBombs);
+    this.addObjectsToMap(this.healItems);
     this.ctx.save();
-    this.ctx.font = "48px CyberpunkCraftpixPixel";
-    this.ctx.fillStyle = "#ff0066";
+    this.ctx.font = "32px CyberpunkCraftpixPixel";
+    this.ctx.fillStyle = "#ff00ff";
     this.ctx.textAlign = "center";
-    this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
+    this.ctx.fillText("COMING SOON", 7100, 300);
+    this.ctx.fillText("--->", 7100, 250);
     this.ctx.restore();
-  }
-}
-
-/**
- * Draws the initial intro screen with the “START” button animation.
- * @returns {boolean} Whether the intro screen was drawn and loop continues.
- */
-drawStartIntroScreen() {
-  if (this.showStartIntro) {
-    this.ui.drawStartIntro();
-    requestAnimationFrame(() => this.draw());
-    return true;
-  }
-  return false;
-}
-
-/**
- * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.
- * @returns {boolean} True if an overlay was drawn, false otherwise.
- */
-handleOverlayScreens() {
-  if (this.showImpressumOverlay) {
-    this.ui.drawImpressumOverlay();
-    requestAnimationFrame(() => this.draw());
-    return true;
-  }
-
-  if (this.showIntro) {
-    this.ui.drawIntroScreen();
-    requestAnimationFrame(() => this.draw());
-    return true;
-  }
-
-  if (this.showControlsOverlay) {
-    this.ui.drawControlsOverlay();
-    requestAnimationFrame(() => this.draw());
-    return true;
-  }
-
-  if (this.showOptionsMenu) {
-    this.ui.drawOptionsMenu();
-    requestAnimationFrame(() => this.draw());
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Manages intro music playback and fade-in logic.
- * Ensures correct music state for different screens.
- */
-handleIntroMusic() {
-  const introMusic = document.getElementById("intro-music");
-
-  const shouldPlay =
-    this.showIntro ||
-    this.showImpressumOverlay ||
-    (this.showControlsOverlay && this.fromIntroToControls);
-
-  if (shouldPlay) {
-    if (introMusic && introMusic.paused) {
-      introMusic.volume = 0.01;
-      introMusic.currentTime = 32;
+    if (this.touchOverlay) {
+      this.touchOverlay.draw(this.ctx);
     }
-  } else {
-    if (introMusic && !introMusic.paused) {
-      introMusic.pause();
-      introMusic.currentTime = 0;
+
+    this.ctx.translate(-this.camera_x, 0);
+  }
+
+
+  /**
+   * Handles the downward animation of the "GAME OVER" text after death.
+   */
+  drawGameOverText() {
+    if (this.showGameOver) {
+      if (this.gameOverY < this.canvas.height / 2) {
+        this.gameOverY += 5;
+      }
+
+      this.ctx.save();
+      this.ctx.font = "48px CyberpunkCraftpixPixel";
+      this.ctx.fillStyle = "#ff0066";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.gameOverY);
+      this.ctx.restore();
     }
   }
-}
+
+  /**
+   * Draws the initial intro screen with the “START” button animation.
+   * @returns {boolean} Whether the intro screen was drawn and loop continues.
+   */
+  drawStartIntroScreen() {
+    if (this.showStartIntro) {
+      this.ui.drawStartIntro();
+      requestAnimationFrame(() => this.draw());
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.
+   * @returns {boolean} True if an overlay was drawn, false otherwise.
+   */
+  handleOverlayScreens() {
+    if (this.showImpressumOverlay) {
+      this.ui.drawImpressumOverlay();
+      requestAnimationFrame(() => this.draw());
+      return true;
+    }
+
+    if (this.showIntro) {
+      this.ui.drawIntroScreen();
+      requestAnimationFrame(() => this.draw());
+      return true;
+    }
+
+    if (this.showControlsOverlay) {
+      this.ui.drawControlsOverlay();
+      requestAnimationFrame(() => this.draw());
+      return true;
+    }
+
+    if (this.showOptionsMenu) {
+      this.ui.drawOptionsMenu();
+      requestAnimationFrame(() => this.draw());
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Manages intro music playback and fade-in logic.
+   * Ensures correct music state for different screens.
+   */
+  handleIntroMusic() {
+    const introMusic = document.getElementById("intro-music");
+
+    const shouldPlay =
+      this.showIntro ||
+      this.showImpressumOverlay ||
+      (this.showControlsOverlay && this.fromIntroToControls);
+
+    if (shouldPlay) {
+      if (introMusic && introMusic.paused) {
+        introMusic.volume = 0.01;
+        introMusic.currentTime = 32;
+      }
+    } else {
+      if (introMusic && !introMusic.paused) {
+        introMusic.pause();
+        introMusic.currentTime = 0;
+      }
+    }
+  }
 
   /**
    * Debug method to draw the character's current HP on screen.
@@ -376,6 +379,6 @@ handleIntroMusic() {
     this.ui.menuOptions = ["restart-game", "back-to-menu"]
     if (this.touchOverlay) {
       this.touchOverlay.disabled = true;
-  }
+    }
   }
 }

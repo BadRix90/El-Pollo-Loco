@@ -104,7 +104,9 @@ function stopGame({ goToMenu = false } = {}) {
     }
 
     world = new World(canvas, keyboard);
-
+    if (world.touchOverlay) {
+        world.touchOverlay.disabled = false; 
+    }
     if (muteMusic && backgroundMusic) {
         backgroundMusic.pause();
     }
