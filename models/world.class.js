@@ -38,12 +38,6 @@ class World {
     this.weather = new WeatherSystem(this.canvas)
     this.bullets = new BulletManager(this)
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard)
-
-    // Initialize audio system early
-    if (typeof initializeAudio === "function") {
-      initializeAudio()
-    }
-
     this.draw()
     this.setWorld()
     this.run()
@@ -216,6 +210,7 @@ class World {
       this.ctx.restore()
     }
   }
+  
 
   /**
    * Draws the initial intro screen with the “START” button animation.
@@ -235,6 +230,7 @@ class World {
     requestAnimationFrame(() => this.draw())
     return true
   }
+
 
   /**
    * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.
@@ -268,28 +264,6 @@ class World {
     return false
   }
 
-  /**
-   * Manages intro music playback and fade-in logic.
-   * Ensures correct music state for different screens.
-   */
-  handleIntroMusic() {
-    const introMusic = document.getElementById("intro-music")
-
-    const shouldPlay =
-      this.showIntro || this.showImpressumOverlay || (this.showControlsOverlay && this.fromIntroToControls)
-
-    if (shouldPlay) {
-      if (introMusic && introMusic.paused) {
-        introMusic.volume = 0.01
-        introMusic.currentTime = 32
-      }
-    } else {
-      if (introMusic && !introMusic.paused) {
-        introMusic.pause()
-        introMusic.currentTime = 0
-      }
-    }
-  }
 
   /**
    * Debug method to draw the character's current HP on screen.
@@ -299,6 +273,7 @@ class World {
     this.ctx.fillStyle = "white"
     this.ctx.fillText("HP: " + this.character.energy, 20 - this.camera_x, 30)
   }
+
 
   /**
    * Draws all background objects with a parallax scroll effect.
@@ -313,6 +288,7 @@ class World {
     })
   }
 
+
   /**
    * Draws an array of game objects to the canvas.
    * @param {Object[]} objects - Array of drawable game objects.
@@ -321,6 +297,7 @@ class World {
     if (!Array.isArray(objects)) return
     objects.forEach((obj) => this.addToMap(obj))
   }
+
 
   /**
    * Draws a single game object to the canvas with optional horizontal flip.
@@ -339,6 +316,7 @@ class World {
     }
   }
 
+
   /**
    * Horizontally flips the object before drawing it (e.g., when facing left).
    * @param {Object} mo - The object to flip.
@@ -350,6 +328,7 @@ class World {
     mo.x = mo.x * -1
   }
 
+
   /**
    * Reverses the horizontal flip after drawing.
    * @param {Object} mo - The object to unflip.
@@ -358,6 +337,7 @@ class World {
     mo.x = mo.x * -1
     this.ctx.restore()
   }
+
 
   /**
    * Applies a temporary shaking effect to the camera for visual impact.
@@ -379,6 +359,7 @@ class World {
       }
     }, 16)
   }
+
 
   /**
    * Ends the game by updating the game state and UI elements.

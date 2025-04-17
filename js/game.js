@@ -12,7 +12,6 @@ let muteSounds = false;
 function init() {
     canvas = document.getElementById('canvas');
     backgroundMusic = document.getElementById('background-music');
-    backgroundMusic.volume = 0.015;
     muteMusic = localStorage.getItem("muteMusic") === "true";
     muteSounds = localStorage.getItem("muteSounds") === "true";
 
@@ -20,7 +19,6 @@ function init() {
     if (isMobile) {
         document.body.classList.add("mobile");
     }
-
 
     world = new World(canvas, keyboard);
 }
@@ -35,48 +33,6 @@ function showMuteNotification(text) {
             notification.style.opacity = 0;
         }, 2000);
     }
-}
-
-
-/**
- * Toggles the background music on or off and updates the UI icon accordingly.
- */
-function toggleMusic() {
-    muteMusic = !muteMusic;
-    muteSounds = muteMusic;
-    localStorage.setItem("muteMusic", muteMusic);
-    localStorage.setItem("muteSounds", muteSounds);
-
-    const introMusic = document.getElementById('intro-music');
-    const backgroundMusic = document.getElementById('background-music');
-
-    const inGame = world && !world.showIntro && !world.showStartIntro && !world.showControlsOverlay && !world.showOptionsMenu && !world.showImpressumOverlay;
-
-    if (muteMusic) {
-        if (introMusic) introMusic.pause();
-        if (backgroundMusic) backgroundMusic.pause();
-    } else {
-        if (inGame) {
-            if (backgroundMusic) backgroundMusic.play();
-            if (introMusic) introMusic.pause();
-        } else {
-            if (introMusic) {
-                introMusic.currentTime = 32;
-                introMusic.volume = 0.01;
-                safePlay(introMusic);
-            }
-            if (backgroundMusic) backgroundMusic.pause();
-        }
-    }
-
-    const btnMusic = document.getElementById('btn-music');
-    if (btnMusic) {
-        btnMusic.src = muteMusic
-            ? "img/GUI/3 Icons/Icons/Icon_34.png"
-            : "img/GUI/3 Icons/Icons/Icon_03.png";
-    }
-
-    showMuteNotification(muteMusic ? "MUSIC/SOUND OFF" : "MUSIC/SOUND ON");
 }
 
 
@@ -111,7 +67,7 @@ function stopGame({ goToMenu = false } = {}) {
 
     world = new World(canvas, keyboard);
     if (world.touchOverlay) {
-        world.touchOverlay.disabled = false; 
+        world.touchOverlay.disabled = false;
     }
     if (muteMusic && backgroundMusic) {
         backgroundMusic.pause();
@@ -123,12 +79,12 @@ function stopGame({ goToMenu = false } = {}) {
     if (goToMenu) {
         world.showStartIntro = false;
         world.showIntro = true;
-        world.introStep = 2;   
-        world.introY = -100; 
-    
+        world.introStep = 2;
+        world.introY = -100;
+
         world.showMainMenu = true;
         world.showEndscreen = false;
-    
+
         if (!muteMusic && introMusic) {
             safePlay(introMusic);
 
@@ -268,11 +224,9 @@ window.addEventListener('keyup', (e) => {
 
 function safePlay(audioElement) {
     if (audioElement && typeof audioElement.play === "function") {
-      audioElement.play().catch((e) => {
-        if (e.name !== "AbortError") {
-          console.warn("Audio play error:", e);
-        }
-      });
+        audioElement.play().catch((e) => {
+            if (e.name !== "AbortError") {}
+        });
     }
-  }
-  
+}
+
