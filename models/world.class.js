@@ -187,11 +187,10 @@ class World {
     this.ctx.fillText("COMING SOON", 7100, 300)
     this.ctx.fillText("--->", 7100, 250)
     this.ctx.restore()
+    this.ctx.translate(-this.camera_x, 0)
     if (this.touchOverlay) {
       this.touchOverlay.draw(this.ctx)
     }
-
-    this.ctx.translate(-this.camera_x, 0)
   }
 
   /**
