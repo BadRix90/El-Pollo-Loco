@@ -20,8 +20,6 @@ class World {
   showControlsOverlay = false
   policeCar = null
   touchOverlay = null
-  endbossDefeatedAt = null
-  showReturnTimer = false
 
   /**
    * Initializes the game world with canvas, keyboard input,
@@ -195,8 +193,7 @@ drawOverlaysAndEffects() {
   this.weather.drawRain();
   this.touchOverlay.draw(this.ctx);
 
-  if (this.showReturnTimer && !this.showEndscreen && !this.character.isDead()) {
-    const secondsPassed = Math.floor((Date.now() - this.endbossDefeatedAt) / 1000);
+  if (!this.showEndscreen && !this.character.isDead()) {
     const secondsLeft = Math.max(0, 10 - secondsPassed);
 
     this.ctx.font = "28px CyberpunkCraftpixPixel";
@@ -396,7 +393,6 @@ handleIntroMusic() {
    */
   endGame() {
     this.showEndscreen = true
-    this.showReturnTimer = false
     this.ui.activeMenuButton = "restart-game"
     this.ui.menuOptions = ["restart-game", "back-to-menu"]
   }
