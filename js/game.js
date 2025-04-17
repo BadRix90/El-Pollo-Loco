@@ -9,7 +9,7 @@ let muteSounds = false;
  */
 function init() {
     canvas = document.getElementById('canvas');
-    initializeAudioSystem(); // ✅ Musiksystem initialisieren
+    initializeAudioSystem();
     muteMusic = localStorage.getItem("muteMusic") === "true";
     muteSounds = localStorage.getItem("muteSounds") === "true";
 

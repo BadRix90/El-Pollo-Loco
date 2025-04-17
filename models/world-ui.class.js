@@ -22,7 +22,8 @@ class WorldUI {
       case "start":
         this.handleStart();
         if (!muteMusic) {
-          startGameMusic(); // ✅ Hintergrundmusik für Spiel starten
+          stopMusic();
+          startGameMusic();
         }
         break;
 

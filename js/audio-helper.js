@@ -52,8 +52,8 @@ function pauseAudio(audioElement) {
  */
 function startIntroMusic() {
     if (introMusic && !muteMusic) {
-        introMusic.currentTime = 32;
-        introMusic.volume = 0.01;
+        introMusic.currentTime = 0;
+        introMusic.volume = 0.0;
         playAudio(introMusic);
     }
 }
