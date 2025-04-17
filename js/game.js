@@ -4,18 +4,12 @@ let keyboard = new Keyboard();
 let muteSounds = false;
 
 /**
- * Initializes the game by setting up the canvas and creating a new instance of the game world.
+ * Initializes the game by setting up the canvas, background music,
+ * and creating a new instance of the game world.
  */
 function init() {
     canvas = document.getElementById('canvas');
-<<<<<<< HEAD
-=======
-    backgroundMusic = document.getElementById('background-music');
-    backgroundMusic.volume = 0.015;
-<<<<<<< HEAD
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
-=======
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
+    initializeAudioSystem(); // ✅ Musiksystem initialisieren
     muteMusic = localStorage.getItem("muteMusic") === "true";
     muteSounds = localStorage.getItem("muteSounds") === "true";
 
@@ -24,21 +18,14 @@ function init() {
         document.body.classList.add("mobile");
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     stopMusic();
-=======
-
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
-=======
-
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
     world = new World(canvas, keyboard);
 
     if (!muteMusic) {
-        startGameMusic();
+        startIntroMusic();
     }
 }
+
 
 /**
  * Displays a mute notification for music and sounds.
@@ -55,7 +42,7 @@ function showMuteNotification(text) {
 }
 
 /**
- * Toggles the background music on or off and updates the UI icon accordingly.
+ * Toggles the background music and sound effects on or off.
  */
 function toggleMusic() {
     muteMusic = !muteMusic;
@@ -95,51 +82,8 @@ function toggleMusic() {
     showMuteNotification(muteMusic ? "MUSIC/SOUND OFF" : "MUSIC/SOUND ON");
 }
 
-
 /**
- * Toggles the background music on or off and updates the UI icon accordingly.
- */
-function toggleMusic() {
-    muteMusic = !muteMusic;
-    muteSounds = muteMusic;
-    localStorage.setItem("muteMusic", muteMusic);
-    localStorage.setItem("muteSounds", muteSounds);
-
-    const introMusic = document.getElementById('intro-music');
-    const backgroundMusic = document.getElementById('background-music');
-
-    const inGame = world && !world.showIntro && !world.showStartIntro && !world.showControlsOverlay && !world.showOptionsMenu && !world.showImpressumOverlay;
-
-    if (muteMusic) {
-        if (introMusic) introMusic.pause();
-        if (backgroundMusic) backgroundMusic.pause();
-    } else {
-        if (inGame) {
-            if (backgroundMusic) backgroundMusic.play();
-            if (introMusic) introMusic.pause();
-        } else {
-            if (introMusic) {
-                introMusic.currentTime = 32;
-                introMusic.volume = 0.01;
-                safePlay(introMusic);
-            }
-            if (backgroundMusic) backgroundMusic.pause();
-        }
-    }
-
-    const btnMusic = document.getElementById('btn-music');
-    if (btnMusic) {
-        btnMusic.src = muteMusic
-            ? "img/GUI/3 Icons/Icons/Icon_34.png"
-            : "img/GUI/3 Icons/Icons/Icon_03.png";
-    }
-
-    showMuteNotification(muteMusic ? "MUSIC/SOUND OFF" : "MUSIC/SOUND ON");
-}
-
-
-/**
- * Toggles the in-game options menu visibility by delegating to the world handler.
+ * Toggles the in-game options menu visibility.
  */
 function toggleMenu() {
     world.uiHandler.handleMenuAction("toggle-menu");
@@ -156,46 +100,20 @@ function stopGame({ goToMenu = false } = {}) {
     world = new World(canvas, keyboard);
 
     if (world.touchOverlay) {
-        world.touchOverlay.disabled = false; 
-<<<<<<< HEAD
-=======
-    }
-    if (muteMusic && backgroundMusic) {
-        backgroundMusic.pause();
-    }
-    if (muteMusic && introMusic) {
-        introMusic.pause();
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
+        world.touchOverlay.disabled = false;
     }
 
     if (goToMenu) {
         world.showStartIntro = false;
         world.showIntro = true;
-<<<<<<< HEAD
-<<<<<<< HEAD
         world.introStep = 2;
         world.introY = -100;
         world.showMainMenu = true;
         world.showEndscreen = false;
-=======
-        world.introStep = 2;   
-        world.introY = -100; 
-    
-        world.showMainMenu = true;
-        world.showEndscreen = false;
-=======
-        world.introStep = 2;   
-        world.introY = -100; 
-    
-        world.showMainMenu = true;
-        world.showEndscreen = false;
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
-    
-        if (!muteMusic && introMusic) {
-            safePlay(introMusic);
 
+        if (!muteMusic) {
+            startIntroMusic();
         }
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
     } else {
         world.showStartIntro = false;
         world.showIntro = false;
@@ -214,7 +132,6 @@ function stopGame({ goToMenu = false } = {}) {
 
 /**
  * Handles keydown events and updates the keyboard state.
- * Also toggles the options menu with Escape and prevents default behavior for Space.
  */
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" && world) {
@@ -222,16 +139,17 @@ window.addEventListener('keydown', (e) => {
     } else if (e.key.toLowerCase() === "m") {
         world.showOptionsMenu = !world.showOptionsMenu;
     }
+
     if (world && world.showImpressumOverlay && e.key === "Enter") {
         world.uiHandler.handleMenuAction("back-to-intro");
     }
+
     if (world && world.showStartIntro && e.key === "Enter") {
         const introMusic = document.getElementById('intro-music');
         if (!muteMusic && introMusic) {
             introMusic.currentTime = 32;
             introMusic.volume = 0.005;
             safePlay(introMusic);
-
         }
         world.showStartIntro = false;
         world.showIntro = true;
@@ -276,7 +194,6 @@ window.addEventListener('keydown', (e) => {
         }
     }
 
-
     if (world && world.showControlsOverlay && e.key === "Enter") {
         world.uiHandler.handleMenuAction("back-to-menu");
     }
@@ -305,7 +222,6 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-
 /**
  * Handles keyup events and resets the corresponding key states in the keyboard object.
  */
@@ -329,25 +245,15 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
+/**
+ * Safely plays audio elements.
+ */
 function safePlay(audioElement) {
     if (audioElement && typeof audioElement.play === "function") {
-<<<<<<< HEAD
-<<<<<<< HEAD
         audioElement.play().catch((e) => {
-            if (e.name !== "AbortError") { }
+            if (e.name !== "AbortError") {
+                console.warn("Audio play error:", e);
+            }
         });
-=======
-=======
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
-      audioElement.play().catch((e) => {
-        if (e.name !== "AbortError") {
-          console.warn("Audio play error:", e);
-        }
-      });
-<<<<<<< HEAD
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
-=======
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
     }
-  }
-  
+}

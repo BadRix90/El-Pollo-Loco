@@ -39,14 +39,9 @@
 
 <body onload="init()">
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop preload="none"></audio>
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
-=======
-  <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop preload="none"></audio>
->>>>>>> parent of 2e36381 (refactor: remove music logic but keep music button structure for future use)
+  <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop preload="auto" style="display: none;"></audio>
+  <audio id="background-music" src="audio/PowerOfTheBeast.mp3" loop preload="auto" style="display: none;"></audio>
+  <div id="mute-notification"></div>
 
   <div id="game-wrapper">
     <div id="canvas-container">
@@ -58,10 +53,6 @@
       </div>
     </div>
   </div>
-
-  <audio id="intro-music" src="audio/PowerOfTheBeastInstrumental.MP3" loop preload="none"></audio>
-  <div id="mute-notification"></div>
-
 
   <div id="rotate-warning">
     <p>Please rotate your device to landscape mode to play.</p>

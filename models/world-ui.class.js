@@ -11,59 +11,61 @@ class WorldUI {
    * @param {string} action - Action string to determine behavior
    */
   handleMenuAction(action) {
-    const bgm = document.getElementById("background-music")
-    const introMusic = document.getElementById("intro-music") // ✅ Einmal ganz oben
-
     switch (action) {
-      case "start":
-        this.handleStart(bgm, introMusic)
-        break
-
       case "start-intro":
-        this.world.showStartIntro = false
-        this.world.showIntro = true
-        this.world.introStep = 2
-        this.world.showStartButton = true
+        this.world.showStartIntro = false;
+        this.world.showIntro = true;
+        this.world.introStep = 2;
+        this.world.showStartButton = true;
+        break;
 
-        if (introMusic && !muteMusic) {
-          introMusic.currentTime = 32
-          introMusic.volume = 0.01
-          introMusic.play()
+      case "start":
+        this.handleStart();
+        if (!muteMusic) {
+          startGameMusic(); // ✅ Hintergrundmusik für Spiel starten
         }
-        break
+        break;
 
       case "music":
       case "sound-toggle":
-        toggleMusic()
-        break
+        toggleMusic();
+        break;
+
       case "restart":
       case "restart-game":
-        stopGame({ goToMenu: false })
-        break
+        stopGame({ goToMenu: false });
+        break;
+
       case "exit":
-        stopGame({ goToMenu: true })
-        break
+        stopGame({ goToMenu: true });
+        break;
+
       case "controls":
-        this.handleControls()
-        break
+        this.handleControls();
+        break;
+
       case "back-to-menu":
-        this.handleBackToMenu()
-        break
+        this.handleBackToMenu();
+        break;
+
       case "toggle-menu":
-        this.world.showOptionsMenu = !this.world.showOptionsMenu
-        break
+        this.world.showOptionsMenu = !this.world.showOptionsMenu;
+        break;
+
       case "impressum":
-        this.world.showIntro = false
-        this.world.showImpressumOverlay = true
-        break
+        this.world.showIntro = false;
+        this.world.showImpressumOverlay = true;
+        break;
+
       case "back-to-intro":
-        this.world.showImpressumOverlay = false
-        this.world.showIntro = true
-        this.world.introStep = 2
-        this.world.showStartButton = true
-        break
+        this.world.showImpressumOverlay = false;
+        this.world.showIntro = true;
+        this.world.introStep = 2;
+        this.world.showStartButton = true;
+        break;
     }
   }
+
 
   handleStart(bgm, introMusic) {
     if (introMusic) {

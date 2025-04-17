@@ -17,12 +17,9 @@ class EventManager {
    * Detects if a menu button was clicked and triggers the corresponding action.
    */
   registerClickEvents() {
-    // Disabled mouse click during intro
     this.canvas.addEventListener("click", (e) => {
-      if (!this.world.showIntro) {
-        this.handleCanvasClick(e)
-      }
-    })
+      this.handleCanvasClick(e);
+    });
   }
 
   /**
@@ -34,13 +31,13 @@ class EventManager {
     this.canvas.addEventListener(
       "touchstart",
       (e) => {
-        const rect = this.canvas.getBoundingClientRect()
-        const scaleX = this.canvas.width / this.canvas.clientWidth
-        const scaleY = this.canvas.height / this.canvas.clientHeight
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / this.canvas.clientWidth;
+        const scaleY = this.canvas.height / this.canvas.clientHeight;
 
         for (const touch of e.changedTouches) {
-          const clickX = (touch.clientX - rect.left) * scaleX
-          const clickY = (touch.clientY - rect.top) * scaleY
+          const clickX = (touch.clientX - rect.left) * scaleX;
+          const clickY = (touch.clientY - rect.top) * scaleY;
 
           if (this.world.menuButtons) {
             for (const button of this.world.menuButtons) {
@@ -52,63 +49,53 @@ class EventManager {
               ) {
                 if (this.world.showEndscreen) {
                   if (button.action === "restart-game") {
-                    stopGame()
-                    return
+                    stopGame();
+                    return;
                   } else if (button.action === "back-to-menu") {
-                    this.world.showEndscreen = false
-                    this.world.showIntro = true
-                    this.world.showStartIntro = false
-                    this.world.introStep = 2
-                    this.world.showStartButton = true
-                    return
+                    this.world.showEndscreen = false;
+                    this.world.showIntro = true;
+                    this.world.showStartIntro = false;
+                    this.world.introStep = 2;
+                    this.world.showStartButton = true;
+                    return;
                   }
                 }
+
                 if (this.world.menuButtons.length === 1) {
                   if (button.action === "start-intro") {
-                    this.world.showStartIntro = false
-                    this.world.showIntro = true
-
-                    const introMusic = document.getElementById("intro-music")
-                    if (!muteMusic && introMusic) {
-                      introMusic.currentTime = 32
-                      introMusic.volume = 0.01
-                      safePlay(introMusic) // Use safePlay instead of direct play
-                    }
+                    this.world.showStartIntro = false;
+                    this.world.showIntro = true;
                   } else {
-                    this.world.uiHandler.handleMenuAction(button.action)
+                    this.world.uiHandler.handleMenuAction(button.action);
                   }
-                  return
+                  return;
                 }
+
                 if (this.world.ui.activeMenuButton === button.action) {
                   if (button.action === "start-intro") {
-                    const introMusic = document.getElementById("intro-music")
-                    if (!muteMusic && introMusic) {
-                      introMusic.currentTime = 32
-                      introMusic.volume = 0.01
-                      safePlay(introMusic) // Use safePlay instead of direct play
-                    }
-                    this.world.showStartIntro = false
-                    this.world.showIntro = true
+                    this.world.showStartIntro = false;
+                    this.world.showIntro = true;
                   } else if (button.action === "restart-game") {
-                    stopGame()
+                    stopGame();
                   } else if (button.action === "back-to-menu") {
-                    this.world.uiHandler.handleMenuAction("back-to-menu")
+                    this.world.uiHandler.handleMenuAction("back-to-menu");
                   } else {
-                    this.world.uiHandler.handleMenuAction(button.action)
+                    this.world.uiHandler.handleMenuAction(button.action);
                   }
                 } else {
-                  this.world.ui.activeMenuButton = button.action
+                  this.world.ui.activeMenuButton = button.action;
                 }
 
-                return
+                return;
               }
             }
           }
         }
       },
-      { passive: false },
-    )
+      { passive: false }
+    );
   }
+
 
   handleCanvasClick(e) {
     const rect = this.canvas.getBoundingClientRect()
