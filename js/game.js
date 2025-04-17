@@ -31,10 +31,14 @@ function init() {
  */
 function toggleMusic() {
     muteMusic = !muteMusic;
+    muteSounds = muteMusic;
+
     localStorage.setItem("muteMusic", muteMusic);
+    localStorage.setItem("muteSounds", muteSounds);
 
     const introMusic = document.getElementById('intro-music');
-    const btn = document.getElementById('btn-music');
+    const btnMusic = document.getElementById('btn-music');
+    const btnSound = document.getElementById('btn-sound');
 
     if (muteMusic) {
         backgroundMusic.pause();
@@ -44,14 +48,13 @@ function toggleMusic() {
         if (introMusic) safePlay(introMusic);
     }
 
-    // 🔥 Icon dynamisch aktualisieren
-    if (btn) {
-        btn.src = muteMusic
-            ? "img/GUI/3 Icons/Icons/Icon_34.png" // ▶️ Play
-            : "img/GUI/3 Icons/Icons/Icon_03.png"; // ⏸️ Pause
+    if (btnMusic) {
+        btnMusic.src = muteMusic
+            ? "img/GUI/3 Icons/Icons/Icon_34.png"
+            : "img/GUI/3 Icons/Icons/Icon_03.png";
     }
+   
 }
-
 
 
 function toggleSounds() {
@@ -90,6 +93,13 @@ function stopGame({ goToMenu = false } = {}) {
     }
 
     world = new World(canvas, keyboard);
+
+    if (muteMusic && backgroundMusic) {
+        backgroundMusic.pause();
+    }
+    if (muteMusic && introMusic) {
+        introMusic.pause();
+    }
 
     if (goToMenu) {
         world.showStartIntro = false;
