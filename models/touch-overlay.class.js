@@ -198,6 +198,7 @@ class TouchOverlay {
  */
     draw(ctx) {
         if (!this.buttons) return;
+        if (!this.buttons || this.disabled) return;
         if (window.innerWidth > 768) return;
     
         this.buttons.forEach(btn => {

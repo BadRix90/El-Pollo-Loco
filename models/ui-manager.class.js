@@ -340,24 +340,31 @@ class UIManager {
     const centerX = this.canvas.width / 2;
 
     ctx.save();
+
+    // Fade-Opacity vorbereiten
+    this.fadeOpacity = this.fadeOpacity || 0;
+    this.fadeOpacity += 0.01;
+    if (this.fadeOpacity > 1) this.fadeOpacity = 1;
+
+    ctx.globalAlpha = this.fadeOpacity;
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+    ctx.globalAlpha = 1.0;
+
     ctx.fillStyle = "#ff0033";
     ctx.font = "48px CyberpunkCraftpixPixel";
     ctx.textAlign = "center";
+
     const text = this.world.character.isDead() ? "GAME OVER" : "YOU WIN";
     ctx.fillText(text, centerX, 150);
-
 
     this.drawButton(centerX, 240, 180, 40, "RESTART", "restart-game");
     this.drawButton(centerX, 300, 180, 40, "MENU", "back-to-menu");
 
     ctx.restore();
     this.pulseFrame++;
-  }
-
-
+}
 
 }

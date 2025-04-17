@@ -395,5 +395,8 @@ handleIntroMusic() {
     this.showEndscreen = true
     this.ui.activeMenuButton = "restart-game"
     this.ui.menuOptions = ["restart-game", "back-to-menu"]
+    if (this.touchOverlay) {
+      this.touchOverlay.disabled = true;
+  }
   }
 }

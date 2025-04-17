@@ -26,6 +26,18 @@ function init() {
 }
 
 
+function showMuteNotification(text) {
+    const notification = document.getElementById('mute-notification');
+    if (notification) {
+        notification.textContent = text;
+        notification.style.opacity = 1;
+        setTimeout(() => {
+            notification.style.opacity = 0;
+        }, 2000);
+    }
+}
+
+
 /**
  * Toggles the background music on or off and updates the UI icon accordingly.
  */
@@ -38,14 +50,15 @@ function toggleMusic() {
 
     const introMusic = document.getElementById('intro-music');
     const btnMusic = document.getElementById('btn-music');
-    const btnSound = document.getElementById('btn-sound');
 
     if (muteMusic) {
         backgroundMusic.pause();
         if (introMusic) introMusic.pause();
+        showMuteNotification("MUSIC/SOUND OFF");
     } else {
         backgroundMusic.play();
         if (introMusic) safePlay(introMusic);
+        showMuteNotification("MUSIC/SOUND ON");
     }
 
     if (btnMusic) {
@@ -53,9 +66,7 @@ function toggleMusic() {
             ? "img/GUI/3 Icons/Icons/Icon_34.png"
             : "img/GUI/3 Icons/Icons/Icon_03.png";
     }
-   
 }
-
 
 function toggleSounds() {
     muteSounds = !muteSounds;
