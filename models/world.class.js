@@ -151,7 +151,6 @@ draw() {
   if (this.drawStartIntroScreen()) return;
 
   this.drawWorldScene();
-  this.drawOverlaysAndEffects();
   this.drawLoopId = requestAnimationFrame(() => this.draw());
   this.drawGameOverText();
 }
@@ -186,26 +185,6 @@ drawWorldScene() {
   this.ctx.translate(-this.camera_x, 0);
 }
 
-/**
- * Draws rain, touch controls, and handles the countdown after endboss defeat.
- */
-drawOverlaysAndEffects() {
-  this.weather.drawRain();
-  this.touchOverlay.draw(this.ctx);
-
-  if (!this.showEndscreen && !this.character.isDead()) {
-    const secondsLeft = Math.max(0, 10 - secondsPassed);
-
-    this.ctx.font = "28px CyberpunkCraftpixPixel";
-    this.ctx.fillStyle = "white";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText(`Returning to Menu in ${secondsLeft}`, this.canvas.width / 2, 60);
-
-    if (secondsLeft <= 0) {
-      this.ui.returnToMainMenu();
-    }
-  }
-}
 
 /**
  * Handles the downward animation of the "GAME OVER" text after death.
