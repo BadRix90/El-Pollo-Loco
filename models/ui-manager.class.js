@@ -281,7 +281,6 @@ class UIManager {
     this.pulseFrame++
   }
 
-  
   drawStartIntro() {
     const btnMusic = document.getElementById("btn-music")
     if (btnMusic) {
@@ -314,12 +313,13 @@ class UIManager {
     this.pulseFrame++
   }
 
-
   drawEndscreen() {
     const ctx = this.ctx
     const centerX = this.canvas.width / 2
 
     ctx.save()
+
+    // Fade-Opacity vorbereiten
     this.fadeOpacity = this.fadeOpacity || 0
     this.fadeOpacity += 0.01
     if (this.fadeOpacity > 1) this.fadeOpacity = 1

@@ -11,17 +11,31 @@ class WorldUI {
    * @param {string} action - Action string to determine behavior
    */
   handleMenuAction(action) {
+    const bgm = document.getElementById("background-music")
+    const introMusic = document.getElementById("intro-music") // ✅ Einmal ganz oben
+
     switch (action) {
+      case "start":
+        this.handleStart(bgm, introMusic)
+        break
+
       case "start-intro":
         this.world.showStartIntro = false
         this.world.showIntro = true
         this.world.introStep = 2
         this.world.showStartButton = true
-        break;
-      case "start":
-        this.handleStart();
-        break;
 
+        if (introMusic && !muteMusic) {
+          introMusic.currentTime = 32
+          introMusic.volume = 0.01
+          introMusic.play()
+        }
+        break
+
+      case "music":
+      case "sound-toggle":
+        toggleMusic()
+        break
       case "restart":
       case "restart-game":
         stopGame({ goToMenu: false })
@@ -51,7 +65,22 @@ class WorldUI {
     }
   }
 
-  handleStart() {
+  handleStart(bgm, introMusic) {
+    if (introMusic) {
+      introMusic.pause()
+      introMusic.currentTime = 0
+    }
+    if (bgm && !muteMusic) {
+      bgm.volume = 0.015
+      safePlay(bgm) // Use the safe play function instead of direct play
+    }
+
+    // Make music button visible in game
+    const btnMusic = document.getElementById("btn-music")
+    if (btnMusic) {
+      btnMusic.style.display = "block"
+    }
+
     this.world.showIntro = false
     this.world.showMainMenu = false
     this.world.policeCar = new PoliceCar(this.world)
