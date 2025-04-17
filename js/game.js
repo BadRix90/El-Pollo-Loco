@@ -1,7 +1,6 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let backgroundMusic;
 let muteMusic = false;
 let muteSounds = false;
 
@@ -11,7 +10,6 @@ let muteSounds = false;
  */
 function init() {
     canvas = document.getElementById('canvas');
-    backgroundMusic = document.getElementById('background-music');
     muteMusic = localStorage.getItem("muteMusic") === "true";
     muteSounds = localStorage.getItem("muteSounds") === "true";
 
@@ -49,61 +47,42 @@ function toggleMenu() {
  * clears intervals and animation frames, and reinitializes the world.
  */
 function stopGame({ goToMenu = false } = {}) {
-    const bgm = document.getElementById("background-music");
-    if (bgm) {
-        bgm.pause();
-        bgm.currentTime = 0;
-    }
-
-    const introMusic = document.getElementById("intro-music");
-    if (introMusic) {
-        introMusic.volume = 0.01;
-        introMusic.currentTime = 32;
-    }
-
     if (world) {
         cancelAnimationFrame(world.drawLoopId);
     }
-
     world = new World(canvas, keyboard);
     if (world.touchOverlay) {
         world.touchOverlay.disabled = false;
     }
-    if (muteMusic && backgroundMusic) {
-        backgroundMusic.pause();
-    }
-    if (muteMusic && introMusic) {
-        introMusic.pause();
-    }
-
     if (goToMenu) {
         world.showStartIntro = false;
         world.showIntro = true;
         world.introStep = 2;
         world.introY = -100;
-
         world.showMainMenu = true;
         world.showEndscreen = false;
-
-        if (!muteMusic && introMusic) {
-            safePlay(introMusic);
-
-        }
     } else {
         world.showStartIntro = false;
         world.showIntro = false;
         world.showMainMenu = false;
         world.showEndscreen = false;
-
         world.setWorld();
         world.character.startIntroRun();
         world.policeCar = new PoliceCar(world);
-
         if (!muteMusic && bgm) {
             bgm.play();
         }
     }
 }
+
+
+stopMusic();
+if (!muteMusic && (world.showIntro || world.showControlsOverlay || world.showImpressumOverlay)) {
+    startIntroMusic();
+} else if (!muteMusic) {
+    startBackgroundMusic();
+}
+
 
 /**
  * Handles keydown events and updates the keyboard state.
@@ -225,7 +204,7 @@ window.addEventListener('keyup', (e) => {
 function safePlay(audioElement) {
     if (audioElement && typeof audioElement.play === "function") {
         audioElement.play().catch((e) => {
-            if (e.name !== "AbortError") {}
+            if (e.name !== "AbortError") { }
         });
     }
 }
