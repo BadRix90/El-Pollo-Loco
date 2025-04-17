@@ -11,7 +11,6 @@ class TouchOverlay {
         this.keyboard = keyboard;
         this.buttons = [];
         this.disabled = false;
-
         this.buttons = this.createButtons();
         this.registerTouchEvents();
     }
@@ -197,10 +196,10 @@ class TouchOverlay {
  * Dynamically assigns the correct image if not already set.
  * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
  */
-
     draw(ctx) {
         if (!this.buttons) return;
-
+        if (window.innerWidth > 768) return;
+    
         this.buttons.forEach(btn => {
             if (!btn.img.src) {
                 switch (btn.id) {
@@ -210,16 +209,15 @@ class TouchOverlay {
                     case 'shoot': btn.img.src = 'img/GUI/9 Other/3 Skill icons/Skillicon7_06.png'; break;
                 }
             }
-
+    
             const x = btn.relX >= 0 ? btn.relX : this.canvas.width + btn.relX;
             const y = btn.relY >= 0 ? btn.relY : this.canvas.height + btn.relY;
-
+    
             ctx.save();
             ctx.globalAlpha = 0.6;
             ctx.drawImage(btn.img, x, y, btn.width, btn.height);
             ctx.restore();
         });
     }
-
-
+    
 }
