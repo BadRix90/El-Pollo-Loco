@@ -1,7 +1,6 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let muteMusic = false;
 let muteSounds = false;
 
 /**
@@ -10,16 +9,22 @@ let muteSounds = false;
  */
 function init() {
     canvas = document.getElementById('canvas');
-    muteMusic = localStorage.getItem("muteMusic") === "true";
-    muteSounds = localStorage.getItem("muteSounds") === "true";
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile) {
         document.body.classList.add("mobile");
     }
 
+    stopMusic();
     world = new World(canvas, keyboard);
+
+    if (!muteMusic && (world.showIntro || world.showControlsOverlay || world.showImpressumOverlay)) {
+        startIntroMusic();
+    } else if (!muteMusic) {
+        startBackgroundMusic();
+    }
 }
+
 
 
 function showMuteNotification(text) {
@@ -50,10 +55,13 @@ function stopGame({ goToMenu = false } = {}) {
     if (world) {
         cancelAnimationFrame(world.drawLoopId);
     }
+
     world = new World(canvas, keyboard);
+
     if (world.touchOverlay) {
         world.touchOverlay.disabled = false;
     }
+
     if (goToMenu) {
         world.showStartIntro = false;
         world.showIntro = true;
@@ -69,18 +77,11 @@ function stopGame({ goToMenu = false } = {}) {
         world.setWorld();
         world.character.startIntroRun();
         world.policeCar = new PoliceCar(world);
-        if (!muteMusic && bgm) {
-            bgm.play();
+
+        if (!muteMusic) {
+            startBackgroundMusic();
         }
     }
-}
-
-
-stopMusic();
-if (!muteMusic && (world.showIntro || world.showControlsOverlay || world.showImpressumOverlay)) {
-    startIntroMusic();
-} else if (!muteMusic) {
-    startBackgroundMusic();
 }
 
 
