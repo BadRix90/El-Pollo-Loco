@@ -1,11 +1,9 @@
 let audioContext;
 let introMusic;
-let backgroundMusic;
 let muteMusic = false;
 
 function initializeAudioSystem() {
   introMusic = document.getElementById('intro-music');
-  backgroundMusic = document.getElementById('background-music');
   document.addEventListener('click', createAudioContextIfNeeded, { once: true });
   document.addEventListener('keydown', createAudioContextIfNeeded, { once: true });
   document.addEventListener('touchstart', createAudioContextIfNeeded, { once: true });
@@ -34,24 +32,16 @@ function pauseAudio(audioElement) {
   }
 }
 
-function startIntroMusic() {
+function startGameMusic() {
   if (introMusic && !muteMusic) {
-    introMusic.currentTime = 32;
-    introMusic.volume = 0.01;
+    introMusic.volume = 0.015;
+    introMusic.currentTime = 0;
     playAudio(introMusic);
-  }
-}
-
-function startBackgroundMusic() {
-  if (backgroundMusic && !muteMusic) {
-    backgroundMusic.volume = 0.015;
-    playAudio(backgroundMusic);
   }
 }
 
 function stopMusic() {
   pauseAudio(introMusic);
-  pauseAudio(backgroundMusic);
 }
 
 function toggleMusic() {
@@ -59,10 +49,6 @@ function toggleMusic() {
   if (muteMusic) {
     stopMusic();
   } else {
-    if (world?.showIntro || world?.showControlsOverlay || world?.showImpressumOverlay) {
-      startIntroMusic();
-    } else {
-      startBackgroundMusic();
-    }
+    startGameMusic();
   }
 }

@@ -4,11 +4,12 @@ let keyboard = new Keyboard();
 let muteSounds = false;
 
 /**
- * Initializes the game by setting up the canvas, background music,
- * and creating a new instance of the game world.
+ * Initializes the game by setting up the canvas and creating a new instance of the game world.
  */
 function init() {
     canvas = document.getElementById('canvas');
+    muteMusic = localStorage.getItem("muteMusic") === "true";
+    muteSounds = localStorage.getItem("muteSounds") === "true";
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile) {
@@ -18,15 +19,14 @@ function init() {
     stopMusic();
     world = new World(canvas, keyboard);
 
-    if (!muteMusic && (world.showIntro || world.showControlsOverlay || world.showImpressumOverlay)) {
-        startIntroMusic();
-    } else if (!muteMusic) {
-        startBackgroundMusic();
+    if (!muteMusic) {
+        startGameMusic();
     }
 }
 
-
-
+/**
+ * Displays a mute notification for music and sounds.
+ */
 function showMuteNotification(text) {
     const notification = document.getElementById('mute-notification');
     if (notification) {
@@ -38,7 +38,6 @@ function showMuteNotification(text) {
     }
 }
 
-
 /**
  * Toggles the in-game options menu visibility by delegating to the world handler.
  */
@@ -46,10 +45,8 @@ function toggleMenu() {
     world.uiHandler.handleMenuAction("toggle-menu");
 }
 
-
 /**
- * Stops the current game session, resets background and intro music,
- * clears intervals and animation frames, and reinitializes the world.
+ * Stops the current game session and resets the world.
  */
 function stopGame({ goToMenu = false } = {}) {
     if (world) {
@@ -79,7 +76,7 @@ function stopGame({ goToMenu = false } = {}) {
         world.policeCar = new PoliceCar(world);
 
         if (!muteMusic) {
-            startBackgroundMusic();
+            startGameMusic();
         }
     }
 }
@@ -102,7 +99,7 @@ window.addEventListener('keydown', (e) => {
         const introMusic = document.getElementById('intro-music');
         if (!muteMusic && introMusic) {
             introMusic.currentTime = 32;
-            introMusic.volume = 0.01;
+            introMusic.volume = 0.005;
             safePlay(introMusic);
 
         }
