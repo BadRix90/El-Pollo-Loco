@@ -42,7 +42,6 @@ class Bullet extends MovableObject {
  */
   constructor(x, y, direction, bulletType, owner) {
     super().loadImage(this.IMAGES_BULLETS[bulletType]);
-    console.log(this.IMAGES_BULLETS[bulletType]);
     this.bulletType = bulletType;
     this.loadImages(this.IMAGES_BULLETS);
     this.loadImages(this.IMAGES_SHOOT_EFFECT);
