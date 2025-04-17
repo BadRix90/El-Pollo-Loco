@@ -217,13 +217,20 @@ class World {
    * @returns {boolean} Whether the intro screen was drawn and loop continues.
    */
   drawStartIntroScreen() {
-    if (this.showStartIntro) {
-      this.ui.drawStartIntro()
-      requestAnimationFrame(() => this.draw())
-      return true
+    if (!this.showStartIntro) {
+      return false;
     }
-    return false
+
+    const btnMusic = document.getElementById('btn-music');
+    if (btnMusic) {
+      btnMusic.style.display = "none";
+    }
+
+    this.ui.drawStartIntro();
+    requestAnimationFrame(() => this.draw());
+    return true;
   }
+
 
   /**
    * Draws UI overlays like Impressum, Intro, Controls, or Options Menu.
