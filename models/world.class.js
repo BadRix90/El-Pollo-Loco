@@ -100,7 +100,7 @@ class World {
     setInterval(() => {
       this.checkCollisions()
       this.bullets.checkBulletHits()
-      this.bullets.removeOffscreenBullets()
+      this.bullets.removeMarkedBullets()
       this.checkEndbossAttack()
       this.throwableObjects = this.throwableObjects.filter((o) => !o.markedForDeletion)
     }, 1000 / 60)
