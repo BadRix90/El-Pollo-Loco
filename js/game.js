@@ -197,7 +197,7 @@ function handleKeyDown(e) {
     processGeneralKeyDown(e);
     if (world?.showEndscreen) processMenuKeyDown(e);
     if (world?.showControlsOverlay && e.key === "Enter") world.uiHandler.handleMenuAction("back-to-menu");
-    if (world?.showOptionsMenu) processMenuKeyDown(e);
+    if (world?.showOptionsMenu) processIntroKeyDown(e);
     if (world?.showIntro) processIntroKeyDown(e);
 }
 

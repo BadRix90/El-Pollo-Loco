@@ -8,16 +8,15 @@ class MenuNavigator {
      */
     constructor(world) {
         this.world = world;
-        this.activeMenu = "startIntro"; // Default menu type
+        this.activeMenu = "null";
     }
 
     /**
      * Sets which menu is currently active.
      * @param {string} menuType - Menu type: 'startIntro', 'intro', or 'options'.
      */
-    setActiveMenu(menuType) {
-        this.activeMenu = menuType;
-        this.world.ui.activeMenuButton = this.getDefaultButton(menuType);
+    setActiveMenu(menuName) {
+        this.activeMenu = menuName
     }
 
     /**
@@ -35,14 +34,12 @@ class MenuNavigator {
     }
 
     /**
-     * Handles navigation input (Arrow keys).
-     * @param {string} direction - 'up', 'down', 'left', or 'right'.
-     */
+       * Handles navigation input (Arrow keys).
+       * @param {string} direction - 'up', 'down', 'left', or 'right'.
+       */
     navigate(direction) {
-        if (this.activeMenu === "intro") {
-            this.world.ui.navigateMenuSmart(direction);
-        } else if (this.activeMenu === "options") {
-            this.world.ui.navigateMenu(direction);
+        if (["intro", "options", "startIntro"].includes(this.activeMenu)) {
+            this.world.ui.navigateMenuSmart(direction)
         }
     }
 

@@ -114,29 +114,6 @@ class UIManager {
   }
 
   /**
-   * Draws the Options menu.
-   */
-  drawOptionsMenu() {
-    const ctx = this.ctx;
-    ctx.save();
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    if (!this.menuOptions || this.menuOptions.length === 0) {
-        this.setupMenu(["exit", "controls", "toggle-menu"], "exit");
-        this.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
-        if (!this.activeMenuButton) this.activeMenuButton = "exit";
-    }
-
-    const centerX = this.canvas.width / 2;
-    this.drawOptionsBackground();
-    this.drawButton(centerX, 200, 200, 40, "Exit Game", "exit");
-    this.drawButton(centerX, 260, 200, 40, "Controls", "controls");
-    this.drawButton(centerX, 320, 200, 40, "BACK", "toggle-menu");
-    ctx.restore();
-    this.pulseFrame++;
-}
-
-  /**
    * Draws background for options menu.
    */
   drawOptionsBackground() {
@@ -239,15 +216,75 @@ class UIManager {
   }
 
   /**
-   * Navigates menu in smart grid.
+   * Sets up the Options menu grid and default active button.
+   */
+  setupOptionsMenu() {
+    this.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
+    if (!this.menuGrid.flat().includes(this.activeMenuButton)) {
+      this.activeMenuButton = "exit";
+    }
+  }
+
+  /**
+ * Draws the Options menu buttons.
+ */
+  drawOptionsButtons() {
+    const centerX = this.canvas.width / 2;
+    const baseY = 200;
+
+    this.drawButton(centerX, baseY, 200, 40, "EXIT GAME", "exit");
+    this.drawButton(centerX, baseY + 60, 200, 40, "CONTROLS", "controls");
+    this.drawButton(centerX, baseY + 120, 200, 40, "BACK", "toggle-menu");
+  }
+
+  /**
+ * Prepares the Options menu background.
+ */
+  prepareOptionsScreen() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.font = "32px CyberpunkCraftpixPixel";
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.fillText("MENU", this.canvas.width / 2, 100);
+    ctx.restore();
+  }
+
+  /**
+   * Draws the complete Options menu screen.
+   */
+  drawOptionsMenu() {
+    this.prepareOptionsScreen();
+    this.setupOptionsMenu();
+    this.drawOptionsButtons();
+    this.pulseFrame++;
+  }
+
+  /**
+   * Navigates menu smartly through a grid based on direction.
    */
   navigateMenuSmart(direction) {
     if (!this.menuGrid || !this.activeMenuButton) return;
+
     let { row, col } = this.findButtonPosition();
-    let [newRow, newCol] = this.getNewGridPosition(row, col, direction);
-    if (this.menuGrid[newRow] && this.menuGrid[newRow][newCol]) {
-      this.activeMenuButton = this.menuGrid[newRow][newCol];
-    }
+    let newRow = row;
+    let newCol = col;
+
+    if (direction === "up") newRow--;
+    if (direction === "down") newRow++;
+    if (direction === "left") newCol--;
+    if (direction === "right") newCol++;
+
+    if (newRow < 0) newRow = this.menuGrid.length - 1;
+    if (newRow >= this.menuGrid.length) newRow = 0;
+
+    if (!this.menuGrid[newRow]) return;
+    if (!this.menuGrid[newRow][newCol]) newCol = 0;
+
+    this.activeMenuButton = this.menuGrid[newRow][newCol];
   }
 
   /**

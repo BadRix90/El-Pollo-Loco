@@ -48,12 +48,18 @@ class WorldUI {
       case "back-to-menu":
         this.handleBackToMenu();
         break;
-
       case "toggle-menu":
         this.world.showOptionsMenu = !this.world.showOptionsMenu;
         this.world.showControlsOverlay = false;
-        break;
 
+        if (this.world.showOptionsMenu) {
+          this.world.menuNavigator.setActiveMenu("options");
+          this.world.ui.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
+          this.world.ui.activeMenuButton = "exit";
+        } else {
+          this.world.menuNavigator.setActiveMenu("intro");
+        }
+        break;
       case "impressum":
         this.world.showIntro = false;
         this.world.showImpressumOverlay = true;
@@ -114,6 +120,8 @@ class WorldUI {
 
       if (this.world.lastMenu === "options") {
         this.world.showOptionsMenu = true;
+        this.world.ui.setupMenu(["exit", "controls", "toggle-menu"], "exit");
+        this.world.ui.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
       } else {
         this.world.showIntro = true;
         this.world.showStartIntro = false;
