@@ -1,21 +1,15 @@
 class Bomb extends MovableObject {
 
-
   /**
- * Creates a new Bomb instance.
- * @param {number} x - The x-position of the bomb.
- * @param {number} y - The initial y-position of the bomb.
- * @param {World} world - The game world instance this bomb belongs to.
- * @param {Endboss} endboss - The endboss that launched the bomb.
- */
+   * Creates a new Bomb instance.
+   * @param {number} x - The x-position of the bomb.
+   * @param {number} y - The initial y-position of the bomb.
+   * @param {World} world - The game world instance this bomb belongs to.
+   * @param {Endboss} endboss - The endboss that launched the bomb.
+   */
   constructor(x, y, world, endboss) {
-    super().loadImage(
-      "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png"
-    );
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_FLY);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM);
-    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST);
+    super().loadImage("img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png");
+    this.loadAllImages();
     this.x = x;
     this.y = y;
     this.world = world;
@@ -25,18 +19,19 @@ class Bomb extends MovableObject {
     this.state = "fly";
     this.explodeSound = new Audio('audio/explosionEndboss.mp3');
     this.explodeSound.volume = 0.06;
-
     this.animate();
   }
 
-
   /**
- * Animation frames for each bomb state:
- * - fly: while moving down
- * - idle: waiting before explosion
- * - boom: explosion effect
- * - dust: dust animation after explosion
- */
+   * Loads all bomb animation images.
+   */
+  loadAllImages() {
+    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_FLY);
+    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB);
+    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM);
+    this.loadImages(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST);
+  }
+
   IMAGES_ATTACK_SPECIAL_BOMB_FLY = [
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Bomb/Bomb_frame_1.png",
   ];
@@ -63,74 +58,120 @@ class Bomb extends MovableObject {
     "img/cyberpunk-characters-pixel-art/10_boss/Boss_three/frames/Dust/Dust_frame_3.png",
   ];
 
-
   /**
- * Handles the bomb's full animation cycle:
- * - Moves the bomb down until it reaches the ground
- * - Plays explosion and dust effects
- * - Applies damage to the player based on proximity
- * - Removes the bomb from the world after explosion
- */
+   * Starts the bomb's animation cycle.
+   */
   animate() {
     let i = 0;
-
-    let interval = setInterval(() => {
-      if (this.state === "fly") {
-        this.y += 4;
-        this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_FLY);
-        if (this.y >= this.defaultYPosition) {
-          this.y = this.defaultYPosition;
-          this.state = "idle";
-          i = 0;
-          this.explodeSound.currentTime = 0;
-          if (!muteSounds) {
-            this.explodeSound.play();
-          }        
-
-        }
-      } else if (this.state === "idle") {
-        this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB);
-        i++;
-        if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB.length) {
-          this.state = "boom";
-          i = 0;
-        }
-      } else if (this.state === "boom") {
-        this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM);
-        i++;
-        if (i === 1) {
-          const distance = Math.abs(this.x - this.world.character.x);
-          const maxRange = 150;
-          const maxDamage = 30;
-
-          if (distance < maxRange) {
-            const damageFactor = 1 - distance / maxRange;
-            const damage = Math.round(maxDamage * damageFactor);
-
-            this.world.character.hit(damage);
-            this.world.statusBar.setPercentage(this.world.character.energy);
-          }
-        }
-
-        if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM.length) {
-          this.state = "dust";
-          i = 0;
-        }
-      } else if (this.state === "dust") {
-        this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST);
-        i++;
-        if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST.length) {
-          clearInterval(interval);
-          this.world.activeBombs = this.world.activeBombs.filter(
-            (b) => b !== this
-          );
-          this.world.shakeCamera(500, 15);
-          if (this.endboss) {
-            this.endboss.isAttacking = false;
-            this.endboss.mode = "idle";
-          }
-        }
-      }
+    const interval = setInterval(() => {
+      this.updateBombState(i, interval);
+      i++;
     }, 1000 / 60);
+  }
+
+  /**
+   * Updates the bomb behavior based on its current state.
+   * @param {number} i - Current animation frame counter.
+   * @param {number} interval - The interval ID.
+   */
+  updateBombState(i, interval) {
+    switch (this.state) {
+      case "fly":
+        this.handleFlyState();
+        break;
+      case "idle":
+        this.handleIdleState(i);
+        break;
+      case "boom":
+        this.handleBoomState(i);
+        break;
+      case "dust":
+        this.handleDustState(i, interval);
+        break;
+    }
+  }
+
+  /**
+   * Handles the flying state of the bomb.
+   */
+  handleFlyState() {
+    this.y += 4;
+    this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_FLY);
+    if (this.y >= this.defaultYPosition) {
+      this.landBomb();
+    }
+  }
+
+  /**
+   * Transitions bomb from flying to idle.
+   */
+  landBomb() {
+    this.y = this.defaultYPosition;
+    this.state = "idle";
+    this.explodeSound.currentTime = 0;
+    if (!muteSounds) this.explodeSound.play();
+  }
+
+  /**
+   * Handles the idle state before explosion.
+   * @param {number} i - Current animation frame counter.
+   */
+  handleIdleState(i) {
+    this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB);
+    if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB.length) {
+      this.state = "boom";
+    }
+  }
+
+  /**
+   * Handles the boom (explosion) state.
+   * @param {number} i - Current animation frame counter.
+   */
+  handleBoomState(i) {
+    this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM);
+    if (i === 1) this.applyExplosionDamage();
+    if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM.length) {
+      this.state = "dust";
+    }
+  }
+
+  /**
+   * Applies damage to the character based on distance.
+   */
+  applyExplosionDamage() {
+    const distance = Math.abs(this.x - this.world.character.x);
+    const maxRange = 150;
+    const maxDamage = 30;
+    if (distance < maxRange) {
+      const damageFactor = 1 - distance / maxRange;
+      const damage = Math.round(maxDamage * damageFactor);
+      this.world.character.hit(damage);
+      this.world.statusBar.setPercentage(this.world.character.energy);
+    }
+  }
+
+  /**
+   * Handles the dust state after the explosion.
+   * @param {number} i - Current animation frame counter.
+   * @param {number} interval - The interval ID.
+   */
+  handleDustState(i, interval) {
+    this.playAnimation(this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST);
+    if (i >= this.IMAGES_ATTACK_SPECIAL_BOMB_BOOM_DUST.length) {
+      clearInterval(interval);
+      this.cleanupBomb();
+    }
+  }
+
+  /**
+   * Cleans up the bomb after the animation finishes.
+   */
+  cleanupBomb() {
+    this.world.activeBombs = this.world.activeBombs.filter(b => b !== this);
+    this.world.shakeCamera(500, 15);
+    if (this.endboss) {
+      this.endboss.isAttacking = false;
+      this.endboss.mode = "idle";
+    }
   }
 }
