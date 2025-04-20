@@ -24,8 +24,9 @@ class DrawableObject {
  * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
  */
   draw(ctx) {
-    if (this.visible === false) return;
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if (this.img instanceof HTMLImageElement && this.img.complete) {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
     if (this instanceof Character) {
       if (this.currentHandImage) {
         ctx.drawImage(
