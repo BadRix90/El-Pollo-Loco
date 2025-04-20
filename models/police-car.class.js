@@ -1,20 +1,21 @@
+/**
+ * Class representing a Police Car.
+ */
 class PoliceCar extends MovableObject {
     IMAGES_POLICECAR = [
-        'img/cyberpunk-characters-pixel-art/policecar/policecar1.png', // red light
-        'img/cyberpunk-characters-pixel-art/policecar/policecar1.png', // red light
-        'img/cyberpunk-characters-pixel-art/policecar/policecar2.png', // red light
-        'img/cyberpunk-characters-pixel-art/policecar/policecar3.png', // red light
-        'img/cyberpunk-characters-pixel-art/policecar/policecar4.png', // blue light
-        'img/cyberpunk-characters-pixel-art/policecar/policecar5.png', // blue light
-        'img/cyberpunk-characters-pixel-art/policecar/policecar6.png', // red light
+        'img/cyberpunk-characters-pixel-art/policecar/policecar1.png',
+        'img/cyberpunk-characters-pixel-art/policecar/policecar1.png',
+        'img/cyberpunk-characters-pixel-art/policecar/policecar2.png',
+        'img/cyberpunk-characters-pixel-art/policecar/policecar3.png',
+        'img/cyberpunk-characters-pixel-art/policecar/policecar4.png',
+        'img/cyberpunk-characters-pixel-art/policecar/policecar5.png',
+        'img/cyberpunk-characters-pixel-art/policecar/policecar6.png',
     ];
 
-
     /**
- * Creates a new PoliceCar instance with default position, size, speed,
- * and animation setup. Starts movement and flashing light animation.
- * @param {World} world - The game world instance.
- */
+     * Initializes the Police Car.
+     * @param {World} world - The game world instance.
+     */
     constructor(world) {
         super().loadImage(this.IMAGES_POLICECAR[0]);
         this.loadImages(this.IMAGES_POLICECAR);
@@ -26,18 +27,21 @@ class PoliceCar extends MovableObject {
         this.world = world;
         this.visible = true;
         this.otherDirection = false;
-        this.animate();
+        this.startAnimation();
     }
 
+    /**
+     * Starts the movement and flashing light animations.
+     */
+    startAnimation() {
+        this.movePoliceCar();
+        this.animatePoliceLights();
+    }
 
     /**
- * Starts two intervals:
- * - One for moving the police car across the screen.
- * - One for cycling through police car animation frames.
- * Once offscreen, the police car becomes invisible and triggers the intro run.
- */
-    animate() {
-        let frame = 0;
+     * Moves the Police Car across the screen.
+     */
+    movePoliceCar() {
         const moveInterval = setInterval(() => {
             this.x += this.speed;
             if (this.x > this.world.canvas.width) {
@@ -46,84 +50,97 @@ class PoliceCar extends MovableObject {
                 this.world.character.startIntroRun();
             }
         }, 1000 / 60);
+    }
 
+    /**
+     * Animates the flashing lights.
+     */
+    animatePoliceLights() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_POLICECAR);
-            frame++;
         }, 100);
     }
 
-
     /**
- * Draws the police car with a blur and semi-transparent effect,
- * along with its flashing lights and reflection effects.
- * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
- */
+     * Draws the Police Car with special effects.
+     * @param {CanvasRenderingContext2D} ctx - The rendering context.
+     */
     draw(ctx) {
         if (!this.visible) return;
+        this.drawBlurredCar(ctx);
+        this.drawPoliceLight(ctx);
+        this.drawPoliceReflection(ctx);
+    }
 
+    /**
+     * Draws the blurred police car.
+     * @param {CanvasRenderingContext2D} ctx - The rendering context.
+     */
+    drawBlurredCar(ctx) {
         ctx.save();
         ctx.globalAlpha = 0.5;
         ctx.filter = 'blur(1px)';
         super.draw(ctx);
         ctx.restore();
-
-        this.drawPoliceLight(ctx);
-        this.drawPoliceReflection(ctx);
     }
 
-
     /**
- * Draws a glowing reflection of the police light beneath the car,
- * matching the current light color.
- * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
- */
+     * Draws a glowing light beneath the car.
+     * @param {CanvasRenderingContext2D} ctx - The rendering context.
+     */
     drawPoliceLight(ctx) {
-        const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
-        const isRed = [0, 1, 2, 3, 6].includes(currentFrame);
-        const color = isRed ? 'red' : 'blue';
-
-        const shimmerX = this.x + this.width / 2.1;
-        const shimmerY = this.y + this.height / 3;
-        const shimmerWidth = 50;
-        const shimmerHeight = 10;
-
+        const { color, shimmerX, shimmerY } = this.getLightParameters();
         ctx.save();
         ctx.globalAlpha = 0.35;
-        ctx.filter = `blur(6px)`;
+        ctx.filter = 'blur(6px)';
         ctx.fillStyle = color;
         ctx.shadowColor = color;
         ctx.shadowBlur = 25;
-
         ctx.beginPath();
-        ctx.ellipse(shimmerX, shimmerY, shimmerWidth, shimmerHeight, 0, 0, 2 * Math.PI);
+        ctx.ellipse(shimmerX, shimmerY, 50, 10, 0, 0, 2 * Math.PI);
         ctx.fill();
         ctx.restore();
     }
 
+    /**
+     * Draws a reflection of the light below the car.
+     * @param {CanvasRenderingContext2D} ctx - The rendering context.
+     */
     drawPoliceReflection(ctx) {
-        const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
-        const isRed = [0, 1, 2, 3, 6].includes(currentFrame);
-        const color = isRed ? 'red' : 'blue';
-
-        const reflectionX = this.x + this.width / 2;
-        const reflectionY = this.y + this.height + 5; // direkt unter dem Auto
-        const reflectionWidth = 50;
-        const reflectionHeight = 10;
-
+        const { color, reflectionX, reflectionY } = this.getReflectionParameters();
         ctx.save();
         ctx.globalAlpha = 0.25;
-        ctx.filter = `blur(12px)`;
+        ctx.filter = 'blur(12px)';
         ctx.fillStyle = color;
         ctx.shadowColor = color;
         ctx.shadowBlur = 20;
-
-        // Reflexion – elliptisch, nach unten
         ctx.beginPath();
-        ctx.ellipse(reflectionX, reflectionY, reflectionWidth, reflectionHeight, 0, 0, 2 * Math.PI);
+        ctx.ellipse(reflectionX, reflectionY, 50, 10, 0, 0, 2 * Math.PI);
         ctx.fill();
         ctx.restore();
     }
 
+    /**
+     * Gets light parameters for shimmer effect.
+     */
+    getLightParameters() {
+        const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
+        const isRed = [0, 1, 2, 3, 6].includes(currentFrame);
+        const color = isRed ? 'red' : 'blue';
+        const shimmerX = this.x + this.width / 2.1;
+        const shimmerY = this.y + this.height / 3;
+        return { color, shimmerX, shimmerY };
+    }
 
+    /**
+     * Gets parameters for reflection effect.
+     */
+    getReflectionParameters() {
+        const currentFrame = this.currentImage % this.IMAGES_POLICECAR.length;
+        const isRed = [0, 1, 2, 3, 6].includes(currentFrame);
+        const color = isRed ? 'red' : 'blue';
+        const reflectionX = this.x + this.width / 2;
+        const reflectionY = this.y + this.height + 5;
+        return { color, reflectionX, reflectionY };
+    }
 }
