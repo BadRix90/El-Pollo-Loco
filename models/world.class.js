@@ -33,6 +33,7 @@ class World {
     this.setupCanvas(canvas);
     this.keyboard = keyboard;
     this.initializeWorld();
+    this.inputLocked = true;
     this.draw();
   }
 
