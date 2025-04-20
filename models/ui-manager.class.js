@@ -69,7 +69,7 @@ class UIManager {
     ctx.textAlign = "center"
     ctx.fillText("Power of the Beast", this.canvas.width / 2, this.world.introY)
 
-    if (this.world.introY < 100 && !this.world.showStartButton) {
+    if (this.world.introY < 100) {
       this.world.introY += 2
       ctx.restore()
       return
