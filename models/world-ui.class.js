@@ -51,6 +51,7 @@ class WorldUI {
 
       case "toggle-menu":
         this.world.showOptionsMenu = !this.world.showOptionsMenu;
+        this.world.showControlsOverlay = false;
         break;
 
       case "impressum":
