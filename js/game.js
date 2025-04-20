@@ -93,6 +93,22 @@ function updateMusicButtonIcon() {
 }
 
 /**
+ * Displays a short mute notification popup.
+ * @param {string} message - The message to display
+ */
+function showMuteNotification(message) {
+    const notification = document.getElementById('mute-notification');
+    if (!notification) return;
+
+    notification.innerText = message;
+    notification.style.opacity = '1';
+
+    setTimeout(() => {
+        notification.style.opacity = '0';
+    }, 1500);
+}
+
+/**
  * Determines if the player is currently in gameplay.
  */
 function isInGame() {
@@ -243,7 +259,7 @@ function handleKeyUp(e) {
 function safePlay(audioElement) {
     if (audioElement && typeof audioElement.play === "function") {
         audioElement.play().catch((e) => {
-            if (e.name !== "AbortError") {}
+            if (e.name !== "AbortError") { }
         });
     }
 }
