@@ -311,7 +311,8 @@ button {
 #mute-notification {
   position: absolute;
   top: 20px;
-  right: 70px;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.7);
   color: white;
   font-family: "CyberpunkCraftpixPixel", monospace;

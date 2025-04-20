@@ -96,17 +96,17 @@ function updateMusicButtonIcon() {
  * Displays a short mute notification popup.
  * @param {string} message - The message to display
  */
-function showMuteNotification(message) {
-    const notification = document.getElementById('mute-notification');
-    if (!notification) return;
-
-    notification.innerText = message;
-    notification.style.opacity = '1';
-
-    setTimeout(() => {
-        notification.style.opacity = '0';
-    }, 1500);
-}
+function showMuteNotification(text) {
+    const notif = document.getElementById('mute-notification');
+    if (notif) {
+      notif.innerText = text;
+      notif.style.opacity = 1;
+      setTimeout(() => {
+        notif.style.opacity = 0;
+      }, 2000);
+    }
+  }
+  
 
 /**
  * Determines if the player is currently in gameplay.
