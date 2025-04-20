@@ -33,7 +33,6 @@ class World {
     this.setupCanvas(canvas);
     this.keyboard = keyboard;
     this.initializeWorld();
-    this.inputLocked = true;
     this.draw();
   }
 
@@ -69,6 +68,7 @@ class World {
     this.bullets = new BulletManager(this);
     this.touchOverlay = new TouchOverlay(this.canvas, this.keyboard);
     this.uiHandler = new WorldUI(this);
+    this.menuNavigator = new MenuNavigator(this);
   }
 
   /**
@@ -95,6 +95,7 @@ class World {
     this.showIntro = false;
     this.introStep = 2;
     this.resetIntroMusic();
+    this.lastMenu = "intro";
   }
 
   /**

@@ -117,14 +117,24 @@ class UIManager {
    * Draws the Options menu.
    */
   drawOptionsMenu() {
-    this.setupMenu(["exit", "controls", "toggle-menu"], "exit");
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    if (!this.menuOptions || this.menuOptions.length === 0) {
+        this.setupMenu(["exit", "controls", "toggle-menu"], "exit");
+        this.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
+        if (!this.activeMenuButton) this.activeMenuButton = "exit";
+    }
+
     const centerX = this.canvas.width / 2;
     this.drawOptionsBackground();
     this.drawButton(centerX, 200, 200, 40, "Exit Game", "exit");
     this.drawButton(centerX, 260, 200, 40, "Controls", "controls");
     this.drawButton(centerX, 320, 200, 40, "BACK", "toggle-menu");
+    ctx.restore();
     this.pulseFrame++;
-  }
+}
 
   /**
    * Draws background for options menu.

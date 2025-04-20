@@ -7,31 +7,57 @@ class EventManager {
    * @param {World} world - The game world instance.
    */
   constructor(world) {
-    this.world = world;
-    this.canvas = world.canvas;
-    this.registerEvents();
+    this.world = world
+    this.canvas = world.canvas
+    this.registerEvents()
   }
 
   /**
    * Registers both click and touch events.
    */
   registerEvents() {
-    this.registerClickEvents();
-    this.registerTouchEvents();
+    this.registerClickEvents()
+    this.registerTouchEvents()
+    this.registerKeyboardEvents()
+  }
+
+  /**
+   * Registers keyboard event listeners for handling menu navigation and selection.
+   * This method listens for specific key presses (Arrow keys and Enter) and delegates
+   * the actions to the `menuNavigator` if certain overlays or menus are active in the game world.
+   * 
+   * Key functionalities:
+   * - Navigates through menu options using Arrow keys.
+   * - Confirms a menu selection using the Enter key.
+   * - Prevents default browser behavior for these keys when a menu or overlay is active.
+   */
+  registerKeyboardEvents() {
+    document.addEventListener("keydown", (e) => {
+      if (this.world.showOptionsMenu || this.world.showIntro || this.world.showControlsOverlay || this.world.showStartIntro || this.world.showImpressumOverlay) {
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+          const dir = e.key.replace("Arrow", "").toLowerCase();
+          this.world.menuNavigator.navigate(dir);
+        }
+        if (e.key === "Enter") {
+          this.world.menuNavigator.confirmSelection();
+        }
+        e.preventDefault();
+      }
+    });
   }
 
   /**
    * Registers a click event on the canvas.
    */
   registerClickEvents() {
-    this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e));
+    this.canvas.addEventListener("click", (e) => this.handleCanvasClick(e))
   }
 
   /**
    * Registers a touchstart event on the canvas.
    */
   registerTouchEvents() {
-    this.canvas.addEventListener("touchstart", (e) => this.handleTouchStart(e), { passive: false });
+    this.canvas.addEventListener("touchstart", (e) => this.handleTouchStart(e), { passive: false })
   }
 
   /**
@@ -39,8 +65,8 @@ class EventManager {
    * @param {MouseEvent} e
    */
   handleCanvasClick(e) {
-    const { clickX, clickY } = this.getClickCoordinates(e);
-    this.processButtonClick(clickX, clickY);
+    const { clickX, clickY } = this.getClickCoordinates(e)
+    this.processButtonClick(clickX, clickY)
   }
 
   /**
@@ -49,10 +75,10 @@ class EventManager {
    * @param {number} clickY
    */
   processButtonClick(clickX, clickY) {
-    if (!this.world.menuButtons) return;
+    if (!this.world.menuButtons) return
     for (const button of this.world.menuButtons) {
       if (this.isButtonHit(button, clickX, clickY)) {
-        this.world.uiHandler.handleMenuAction(button.action);
+        this.world.menuNavigator.handleTouch(button.action);
         return;
       }
     }
@@ -67,6 +93,7 @@ class EventManager {
     touches.forEach(touch => this.processTouch(touch));
   }
 
+
   /**
    * Processes a single touch event.
    * @param {Touch} touch
@@ -76,7 +103,7 @@ class EventManager {
     if (!this.world.menuButtons) return;
     for (const button of this.world.menuButtons) {
       if (this.isButtonHit(button, clickX, clickY)) {
-        this.processTouchHit(button);
+        this.world.menuNavigator.handleTouch(button.action);
         return;
       }
     }
@@ -88,11 +115,11 @@ class EventManager {
    */
   processTouchHit(button) {
     if (this.world.showEndscreen) {
-      this.handleEndscreenTouch(button);
+      this.handleEndscreenTouch(button)
     } else if (this.world.menuButtons.length === 1) {
-      this.handleSingleButtonTouch(button);
+      this.handleSingleButtonTouch(button)
     } else {
-      this.handleGeneralTouch(button);
+      this.handleGeneralTouch(button)
     }
   }
 
@@ -102,13 +129,13 @@ class EventManager {
    */
   handleEndscreenTouch(button) {
     if (button.action === "restart-game") {
-      stopGame();
+      stopGame()
     } else if (button.action === "back-to-menu") {
-      this.world.showEndscreen = false;
-      this.world.showIntro = true;
-      this.world.showStartIntro = false;
-      this.world.introStep = 2;
-      this.world.showStartButton = true;
+      this.world.showEndscreen = false
+      this.world.showIntro = true
+      this.world.showStartIntro = false
+      this.world.introStep = 2
+      this.world.showStartButton = true
     }
   }
 
@@ -118,10 +145,10 @@ class EventManager {
    */
   handleSingleButtonTouch(button) {
     if (button.action === "start-intro") {
-      this.world.showStartIntro = false;
-      this.world.showIntro = true;
+      this.world.showStartIntro = false
+      this.world.showIntro = true
     } else {
-      this.world.uiHandler.handleMenuAction(button.action);
+      this.world.uiHandler.handleMenuAction(button.action)
     }
   }
 
@@ -131,9 +158,9 @@ class EventManager {
    */
   handleGeneralTouch(button) {
     if (this.world.ui.activeMenuButton === button.action) {
-      this.triggerMenuAction(button.action);
+      this.triggerMenuAction(button.action)
     } else {
-      this.world.ui.activeMenuButton = button.action;
+      this.world.ui.activeMenuButton = button.action
     }
   }
 
@@ -143,14 +170,14 @@ class EventManager {
    */
   triggerMenuAction(action) {
     if (action === "start-intro") {
-      this.world.showStartIntro = false;
-      this.world.showIntro = true;
+      this.world.showStartIntro = false
+      this.world.showIntro = true
     } else if (action === "restart-game") {
-      stopGame();
+      stopGame()
     } else if (action === "back-to-menu") {
-      this.world.uiHandler.handleMenuAction("back-to-menu");
+      this.world.uiHandler.handleMenuAction("back-to-menu")
     } else {
-      this.world.uiHandler.handleMenuAction(action);
+      this.world.uiHandler.handleMenuAction(action)
     }
   }
 
@@ -161,12 +188,7 @@ class EventManager {
    * @param {number} y
    */
   isButtonHit(button, x, y) {
-    return (
-      x >= button.x &&
-      x <= button.x + button.w &&
-      y >= button.y &&
-      y <= button.y + button.h
-    );
+    return x >= button.x && x <= button.x + button.w && y >= button.y && y <= button.y + button.h
   }
 
   /**
@@ -174,11 +196,11 @@ class EventManager {
    * @param {MouseEvent} e
    */
   getClickCoordinates(e) {
-    const rect = this.canvas.getBoundingClientRect();
+    const rect = this.canvas.getBoundingClientRect()
     return {
       clickX: e.clientX - rect.left,
-      clickY: e.clientY - rect.top
-    };
+      clickY: e.clientY - rect.top,
+    }
   }
 
   /**
@@ -186,12 +208,12 @@ class EventManager {
    * @param {Touch} touch
    */
   getTouchCoordinates(touch) {
-    const rect = this.canvas.getBoundingClientRect();
-    const scaleX = this.canvas.width / this.canvas.clientWidth;
-    const scaleY = this.canvas.height / this.canvas.clientHeight;
+    const rect = this.canvas.getBoundingClientRect()
+    const scaleX = this.canvas.width / this.canvas.clientWidth
+    const scaleY = this.canvas.height / this.canvas.clientHeight
     return {
       clickX: (touch.clientX - rect.left) * scaleX,
-      clickY: (touch.clientY - rect.top) * scaleY
-    };
+      clickY: (touch.clientY - rect.top) * scaleY,
+    }
   }
 }

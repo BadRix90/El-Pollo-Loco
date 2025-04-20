@@ -76,10 +76,9 @@ class WorldUI {
     }
     if (bgm && !muteMusic) {
       bgm.volume = 0.015
-      safePlay(bgm) // Use the safe play function instead of direct play
+      safePlay(bgm)
     }
 
-    // Make music button visible in game
     const btnMusic = document.getElementById("btn-music")
     if (btnMusic) {
       btnMusic.style.display = "block"
@@ -91,34 +90,46 @@ class WorldUI {
   }
 
   handleControls() {
-    if (this.world.showIntro) {
-      this.world.fromIntroToControls = true
-      this.world.showIntro = false
+    if (this.world.showOptionsMenu) {
+      this.world.lastMenu = "options";
     } else {
-      this.world.fromIntroToControls = false
+      this.world.lastMenu = "intro";
     }
-
-    this.world.showControlsOverlay = true
+    this.world.showIntro = false;
+    this.world.showStartIntro = false;
+    this.world.showOptionsMenu = false;
+    this.world.showImpressumOverlay = false;
+    this.world.showControlsOverlay = true;
   }
 
   handleBackToMenu() {
     if (this.world.showEndscreen) {
-      this.world.showEndscreen = false
-      this.world.showIntro = true
-      this.world.showStartIntro = false
-      this.world.introStep = 2
-      this.world.showStartButton = true
+      this.world.showEndscreen = false;
+      this.world.showIntro = true;
+      this.world.showStartIntro = false;
+      this.world.introStep = 2;
+      this.world.showStartButton = true;
     } else if (this.world.showControlsOverlay) {
-      this.world.showControlsOverlay = false
-      if (this.world.fromIntroToControls) {
-        this.world.showIntro = true
-        this.world.showStartButton = true
-        this.world.introStep = 2
-      } else {
-        this.world.showOptionsMenu = true
-      }
+      this.world.showControlsOverlay = false;
 
-      stopGame({ goToMenu: true })
+      if (this.world.lastMenu === "options") {
+        this.world.showOptionsMenu = true;
+      } else {
+        this.world.showIntro = true;
+        this.world.showStartIntro = false;
+        this.world.introStep = 2;
+        this.world.showStartButton = true;
+      }
+    } else if (this.world.showImpressumOverlay) {
+      this.world.showImpressumOverlay = false;
+      this.world.showIntro = true;
+      this.world.showStartIntro = false;
+      this.world.introStep = 2;
+      this.world.showStartButton = true;
+    } else {
+      this.world.showOptionsMenu = true;
     }
   }
+
+
 }
