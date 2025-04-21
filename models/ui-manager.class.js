@@ -16,14 +16,25 @@ class UIManager {
    * Draws all intro elements.
    */
   drawIntroScreen() {
-    this.prepareIntroScreen()
+    this.prepareIntroScreen();
+
     if (this.world.introY < 100) {
-      this.world.introY += 2
-      return
+      this.world.introY += 2;
+      return;
     }
-    this.setupIntroMenu()
-    this.drawIntroButtons()
-    this.pulseFrame++
+    this.setupIntroMenu();
+    this.drawIntroButtons();
+    this.pulseFrame++;
+  }
+
+  /**
+  * Sets up intro menu grid and default active button.
+  */
+  setupIntroMenu() {
+    this.menuGrid = [["start", "controls"], ["impressum"]];
+    if (!this.menuGrid.flat().includes(this.activeMenuButton)) {
+      this.activeMenuButton = "start";
+    }
   }
 
   /**
@@ -50,16 +61,6 @@ class UIManager {
   showMusicButton() {
     const btnMusic = document.getElementById("btn-music")
     if (btnMusic) btnMusic.style.display = "block"
-  }
-
-  /**
-   * Sets up intro menu grid and active button.
-   */
-  setupIntroMenu() {
-    this.menuGrid = [["start", "controls"], ["impressum"]]
-    if (!this.menuGrid.flat().includes(this.activeMenuButton)) {
-      this.activeMenuButton = "start"
-    }
   }
 
   /**
@@ -154,12 +155,12 @@ class UIManager {
     ctx.fillText("CONTROLS", centerX, 100)
     ctx.font = "18px CyberpunkCraftpixPixel"
     ctx.textAlign = "left"
-    ;["A - Left", "D - Right", "SPACE - Jump", "Q - Shoot"].forEach((line, i) =>
-      ctx.fillText(line, centerX - 150, 160 + i * 30),
-    )
-    ;["M - Menu", "F - Fullscreen", "T - Toggle Music/ Sound"].forEach((line, i) =>
-      ctx.fillText(line, centerX + 20, 160 + i * 30),
-    )
+      ;["A - Left", "D - Right", "SPACE - Jump", "Q - Shoot"].forEach((line, i) =>
+        ctx.fillText(line, centerX - 150, 160 + i * 30),
+      )
+      ;["M - Menu", "F - Fullscreen", "T - Toggle Music/ Sound"].forEach((line, i) =>
+        ctx.fillText(line, centerX + 20, 160 + i * 30),
+      )
     this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu")
   }
 
@@ -268,18 +269,24 @@ class UIManager {
    * Navigates menu smartly through a grid based on direction.
    */
   navigateMenuSmart(direction) {
-    if (!this.menuGrid || !this.activeMenuButton) return
+    if (!this.menuGrid || !this.activeMenuButton) return;
 
-    let { row, col } = this.findButtonPosition()
+    let { row, col } = this.findButtonPosition();
 
     if (direction === "up") {
-      row = (row + 1) % this.menuGrid.length
+        row = (row + 1) % this.menuGrid.length;
     } else if (direction === "down") {
-      row = (row - 1 + this.menuGrid.length) % this.menuGrid.length
-    } else if (direction === "left" || direction === "right") {
+        row = (row - 1 + this.menuGrid.length) % this.menuGrid.length;
+    } else if (direction === "left") {
+        col = (col - 1 + this.menuGrid[row].length) % this.menuGrid[row].length;
+    } else if (direction === "right") {
+        col = (col + 1) % this.menuGrid[row].length;
     }
-    this.activeMenuButton = this.menuGrid[row][0]
-  }
+
+    if (this.menuGrid[row] && this.menuGrid[row][col]) {
+        this.activeMenuButton = this.menuGrid[row][col];
+    }
+}
 
   /**
    * Finds button position in grid.

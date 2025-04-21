@@ -13,65 +13,90 @@ class WorldUI {
   handleMenuAction(action) {
     switch (action) {
       case "start-intro":
-        this.world.showStartIntro = false;
-        this.world.showIntro = true;
-        this.world.introStep = 2;
-        this.world.showStartButton = true;
+        this.handleStartIntro();
         break;
-
       case "start":
-        this.handleStart();
-        if (!muteMusic) {
-          stopMusic();
-          startGameMusic();
-        }
+        this.handleStartGame();
         break;
-
       case "music":
       case "sound-toggle":
-        toggleMusic();
+        this.handleToggleMusic();
         break;
-
       case "restart":
       case "restart-game":
-        stopGame({ goToMenu: false });
+        this.handleRestart();
         break;
-
       case "exit":
-        stopGame({ goToMenu: true });
+        this.handleExit();
         break;
-
       case "controls":
         this.handleControls();
         break;
-
       case "back-to-menu":
         this.handleBackToMenu();
         break;
       case "toggle-menu":
-        this.world.showOptionsMenu = !this.world.showOptionsMenu;
-        this.world.showControlsOverlay = false;
-
-        if (this.world.showOptionsMenu) {
-          this.world.menuNavigator.setActiveMenu("options");
-          this.world.ui.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
-          this.world.ui.activeMenuButton = "exit";
-        } else {
-          this.world.menuNavigator.setActiveMenu("intro");
-        }
+        this.handleToggleMenu();
         break;
       case "impressum":
-        this.world.showIntro = false;
-        this.world.showImpressumOverlay = true;
+        this.handleImpressum();
         break;
-
       case "back-to-intro":
-        this.world.showImpressumOverlay = false;
-        this.world.showIntro = true;
-        this.world.introStep = 2;
-        this.world.showStartButton = true;
+        this.handleBackToIntro();
         break;
     }
+  }
+
+  handleStartIntro() {
+    this.world.showStartIntro = false;
+    this.world.showIntro = true;
+    this.world.introStep = 2;
+    this.world.showStartButton = true;
+  }
+
+  handleStartGame() {
+    this.handleStart();
+    if (!muteMusic) {
+      stopMusic();
+      startGameMusic();
+    }
+  }
+
+  handleToggleMusic() {
+    toggleMusic();
+  }
+
+  handleRestart() {
+    stopGame({ goToMenu: false });
+  }
+
+  handleExit() {
+    stopGame({ goToMenu: true });
+  }
+
+  handleToggleMenu() {
+    this.world.showOptionsMenu = !this.world.showOptionsMenu;
+    this.world.showControlsOverlay = false;
+
+    if (this.world.showOptionsMenu) {
+      this.world.menuNavigator.setActiveMenu("options");
+      this.world.ui.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
+      this.world.ui.activeMenuButton = "exit";
+    } else {
+      this.world.menuNavigator.setActiveMenu("intro");
+    }
+  }
+
+  handleImpressum() {
+    this.world.showIntro = false;
+    this.world.showImpressumOverlay = true;
+  }
+
+  handleBackToIntro() {
+    this.world.showImpressumOverlay = false;
+    this.world.showIntro = true;
+    this.world.introStep = 2;
+    this.world.showStartButton = true;
   }
 
 
@@ -110,37 +135,52 @@ class WorldUI {
 
   handleBackToMenu() {
     if (this.world.showEndscreen) {
-      this.world.showEndscreen = false;
-      this.world.showIntro = true;
-      this.world.showStartIntro = false;
-      this.world.introStep = 2;
-      this.world.showStartButton = true;
-      this.world.character = new Character();
-      this.world.character.world = this.world;
-      this.world.statusBar.setPercentage(100);
-
+      this.resetAfterEndscreen();
     } else if (this.world.showControlsOverlay) {
-      this.world.showControlsOverlay = false;
-
-      if (this.world.lastMenu === "options") {
-        this.world.showOptionsMenu = true;
-        this.world.ui.setupMenu(["exit", "controls", "toggle-menu"], "exit");
-        this.world.ui.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
-      } else {
-        this.world.showIntro = true;
-        this.world.showStartIntro = false;
-        this.world.introStep = 2;
-        this.world.showStartButton = true;
-      }
+      this.resetAfterControls();
     } else if (this.world.showImpressumOverlay) {
-      this.world.showImpressumOverlay = false;
-      this.world.showIntro = true;
-      this.world.showStartIntro = false;
-      this.world.introStep = 2;
-      this.world.showStartButton = true;
+      this.resetAfterImpressum();
     } else {
       this.world.showOptionsMenu = true;
     }
   }
+
+  resetAfterEndscreen() {
+    this.world.showEndscreen = false;
+    this.world.showIntro = true;
+    this.world.showStartIntro = false;
+    this.world.introStep = 2;
+    this.world.showStartButton = true;
+    this.world.character = new Character();
+    this.world.character.world = this.world;
+    this.world.statusBar.setPercentage(100);
+
+    this.world.ui.setupMenu(["start", "controls", "impressum"], "start");
+    this.world.ui.menuGrid = [["start", "controls"], ["impressum"]];
+
+  }
+
+  resetAfterControls() {
+    this.world.showControlsOverlay = false;
+    if (this.world.lastMenu === "options") {
+      this.world.showOptionsMenu = true;
+      this.world.ui.setupMenu(["exit", "controls", "toggle-menu"], "exit");
+      this.world.ui.menuGrid = [["exit"], ["controls"], ["toggle-menu"]];
+    } else {
+      this.world.showIntro = true;
+      this.world.showStartIntro = false;
+      this.world.introStep = 2;
+      this.world.showStartButton = true;
+    }
+  }
+
+  resetAfterImpressum() {
+    this.world.showImpressumOverlay = false;
+    this.world.showIntro = true;
+    this.world.showStartIntro = false;
+    this.world.introStep = 2;
+    this.world.showStartButton = true;
+  }
+
 
 }
