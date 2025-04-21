@@ -4,33 +4,54 @@
  * without distortion by adjusting width or height accordingly.
  */
 function resizeCanvas() {
-  const canvas = document.getElementById("canvas")
+  const canvas = document.getElementById("canvas");
   const containerWidth = window.innerWidth;
   const containerHeight = window.innerHeight;
 
+  const originalWidth = 720;
+  const originalHeight = 480;
+  const aspectRatio = calculateAspectRatio(originalWidth, originalHeight);
 
-  const originalWidth = 720
-  const originalHeight = 480
+  let { newWidth, newHeight } = calculateNewCanvasSize(containerWidth, containerHeight, aspectRatio);
 
-  const aspectRatio = originalWidth / originalHeight
+  applyCanvasSize(canvas, newWidth, newHeight, originalWidth, originalHeight);
+}
 
-  let newWidth, newHeight
+/**
+ * Calculates the aspect ratio.
+ */
+function calculateAspectRatio(width, height) {
+  return width / height;
+}
+
+/**
+ * Calculates new canvas dimensions based on container size and aspect ratio.
+ */
+function calculateNewCanvasSize(containerWidth, containerHeight, aspectRatio) {
+  let newWidth, newHeight;
 
   if (containerWidth / containerHeight > aspectRatio) {
-    newHeight = containerHeight
-    newWidth = newHeight * aspectRatio
+    newHeight = containerHeight;
+    newWidth = newHeight * aspectRatio;
   } else {
-    newWidth = containerWidth
-    newHeight = newWidth / aspectRatio
+    newWidth = containerWidth;
+    newHeight = newWidth / aspectRatio;
   }
 
-  newWidth = Math.min(newWidth, 720);
-  newHeight = Math.min(newHeight, 480);
+  return {
+    newWidth: Math.min(newWidth, 720),
+    newHeight: Math.min(newHeight, 480)
+  };
+}
 
-  canvas.style.width = `${newWidth}px`
-  canvas.style.height = `${newHeight}px`
-  canvas.width = originalWidth
-  canvas.height = originalHeight
+/**
+ * Applies the calculated size to the canvas.
+ */
+function applyCanvasSize(canvas, width, height, originalWidth, originalHeight) {
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+  canvas.width = originalWidth;
+  canvas.height = originalHeight;
 }
 
 /**

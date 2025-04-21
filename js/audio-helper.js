@@ -78,6 +78,10 @@ function stopMusic() {
 }
 
 
+/**
+ * Stops all currently playing audio elements with the class "sound".
+ * This function pauses each audio element and resets its playback position to the beginning.
+ */
 function stopAllSounds() {
     const soundElements = document.querySelectorAll('audio.sound');
     soundElements.forEach(audio => {
