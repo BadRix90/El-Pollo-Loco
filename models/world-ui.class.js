@@ -115,6 +115,10 @@ class WorldUI {
       this.world.showStartIntro = false;
       this.world.introStep = 2;
       this.world.showStartButton = true;
+      this.world.character = new Character();
+      this.world.character.world = this.world;
+      this.world.statusBar.setPercentage(100);
+
     } else if (this.world.showControlsOverlay) {
       this.world.showControlsOverlay = false;
 
@@ -138,6 +142,5 @@ class WorldUI {
       this.world.showOptionsMenu = true;
     }
   }
-
 
 }

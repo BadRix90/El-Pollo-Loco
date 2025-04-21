@@ -24,34 +24,33 @@ class DrawableObject {
  * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
  */
   draw(ctx) {
-    if (this.img instanceof HTMLImageElement && this.img.complete) {
-      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
+    this.drawSelf(ctx);
     if (this instanceof Character) {
-      if (this.currentHandImage) {
-        ctx.drawImage(
-          this.currentHandImage,
-          this.x,
-          this.y,
-          this.width,
-          this.height
-        );
-      }
-      if (this.currentWeaponImage) {
-        ctx.drawImage(
-          this.currentWeaponImage,
-          this.x,
-          this.y,
-          this.width,
-          this.height
-        );
-      }
+      this.drawCharacterExtras(ctx);
     }
-    if (this.img && this.img.complete) {
+    this.drawSelf(ctx); // (falls wirklich doppelt nötig)
+  }
+
+  /**
+   * Draws the main image.
+   */
+  drawSelf(ctx) {
+    if (this.img instanceof HTMLImageElement && this.img.complete) {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
   }
 
+  /**
+   * Draws additional parts for characters like hands and weapons.
+   */
+  drawCharacterExtras(ctx) {
+    if (this.currentHandImage) {
+      ctx.drawImage(this.currentHandImage, this.x, this.y, this.width, this.height);
+    }
+    if (this.currentWeaponImage) {
+      ctx.drawImage(this.currentWeaponImage, this.x, this.y, this.width, this.height);
+    }
+  }
 
   /**
  * Loads multiple images and stores them in the image cache for animation purposes.
