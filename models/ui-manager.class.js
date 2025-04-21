@@ -157,7 +157,7 @@ class UIManager {
     ;["A - Left", "D - Right", "SPACE - Jump", "Q - Shoot"].forEach((line, i) =>
       ctx.fillText(line, centerX - 150, 160 + i * 30),
     )
-    ;["M - Menu", "F - Fullscreen", "T - Toggle Music", "Y - Toggle Sound"].forEach((line, i) =>
+    ;["M - Menu", "F - Fullscreen", "T - Toggle Music/ Sound"].forEach((line, i) =>
       ctx.fillText(line, centerX + 20, 160 + i * 30),
     )
     this.drawButton(centerX, 350, 160, 40, "BACK", "back-to-menu")

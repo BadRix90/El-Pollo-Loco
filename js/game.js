@@ -214,7 +214,6 @@ function processGeneralKeyDown(e) {
     else if (e.key === "Control") keyboard.CTRL = true;
     else if (e.key === "Shift") keyboard.SHIFT = true;
     else if (e.key.toLowerCase() === "t") { if (isInGame()) toggleMusic(); }
-    else if (e.key.toLowerCase() === "y") toggleSounds();
     else if (e.key.toLowerCase() === "f") toggleFullscreen();
 }
 
