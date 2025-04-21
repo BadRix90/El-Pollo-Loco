@@ -78,10 +78,13 @@ function handleGameMusic() {
     const introMusic = document.getElementById('intro-music');
     const backgroundMusic = document.getElementById('background-music');
     const inGame = isInGame();
-    if (muteMusic) pauseAllMusic(introMusic, backgroundMusic);
-    else playCorrectMusic(introMusic, backgroundMusic, inGame);
-}
 
+    if (muteMusic) {
+        pauseAllMusic(introMusic, backgroundMusic);
+    } else {
+        playCorrectMusic(introMusic, backgroundMusic, inGame);
+    }
+}
 /**
  * Updates the music button icon.
  */
@@ -99,14 +102,14 @@ function updateMusicButtonIcon() {
 function showMuteNotification(text) {
     const notif = document.getElementById('mute-notification');
     if (notif) {
-      notif.innerText = text;
-      notif.style.opacity = 1;
-      setTimeout(() => {
-        notif.style.opacity = 0;
-      }, 2000);
+        notif.innerText = text;
+        notif.style.opacity = 1;
+        setTimeout(() => {
+            notif.style.opacity = 0;
+        }, 2000);
     }
-  }
-  
+}
+
 
 /**
  * Determines if the player is currently in gameplay.
@@ -129,7 +132,10 @@ function pauseAllMusic(introMusic, backgroundMusic) {
  */
 function playCorrectMusic(introMusic, backgroundMusic, inGame) {
     if (inGame) {
-        backgroundMusic?.play();
+        if (backgroundMusic) {
+            backgroundMusic.volume = 0.1; // Stellen Sie die Lautstärke ein
+            safePlay(backgroundMusic);
+        }
         introMusic?.pause();
     } else {
         if (introMusic) {
@@ -289,3 +295,34 @@ function updateBombSounds() {
         bomb.explodeSound.volume = muteSounds ? 0 : 0.06;
     });
 }
+
+/**
+ * Updates the sound button icon based on the current mute state.
+ * If the `muteSounds` variable is true, the button icon is set to the muted icon.
+ * Otherwise, it is set to the unmuted icon.
+ * 
+ * The function first checks if the sound button element exists in the DOM.
+ * If it does not exist, the function exits early.
+ */
+function updateSoundButtonIcon() {
+    const btnSound = document.getElementById('btn-sound');
+    if (!btnSound) return;
+    btnSound.src = muteSounds ? "img/GUI/3 Icons/Icons/Icon_34.png" : "img/GUI/3 Icons/Icons/Icon_03.png";
+}
+
+/**
+ * Initializes the audio settings by retrieving mute preferences from localStorage.
+ * Updates the UI icons for music and sound buttons and stops any playing music.
+ */
+function setupAudioSettings() {
+    muteMusic = localStorage.getItem("muteMusic") === "true";
+    muteSounds = localStorage.getItem("muteSounds") === "true";
+    updateMusicButtonIcon();
+    updateSoundButtonIcon();
+    
+    if (!muteMusic) {
+      handleGameMusic();
+    } else {
+      stopMusic();
+    }
+  }

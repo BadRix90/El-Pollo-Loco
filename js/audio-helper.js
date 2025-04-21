@@ -33,9 +33,9 @@ function createAudioContextIfNeeded() {
  * Plays an audio element safely.
  */
 function playAudio(audioElement) {
-    if (audioElement && !muteMusic && !muteSounds) { 
+    if (audioElement && !muteMusic && !muteSounds) {
         audioElement.play().catch(e => console.log('Audio play prevented:', e));
-      }
+    }
 }
 
 /**
