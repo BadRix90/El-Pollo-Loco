@@ -47,6 +47,10 @@ class WorldUI {
     }
   }
 
+  /**
+   * Handles the transition from the start screen to the intro sequence.
+   * Updates the world state to display the intro and show the start button.
+   */
   handleStartIntro() {
     this.world.showStartIntro = false;
     this.world.showIntro = true;
@@ -54,6 +58,10 @@ class WorldUI {
     this.world.showStartButton = true;
   }
 
+  /**
+   * Handles the start of the game by initializing necessary actions
+   * and managing background music based on the mute setting.
+   */
   handleStartGame() {
     this.handleStart();
     if (!muteMusic) {
@@ -62,18 +70,31 @@ class WorldUI {
     }
   }
 
+  /**
+   * Toggles the background music on or off.
+   */
   handleToggleMusic() {
     toggleMusic();
   }
 
+  /**
+   * Handles the restart of the game by stopping the current game session.
+   */
   handleRestart() {
     stopGame({ goToMenu: false });
   }
 
+  /**
+   * Handles the exit action by stopping the game and returning to the menu.
+   */
   handleExit() {
     stopGame({ goToMenu: true });
   }
 
+  /**
+   * Toggles the options menu visibility and updates the UI state accordingly.
+   * Activates the "options" menu when shown, otherwise reverts to the "intro" menu.
+   */
   handleToggleMenu() {
     this.world.showOptionsMenu = !this.world.showOptionsMenu;
     this.world.showControlsOverlay = false;
@@ -87,11 +108,17 @@ class WorldUI {
     }
   }
 
+  /**
+   * Handles the display of the impressum overlay by hiding the intro and showing the impressum overlay.
+   */
   handleImpressum() {
     this.world.showIntro = false;
     this.world.showImpressumOverlay = true;
   }
 
+  /**
+   * Resets the world state to display the intro screen.
+   */
   handleBackToIntro() {
     this.world.showImpressumOverlay = false;
     this.world.showIntro = true;
@@ -100,6 +127,13 @@ class WorldUI {
   }
 
 
+  /**
+   * Handles the start of the game by managing background music, UI elements, 
+   * and initializing the police car.
+   * 
+   * @param {HTMLAudioElement} bgm - The background music audio element.
+   * @param {HTMLAudioElement} introMusic - The intro music audio element.
+   */
   handleStart(bgm, introMusic) {
     if (introMusic) {
       introMusic.pause()
@@ -120,6 +154,10 @@ class WorldUI {
     this.world.policeCar = new PoliceCar(this.world)
   }
 
+  /**
+   * Handles the display of control overlays by updating the world state.
+   * Sets the last menu, hides other overlays, and shows the controls overlay.
+   */
   handleControls() {
     if (this.world.showOptionsMenu) {
       this.world.lastMenu = "options";
@@ -133,6 +171,10 @@ class WorldUI {
     this.world.showControlsOverlay = true;
   }
 
+  /**
+   * Handles navigation back to the menu by resetting the world state 
+   * based on the currently active overlay or showing the options menu.
+   */
   handleBackToMenu() {
     if (this.world.showEndscreen) {
       this.resetAfterEndscreen();
@@ -145,6 +187,10 @@ class WorldUI {
     }
   }
 
+  /**
+   * Resets the game state after the end screen is displayed.
+   * Restores initial settings for the world, character, and UI.
+   */
   resetAfterEndscreen() {
     this.world.showEndscreen = false;
     this.world.showIntro = true;
@@ -160,6 +206,10 @@ class WorldUI {
 
   }
 
+  /**
+   * Resets the world state after the controls overlay is closed.
+   * Restores the appropriate menu or intro screen based on the last menu state.
+   */
   resetAfterControls() {
     this.world.showControlsOverlay = false;
     if (this.world.lastMenu === "options") {
@@ -174,6 +224,10 @@ class WorldUI {
     }
   }
 
+  /**
+   * Resets the world state after closing the impressum overlay.
+   * Restores the intro and start button visibility.
+   */
   resetAfterImpressum() {
     this.world.showImpressumOverlay = false;
     this.world.showIntro = true;
@@ -181,6 +235,4 @@ class WorldUI {
     this.world.introStep = 2;
     this.world.showStartButton = true;
   }
-
-
 }

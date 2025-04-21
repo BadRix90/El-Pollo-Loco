@@ -319,10 +319,10 @@ function setupAudioSettings() {
     muteSounds = localStorage.getItem("muteSounds") === "true";
     updateMusicButtonIcon();
     updateSoundButtonIcon();
-    
+
     if (!muteMusic) {
-      handleGameMusic();
+        handleGameMusic();
     } else {
-      stopMusic();
+        stopMusic();
     }
-  }
+}
